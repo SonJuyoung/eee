@@ -1,0 +1,39 @@
+server:
+  servlet:
+    context-path: /
+  port: 9000
+
+spring:
+#  datasource:
+#    url: jdbc:h2:tcp://localhost/~/workspace/h2db/base_project
+#    username: sa
+#    password:
+#    driver-class-name: org.h2.Driver
+
+  jpa:
+    hibernate:
+      ddl-auto: none
+      use-new-id-generator-mappings: false
+    properties:
+      hibernate:
+#        show_sql: true
+        format_sql: true
+        default_batch_fetch_size: 100 # in 쿼리의 갯수 (데이터가 1000 개 가 있을 경우 10번 쿼리가 나간다)
+  
+    database-platform: org.hibernate.dialect.MariaDB103Dialect
+
+  data:
+    web:
+      pageable:
+        default-page-size: 10
+
+  servlet:
+    multipart:
+      location: /srv/base-proj-boot/upload
+      maxFileSize: 100MB
+      maxRequestSize: 150MB
+
+logging:
+  level:
+    org.hibernate.SQL: debug
+    org.springframework.boot.autoconfigure: ERROR

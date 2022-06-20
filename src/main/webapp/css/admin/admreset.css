@@ -1,0 +1,228 @@
+@charset "UTF-8";
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@100;300;400;500;700;900&display=swap');
+
+@font-face{
+    font-family:'Roboto-Regular';
+    src:url('../../font/Roboto-Regular.woff') format('truetype');
+    unicode-range: U+0041-005A, U+0061-007A, U+0030-0039;
+}
+@font-face{
+    font-family:'EliceDigitalBaeumOTF_Regular';
+    src:url('../../font/EliceDigitalBaeumOTF_Regular.otf') format('truetype');
+}
+@font-face{
+    font-family:'EliceDigitalBaeumOTF_Bold';
+    src:url('../../font/EliceDigitalBaeumOTF_Bold.otf') format('truetype');
+}
+@font-face{
+    font-family:'EliceDigitalBaeum_Regular';
+    src:url('../../font/EliceDigitalBaeum_Regular.woff') format('truetype');
+}
+
+@font-face{
+    font-family:'Pretendard-Bold';
+    src:url('../../font/Pretendard-Bold.woff2') format('truetype');
+}
+@font-face{
+    font-family:'Pretendard-SemiBold';
+    src:url('../../font/Pretendard-SemiBold.woff2') format('truetype');
+}
+@font-face{
+    font-family:'Pretendard-Regular';
+    src:url('../../font/Pretendard-Regular.woff2') format('truetype');
+}
+
+
+
+*{
+    font-family:'Roboto-Regular', 'Pretendard-Regular', sans-serif;
+    color:#000;
+    list-style: none;
+    margin:0;
+    padding:0;
+    border:0;
+    box-sizing:border-box;
+    line-height:1;
+    -ms-overflow-style:none; /* 스크롤 숨기기 */
+	scrollbar-width:none;
+}   
+
+
+
+/*--------------------------------------------------------- reset ---------------------------*/
+html, body, div, span, applet, object, iframe,
+h1, h2, h3, h4, h5, h6, p, blockquote, pre,
+a, abbr, acronym, address, big, cite, code,
+del, dfn, em, img, ins, kbd, q, s, samp,
+small, strike, strong, sub, sup, tt, var,
+b, u, i, center,
+dl, dt, dd, ol, ul, li,
+fieldset, form, label, legend,
+table, caption, tbody, tfoot, thead, tr, th, td,
+article, aside, canvas, details, embed, 
+figure, figcaption, footer, header, hgroup, 
+menu, nav, output, ruby, section, summary,
+time, mark, audio, video{
+	margin:0;
+	padding:0;
+	border:0;
+}
+
+
+body{
+    position:relative;
+    margin:0;
+    padding:0;
+    width:100%;
+    -webkit-text-size-adjust:none;
+    -moz-text-size-adjust:none;
+    -ms-text-size-adjust:none;
+    overflow: auto;
+}
+
+
+a{
+    color:#000;
+    display:block;
+    text-decoration:none;
+    cursor:pointer;
+}
+
+
+a:hover, a:active{
+    text-decoration:none;
+}
+
+
+ol, ul{
+	list-style:none;
+}
+
+
+em{
+    font-style:normal;
+}
+
+b{
+    font-size:inherit;
+    letter-spacing:inherit;
+}
+
+pre{
+    line-height:1.76;
+}
+
+table{
+    width:100%;
+	border-spacing:0;
+}
+
+table th,
+table td{color:#333;}
+
+table td{font-weight:300;}
+
+
+select option{
+	font-size:inherit;
+}
+select{
+    font-size: 0.938em;
+    border-radius: 2px;
+    letter-spacing: -0.4px; 
+    background:url(../images/select.png) no-repeat 50% / 0.5em; 
+    background-position-x:calc(100% - 0.938em); 
+    appearance:none; /* 네이티브 화살표 제거*/ 
+    -webkit-appearance:none; /* 네이티브 화살표 제거*/
+    border: 1px solid #dcdcdc;
+    padding-left: 10px;
+}
+
+select::-ms-expand{
+    display:none; /* 네이티브 화살표 제거*/
+}
+
+
+select:focus::-ms-value{
+	background-color:inherit;
+	color:inherit;
+}
+
+
+/* 자동완성 */
+input:-webkit-autofill,
+input:-internal-autofill-selected{
+	-webkit-box-shadow:0 0 0 30px #f4f4f4 inset;
+	-webkit-text-fill-color:#000000;
+}
+
+
+input::read-only,
+input::-moz-read-only{
+	background:#dadada;
+	cursor:default;
+}
+
+
+input::-moz-focus-inner,
+button::-moz-focus-inner{
+    border:0;
+    padding:0;
+}
+
+
+
+
+button{
+	background:none;
+    border:0;
+    -webkit-user-select:none;
+    -moz-user-select:none;
+    -ms-user-select:none;
+    cursor:pointer;
+}
+
+
+textarea{
+	width:100%;
+    display:block;
+    border:1px solid #e5e5e5;
+	padding:6px 9px;
+	min-height:100px;
+	resize:none;
+    line-height:1.5;
+}
+
+address{
+    font-style:normal;
+}
+
+
+::placeholder{
+	color:#a2a2a2;
+    font-size:inherit;
+    font-weight:300;
+}
+
+
+/* 스크롤 디자인 */
+::-webkit-scrollbar{
+	width:6px;
+	height:6px;
+	background-color:#e5e5e5;
+}
+
+
+::-webkit-scrollbar-thumb{
+	background:#484848;
+}
+
+
+:focus{
+	outline:none;
+}
+	
+	
+::selection{
+	background:#ddd;
+}

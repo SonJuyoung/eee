@@ -1,0 +1,164 @@
+/* ----------------------------------------------------- 공통 ------------------------------------------------------ */
+/*    페이지 타이틀   */
+.pageTitle{ padding: 30px 0; }
+.pageTitle h1{ font-size: 36px; color: #000; font-family:'EliceDigitalBaeumOTF_Bold'; font-weight: bold; letter-spacing: -1.8px; }
+
+.pageSubTitle{ margin-bottom: 10px; }
+.pageSubTitle h2{ font-size: 18px; font-weight: bold; color: #174279; font-family:'EliceDigitalBaeumOTF_Bold'; }
+
+
+
+/*    카테고리   */
+.category{ display: flex; align-items: center; margin-bottom: 10px; }
+.category a{ width: 200px; height: 40px; display: flex; align-items: center; justify-content: center; border-radius: 4px; background-color: #dbdde1; font-size: 15px; font-weight: bold; color: #303843; margin-left: 4px; }
+.category a:first-child{ margin-left: 0; }
+.category a span{ font-size: 13px; color: #303843; display: block; margin-left: 6px; font-weight: normal; }
+.category a.on{ background-color: #4969bb; color: #fff; }
+.category a.on span{ color: #fff; }
+
+
+/* ----------------------------------------------------- 회원관리 ------------------------------------------------------ */
+/*    권한관리   */
+.powerView_name{ min-width: 160px; height: 40px; display: flex; align-items: center; border: 1px solid #bec7d4; padding: 0 14px; font-size: 15px; color: #4969bb; font-weight: bold; }
+
+
+
+
+/* ----------------------------------------------------- 구인구직관리 ------------------------------------------------------ */
+/*    인재정보관리   */
+.resume_title{ margin-bottom: 18px; }
+.resume_title h2{ font-size: 24px; color: #174279; font-weight: bold; }
+
+.resumeImg_wrap{ padding: 30px !important; }
+.resumeImg_wrap .resumeImg_area{ background-color: #f3f3f3; position: relative; width: 200px; height: 260px; }
+.resumeImg_wrap .resumeImg_area img{ position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); max-width: 100%; max-height: 100%; }
+
+.table_major{ display: flex; align-items: center; }
+.table_major h5{ font-size: 13px; color: #464a4f; margin-right: 12px; white-space: nowrap; }
+.table_major p{ font-size: 14px; color: #000; line-height: 16px; }
+
+
+
+
+
+/* ----------------------------------------------------- 시스템관리 ------------------------------------------------------ */
+/*    공통코드관리   */
+.code_wrap{ display: flex; justify-content: space-between; }
+
+.code_left{ width: 600px; }
+.code_search { display: flex; }
+.code_search > *{ margin-right: 4px; }
+.code_search > *:last-child{ margin-right: 0; }
+.code_search button{ flex: none; }
+.code_search input{ height: 40px; }
+
+.code_search2{ display: flex; align-items: center; justify-content: center; padding: 20px 30px; background-color: #fff; margin-top: 10px; border: 1px solid #dcdcdc; border-bottom: none; }
+.code_search2 > *{ margin-right: 4px; }
+.code_search2 > *:last-child{ margin-right: 0; }
+.code_search2 p{ font-size: 14px; color: #464a4f; font-weight: bold; }
+
+
+.code_right{ width: calc(100% - 620px); margin-top: 50px; }
+
+
+
+.scrollTable{ border: 1px solid #dcdcdc; border-radius: 4px; overflow: hidden; }
+.scrollTable table{ border: none; border-radius: 0; }
+.scrollTable .tableBody{ overflow-y: auto; }
+.scrollTable .tableBody::-webkit-scrollbar{ display: none; }
+
+.listSelect tr td{ cursor: pointer; }
+.listSelect tr.on td{ background-color: #e8fbff; }
+
+
+/*    SMS&Push 발송이력   */
+.table_searchSms input,
+.table_searchSms select{ height: 40px; }
+.table_searchSms{ display: flex; }
+.table_searchSms > *{ margin-left: 30px;}
+.table_searchSms > *:first-child{ margin-left: 0;}
+
+.table_searchSms_box{ display: flex; align-items: center; }
+.table_searchSms_box > *{ margin-right: 4px; }
+.table_searchSms_box > *:last-child{ margin-right: 0; }
+.table_searchSms_box p{ font-size: 14px; color: #464a4f; font-weight: bold; }
+
+
+
+/* ----------------------------------------------------- 통계관리 ------------------------------------------------------ */
+/*    지역인재통계   */
+.areaStats_wrap{ display: flex; margin-top: 26px; }
+.map_area{ width: 520px; display: flex; flex-direction: column; position: relative; }
+.map_area > button{ width: 80px; height: 32px; background-color: transparent; border: 1px solid #777; font-size: 13px; color: #000; border-radius: 2px; margin-bottom: 8px; }
+.map_area > button.on{ background-color: #4969bb; border: 1px solid #4969bb; color: #fff; }
+.map_area .map_box{ position: absolute; width: 304px; height: 372px; left: 120px; }
+
+.mapTable_wrap{ width: calc(100% - 520px); display: flex; flex-direction: column; }
+.mapTable_wrap .mapTable_area{ display: flex; justify-content: space-between; }
+.mapTable_wrap .mapTable_area > table:nth-child(1){ width: 25.45%; }
+.mapTable_wrap .mapTable_area > table:nth-child(2){ width: 71.81%; }
+
+
+/*    입사지원/제안 통계   */
+.applyChart_wrap{ display: flex; justify-content: space-between; }
+.applyChart_wrap > div{ width: 47.5%; }
+
+
+
+
+
+
+/* ----------------------------------------------------- 대시보드 ------------------------------------------------------ */
+.main *{ font-family:'Pretendard-Regular'; }
+
+.main_title_area{ display: flex; justify-content: space-between; align-items: flex-end; padding: 30px 0; }
+.main_title_area h1{ font-size: 36px; color: #000; letter-spacing: -1.8px; font-weight: bold; font-family:'EliceDigitalBaeumOTF_Bold'; }
+.main_title_area p{ font-size: 14px; color: #000; }
+
+.main_top{ display: flex; justify-content: space-between; }
+.main_top .main_top_box{ width: 100%; margin-right: 30px; padding: 34px 40px 36px 40px; border-radius: 8px; background-color: #fff;border: 1px solid #d9dee6; box-shadow: 0 0 9px 0 rgba(3,0,0,0.05); }
+.main_top .main_top_box.bgBlue{ background-color: #e4f1ff; }
+.main_top .main_top_box:last-child{ margin-right: 0; }
+.main_top .main_top_box .box_title{ display: flex; justify-content: space-between; align-items: flex-end; margin-bottom: 38px; }
+.main_top .main_top_box .box_title h3{ font-size: 18px; color: #174279; font-weight: bold; font-family:'EliceDigitalBaeumOTF_Bold'; }
+.main_top .main_top_box .box_title p{ font-size: 12px; color: #777; }
+.main_top .main_top_box .box_con{ display: flex; justify-content: space-between; }
+.main_top .main_top_box .box_con > div{ width: 100%; }
+.main_top .main_top_box .box_con > div h1{ font-size: 40px; color: #000; }
+.main_top .main_top_box .box_con > div h1 span{ font-size: 12px; color: #777; display: inline-block; margin-left: 4px; }
+.main_top .main_top_box .box_con > div p{ margin-top: 4px; font-size: 14px; color: #000; }
+
+.main_mid{ margin-top: 30px; }
+.main_mid .main_mid_box{ border-radius: 8px; background-color: #edfbf8; border: 1px solid #d9dee6; box-shadow: 0 0 9px 0 rgba(3,0,0,0.05); padding: 34px 40px 36px 40px; }
+.main_mid .main_mid_box .box_title{ display: flex; justify-content: space-between; align-items: flex-end; }
+.main_mid .main_mid_box .box_title h3{ font-size: 18px; color: #174279; font-weight: bold; font-family:'EliceDigitalBaeumOTF_Bold'; }
+.main_mid .main_mid_box .box_con{ display: flex; justify-content: space-between; align-items: flex-end; }
+.main_mid .main_mid_box .box_con > div{ width: fit-content; }
+.main_mid .main_mid_box .box_con > div h1{ font-size: 40px; color: #000; }
+.main_mid .main_mid_box .box_con > div h1 span{ font-size: 12px; color: #777; display: inline-block; margin-left: 4px; }
+.main_mid .main_mid_box .box_con > div p{ margin-top: 4px; font-size: 14px; color: #000; }
+.main_mid .main_mid_box .box_con > div.main_mid_areaBox{ display: flex; }
+.main_mid .main_mid_box .box_con > div.main_mid_areaBox > div{ width: 100px; height: 100px; border-radius: 10px; background-color: #e0f6f2; display: flex; flex-direction: column; align-items: center; margin-right: 8px; padding-top: 30px; }
+.main_mid .main_mid_box .box_con > div.main_mid_areaBox > div:last-child{ margin-right: 0; }
+.main_mid .main_mid_box .box_con > div.main_mid_areaBox > div h2{ font-size: 24px; color: #000; }
+.main_mid .main_mid_box .box_con > div.main_mid_areaBox > div h2 span{ font-size: 12px; color: #777; display: inline-block; margin-left: 4px; }
+.main_mid .main_mid_box .box_con > div.main_mid_areaBox > div p{ margin-top: 18px; color: #000; font-size: 14px; }
+
+.main_bot{ margin-top: 30px; display: flex; justify-content: space-between; }
+.main_bot .main_bot_box{ width: 100%; margin-right: 30px; border-radius: 8px; background-color: #fff; border: 1px solid #d9dee6; box-shadow: 0 0 9px 0 rgba(3,0,0,0.05); padding: 34px 40px 36px 40px; }
+.main_bot .main_bot_box:last-child{ margin-right: 0; }
+.main_bot .main_bot_box .box_title{ display: flex; justify-content: space-between; align-items: flex-end; }
+.main_bot .main_bot_box .box_title h3{ font-size: 18px; color: #174279; font-weight: bold; font-family:'EliceDigitalBaeumOTF_Bold'; }
+.main_bot .main_bot_box .box_title a{ font-size: 13px; color: #777; }
+.main_bot .main_bot_box .box_con{ margin-top: 38px; }
+.main_bot .main_bot_box .box_con a{ display: flex; align-items: center; justify-content: space-between; margin-bottom: 24px; }
+.main_bot .main_bot_box .box_con a:last-child{ margin-bottom: 0; }
+.main_bot .main_bot_box .box_con a p{ font-size: 16px; color: #4969bb; letter-spacing: -0.4px; width: calc(100% - 100px); overflow: hidden; text-overflow: ellipsis; display: -webkit-box; -webkit-line-clamp: 1; -webkit-box-orient: vertical; }
+.main_bot .main_bot_box .box_con a span{ font-size: 14px; color: #000; letter-spacing: -0.35px; }
+
+
+
+
+
+
+

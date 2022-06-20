@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?><!--Converted at: Wed May 11 15:49:38 KST 2016-->
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="FileDAO">
+
+    <insert id="FileDAO.insertFileList">
+        INSERT INTO tb_file (ref_seq, ref_type, original_file_nm, store_file_nm, file_path, file_size, download_auth, delete_auth, created_by, created_date)
+        VALUES
+        <foreach collection="list" item="item" separator=",">
+             (#{item.refSeq}, #{item.refType}, #{item.originalFileNm}, #{item.storeFileNm}, #{item.filePath}, #{item.fileSize}, #{item.downloadAuth}, #{item.deleteAuth}, #{item.createdBy}, #{item.createdDate})
+        </foreach>
+
+    </insert>
+
+    <select id="FileDAO.selectFileList" resultType="ieetu.common.file.dto.FileDto">
+        SELECT file_seq, ref_seq, ref_type, original_file_nm, store_file_nm, file_size
+        FROM tb_file
+        WHERE ref_seq = #{refSeq}
+        AND ref_type = #{refType}
+
+    </select>
+
+    <select id="FileDAO.selectFile" resultType="ieetu.common.file.vo.FileVO">
+        SELECT file_seq, ref_seq, ref_type, original_file_nm, store_file_nm, file_path, file_size, download_auth, delete_auth
+        FROM tb_file
+        WHERE file_seq = #{fileSeq}
+    </select>
+</mapper>

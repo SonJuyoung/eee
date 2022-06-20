@@ -1,0 +1,149 @@
+/* ----------------------------------------------- table top -------------------------------------------- */
+.table_top{ display: flex; align-items: flex-end; justify-content: space-between; margin-bottom: 10px; }
+
+
+.table_count{ display: flex; align-items: center; }
+.table_count p{ font-size: 14px; color: #1f1f1f; }
+.table_count p b{ font-size: 14px; color: #4969bb; }
+.table_count select{ width: 80px; height: 32px; font-size: 13px; border: 1px solid #d5d5d5; min-width: 0; min-height: 0; margin-left: 14px; background: transparent url(../../images/select.png) no-repeat 85% / 0.5em; }
+
+
+.table_search{ display: flex; align-items: center; }
+.table_search > *{ margin-left: 4px; }
+.table_search select{ height: 40px; }
+.table_search .tableSearch_area{ display: flex; align-items: center; justify-content: space-around; border: 1px solid #bec7d4; background-color: #fff; border-radius: 2px; height: 40px; width: 250px; }
+.table_search .tableSearch_area input{ border: none; }
+
+
+/* ----------------------------------------------- table title -------------------------------------------- */
+.tableTitle{ display: flex; align-items: flex-end; justify-content: space-between; margin-bottom: 10px; }
+.tableTitle h3{ font-size: 18px; color: #244497; font-weight: bold; letter-spacing: -0.72px; }
+.tableTitle h3 span{ font-size: 13px; font-weight: normal; color: #174279; }
+.tableTitle p{ font-size: 13px; color: #ef280e; letter-spacing: -0.52px; }
+
+
+
+
+/* ----------------------------------------------- table bottom -------------------------------------------- */
+.table_bottom{ display: flex; justify-content: space-between; margin-top: 30px; position: relative; min-height: 32px; }
+
+
+
+/* ----------------------------------------------- page -------------------------------------------- */
+.pagenation{ display: flex; align-items: center; justify-content: center; position: absolute; top: 0; left: 50%; transform: translateX(-50%); }
+.pagenation a{ width: 40px; height: 32px; display: flex; align-items: center; justify-content: center; border-radius: 4px; border: 1px solid #e6e6e6; background-color: #fff; font-size: 15px; color: #313131; margin: 0 2px; }
+.pagenation a.btn_arrow{ background-color: transparent; border: 1px solid transparent; }
+.pagenation a.on{ background-color: #555; border: 1px solid #555; color: #fff; }
+
+
+/* ----------------------------------------------- 레이아웃 -------------------------------------------- */
+.red_dot::after{ content: "*"; font-size: 13px; letter-spacing: -0.6px; color: #ef280e; margin-left: 4px; }
+
+.conTable_file a{ display: inline-block; margin-right: 30px; color: #0e69d0; }
+.conTable_file a img{ margin-left: 6px; }
+.conTable_file p{ display: inline-block; margin-right: 30px; font-weight: bold; }
+.conTable_file p button{ margin-left: 6px; }
+
+.conTable_file_down a{ display: block; color: #0e69d0; width: fit-content; margin-bottom: 10px; }
+.conTable_file_down a:last-child{ margin-bottom: 0; }
+.conTable_file_down a img{ margin-left: 6px; }
+
+.reomteTable_area{ margin-top: 60px; }
+.reomteTable_area table td a{  /* color: #0e69d0; */ font-weight: bold; display: inline-block; }
+
+.table_textArea{ text-align: left; min-height: 200px; }
+
+.table_note{ text-align: right; font-size: 14px; color: #666; }
+
+
+/* ----------------------------------------------- contentsTable1 -------------------------------------------- */
+.contentsTable1{ border-radius: 4px; border: 1px solid #dcdcdc; overflow: hidden; }
+.contentsTable1 tr th{ padding: 12px 10px 10px 24px; border-bottom: 1px solid #d9dee6; background-color: #eaedf2; font-size: 13px; color: #464a4f; text-align: left; height: 52px; }
+.contentsTable1 tr:last-child th{ border-bottom: none; }
+.contentsTable1 tr td{ background-color: #fff; font-size: 14px; padding: 10px 10px 10px 16px; border-bottom: 1px solid #eaeaea; line-height: 18px; }
+.contentsTable1 tr:last-child td{ border-bottom: none; }
+
+
+
+/* ----------------------------------------------- listTable1 -------------------------------------------- */
+.listTable1{ border: 1px solid #dcdcdc; border-radius: 4px; overflow: hidden; }
+.listTable1 thead tr th{ background-color: #eaedf2; font-size: 13px; color: #464a4f; letter-spacing: -0.13px; border-right: 1px solid #d9dee6; border-top: 1px solid #d9dee6; height: 46px; padding: 12px; }
+.listTable1 thead tr:first-child th{ border-top: none; }
+.listTable1 thead tr:first-child th:last-child{ border-right: none; }
+.listTable1 thead tr td{ background-color: #fff; font-size: 14px; color: #000; padding: 12px 16px; }
+.listTable1 tbody tr th{ background-color: #f3f3f3; text-align: left; font-size: 13px; color: #000; border-bottom: 1px solid #eaeaea; padding: 12px 10px 10px 24px; }
+.listTable1 tbody tr:last-child th{ border-bottom: none; }
+.listTable1 tbody tr td{ background-color: #fff; text-align: center; padding: 12px 16px; height: 56px; border-bottom: 1px solid #eaeaea; border-right: 1px solid #eaeaea; font-size: 14px; color: #000; letter-spacing: -0.56px; line-height: 18px; }
+.listTable1 tbody tr:last-child td{ border-bottom: none; }
+.listTable1 tbody tr td:last-child{ border-right: none; }
+
+
+.listTable1 tbody tr td a{ font-size: 14px; color: #0e69d0; letter-spacing: -0.56px; }
+
+
+
+/* ----------------------------------------------- listTable2 -------------------------------------------- */
+.listTable2{ border: 1px solid #dcdcdc; border-radius: 4px; overflow: hidden; }
+.listTable2 thead tr th{ background-color: #eaedf2; font-size: 13px; color: #464a4f; letter-spacing: -0.13px; border-right: 1px solid #d9dee6; border-top: 1px solid #d9dee6; height: 46px; padding: 12px; }
+.listTable2 thead tr:first-child th{ border-top: none; }
+.listTable2 thead tr:first-child th:last-child{ border-right: none; }
+.listTable2 tbody tr td{ background-color: #fff; text-align: left; padding: 9px 20px; height: 40px; border-bottom: 1px solid #eaeaea; border-right: 1px solid #eaeaea; font-size: 14px; color: #000; letter-spacing: -0.56px; line-height: 18px; }
+.listTable2 tbody tr:last-child td{ border-bottom: none; }
+.listTable2 tbody tr td:last-child{ border-right: none; }
+
+.listTable2 tbody tr.bg_grey td{ background-color: #f8f8f8; }
+
+
+
+/* ----------------------------------------------- listTable3 -------------------------------------------- */
+.listTable3{ border: 1px solid #dcdcdc; border-radius: 4px; overflow: hidden; }
+.listTable3 thead tr th{ height: 46px; background-color: #eaedf2; font-size: 14px; color: #464a4f; border-right: 1px solid #d9dee6; }
+.listTable3 thead tr th:last-child{ border-right: none; }
+.listTable3 thead tr td{ height: 56px; background-color: #f3f3f3; font-size: 14px; color: #000; border-bottom: 1px solid #eaeaea; border-right: 1px solid #eaeaea; text-align: center; padding: 4px; }
+.listTable3 thead tr td:last-child{ border-right: none; }
+.listTable3 tbody tr th{ font-size: 13px; background-color: #f3f3f3; text-align: left; padding: 10px 10px 10px 24px; border-bottom: 1px solid #eaeaea; }
+.listTable3 tbody tr:last-child th{ border-bottom: none; }
+.listTable3 tbody tr td{ height: 58px; background-color: #fff; font-size: 15px; color: #000; border-right: 1px solid #eaeaea; border-bottom: 1px solid #eaeaea; text-align: center; }
+.listTable3 tbody tr:last-child td{ border-bottom: none; }
+.listTable3 tbody tr td:last-child{ border-right: none; }
+
+
+/* ----------------------------------------------- listTable4 -------------------------------------------- */
+.listTable4{ border: 1px solid #dcdcdc; border-radius: 4px; overflow: hidden; }
+.listTable4 thead tr th{ height: 46px; background-color: #eaedf2; font-size: 14px; color: #464a4f; }
+.listTable4 thead tr th span{ font-weight: normal; }
+.listTable4 thead tr td{ height: 56px; background-color: #f3f3f3; font-size: 12px; color: #000; border-bottom: 1px solid #eaeaea; border-right: 1px solid #eaeaea; text-align: right; padding: 4px; }
+.listTable4 thead tr td:last-child{ border-right: none; }
+.listTable4 tbody tr td{ height: 58px; background-color: #fff; font-size: 15px; color: #000; border-right: 1px solid #eaeaea; text-align: center; }
+.listTable4 tbody tr td:last-child{ border-right: none; }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
