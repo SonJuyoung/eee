@@ -1,2 +1,2 @@
-# egovStudy
+# egov-study
 
