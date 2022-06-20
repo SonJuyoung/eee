@@ -2,7 +2,7 @@
 
 ## 개발환경
 - egov4.0
-- java 8 이상
+- [openjdk temurin 11](https://adoptium.net/temurin/releases?version=11)
 - db : mariadb v10
 
 ## 프로젝트 진행
