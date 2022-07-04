@@ -33,6 +33,7 @@ body {
 
 .join-input {
     display: flex;
+    justify-content: center;
 }
 
 .join-detail {

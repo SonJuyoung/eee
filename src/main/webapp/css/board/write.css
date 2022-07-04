@@ -1,0 +1,30 @@
+.write-top > h5 {
+    display: flex;
+    justify-content: end;
+}
+
+.write-top > div > h1 {
+    border-left: 3px solid lightslategray;
+    border-bottom: 1px solid lightslategray;
+}
+
+table {
+    border: 1px solid lightslategray;
+    width: 100%;
+}
+
+td {
+    border: 1px solid lightslategray;
+}
+
+.write-body {
+    display: flex;
+    justify-content: center;
+    width: 100%;
+}
+
+.write-bottom {
+    margin-top: 5px;
+    display: flex;
+    justify-content: space-between;
+}
