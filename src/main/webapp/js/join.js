@@ -13,7 +13,7 @@ joinBtn.addEventListener("click", (e)=> {
         alert("비밀번호를 확인해 주세요.");
         return;
     }
-    fetch("http://localhost:9000/api/join", {
+    fetch("http://localhost:9000/join", {
         method: "POST",
         headers: {
             "Content-Type": "application/json",
