@@ -11,4 +11,5 @@ public class CommonController {
     public String error() {
         return RESOLVER_DEFAULT_ERROR_VIEW;
     }
+
 }

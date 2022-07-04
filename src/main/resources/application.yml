@@ -4,11 +4,11 @@ server:
   port: 9000
 
 spring:
-#  datasource:
-#    url: jdbc:h2:tcp://localhost/~/workspace/h2db/base_project
-#    username: sa
-#    password:
-#    driver-class-name: org.h2.Driver
+  datasource:
+    driver-class-name: org.mariadb.jdbc.Driver
+    url: jdbc:mariadb://localhost:3306/egovstudy
+    username: root
+    password: root1234
 
   jpa:
     hibernate:

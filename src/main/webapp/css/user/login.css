@@ -1,0 +1,36 @@
+*{
+    padding: 0;
+    margin: 0;
+}
+
+body {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+}
+
+.login-body {
+    display: flex;
+}
+
+.login-input {
+    display: flex;
+    flex-direction: column;
+}
+
+.login-btn {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.login-bottom {
+    display: flex;
+}
+
+.btns {
+    display: flex;
+    flex-direction: column;
+}
