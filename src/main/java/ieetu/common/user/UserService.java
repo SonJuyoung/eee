@@ -13,5 +13,7 @@ public class UserService {
     public int join(UserEntity entity) {
 
         userRepository.save(entity);
+
+        return 1;
     }
 }
