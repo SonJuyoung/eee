@@ -1,3 +1,4 @@
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
 <head>
@@ -15,26 +16,24 @@
     <table>
         <tr>
             <td>제목(*)</td>
-            <td><input type="text"></td>
+            <td><input class="title" id="title" name="title" type="text"></td>
             <td>상단공지 여부(*)</td>
             <td>
-                <input type="radio" id="yes" name="yes" value="yes"
-                       checked>
-                <label for="yes">예</label>
-
-                <input type="radio" id="no" name="no" value="no">
-                <label for="no">아니오</label>
+                <form class="fix">
+                    <input type="radio" name="fix" value="1" /> 예
+                    <input type="radio" name="fix" checked="checked" value="0" /> 아니오
+                </form>
             </td>
         </tr>
         <tr>
             <td>작성자(*)</td>
-            <td><input type="text"></td>
+            <td><input class="writer" id="writer" name="writer" value="${loginUser}" type="text" readonly></td>
             <td>작성일자(*)</td>
-            <td><input type="datetime-local"></td>
+            <td><input class="rdt" type="date" id="rdt" name="rdt"></td>
         </tr>
         <tr>
             <td>내용(*)</td>
-            <td colspan="3"><textarea cols="100" rows="10"></textarea></td>
+            <td colspan="3"><textarea class="ctnt" cols="100" rows="10"></textarea></td>
         </tr>
         <tr>
             <td>영상파일</td>
@@ -42,7 +41,9 @@
         </tr>
         <tr>
             <td>첨부파일</td>
-            <td colspan="3"><button>파일선택</button><span>※ 첨부파일 당 최대 5MB까지 업로드 가능하며, 최대5개까지 등록할 수 있습니다.</span></td>
+            <td colspan="3">
+                <button>파일선택</button>
+                <span>※ 첨부파일 당 최대 5MB까지 업로드 가능하며, 최대5개까지 등록할 수 있습니다.</span></td>
         </tr>
         <tr>
             <td></td>
@@ -52,7 +53,8 @@
 </div>
 <div class="write-bottom">
     <button>취소</button>
-    <button>저장</button>
+    <button class="save-btn">저장</button>
 </div>
+<script src="/js/write.js"></script>
 </body>
 </html>

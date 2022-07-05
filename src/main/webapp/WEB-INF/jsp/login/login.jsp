@@ -20,7 +20,7 @@
 
     </div>
     <div class="login-btn">
-        <input type="button" name="btn" value="로그인">
+        <input id="login-btn" type="button" name="btn" value="로그인">
     </div>
 </div>
 <div class="id-save">
@@ -37,5 +37,6 @@
         <button>아이디/비밀번호 찾기</button>
     </div>
 </div>
+<script src="/js/login.js"></script>
 </body>
 </html>
