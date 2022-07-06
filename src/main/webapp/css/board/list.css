@@ -1,0 +1,55 @@
+*{
+    margin: 0;
+    padding: 0;
+}
+
+.board-top > h1 {
+    text-align: center;
+}
+
+body{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    height: 100%;
+}
+
+.count-search {
+    width: 80vw;
+    display: flex;
+    justify-content: space-between;
+}
+
+table {
+    width: 80vw;
+}
+
+th {
+    background-color: lightgray;
+}
+
+td {
+    text-align: center;
+}
+
+.toWrite {
+    margin: 5px;
+    width: 80vw;
+    display: flex;
+    justify-content: end;
+}
+
+.pagination {
+    display: flex;
+    align-items: center;
+}
+
+.pageNum {
+    margin: 5px;
+}
+
+.bold {
+    font-weight: bolder;
+}

@@ -29,5 +29,6 @@ console.log(fixElem.value);
         return res.json();
     }).then(data => {
         console.log(data)
+        location.href="http://localhost:9000/board/list";
     }).catch(e=> console.log(e));
 })
