@@ -1,0 +1,45 @@
+*{
+    padding: 0;
+    margin: 0;
+}
+
+.container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+}
+
+.title {
+    text-align: center;
+    width: 80%;
+    border-bottom: 1px solid lightslategray;
+    padding-bottom: 10px;
+    margin-bottom: 10px;
+}
+
+.detail {
+    display: flex;
+    margin: 10px 0px;
+    justify-content: space-around;
+    width: 80%;
+}
+
+.ctnt {
+    min-height: 50vh;
+    width: 80%;
+    display: flex;
+    border: 1px solid lightslategray;
+    margin: 10px 0px;
+}
+
+.btns {
+    width: 80%;
+    display: flex;
+    justify-content: space-around;
+}
+
+.hidden {
+    display: none;
+}

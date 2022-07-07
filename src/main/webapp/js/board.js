@@ -41,7 +41,7 @@ let fixNum = document.querySelector(".fix-count").textContent;
 
 let pagingNum = Math.ceil((totalCount-fixNum)/defaultNum);
 
-function makePagingNum(page) {
+function makePagingNum() {
     pagingElem.innerHTML = '';
     for (let i=1; i<=pagingNum; i++) {
         pagingElem.innerHTML += `
@@ -52,11 +52,21 @@ function makePagingNum(page) {
     let pageNum = document.querySelectorAll(".pageNum");
 
     pageNum.forEach((item)=> {
+        const url = new URL(location.href).href;
+
         if (item.textContent - 1 == getParameterByName("page")) {
             item.classList.add("bold")
         }
     item.addEventListener("click", ()=> {
-            location.href="http://localhost:9000/board/list?"+`page=${item.textContent-1}`
+        if (url.includes("page")) {
+                let url1 = url.split("page")[0];
+                location.href = `${url1}` + `page=${item.textContent - 1}`
+        } else if (url.includes("?")) {
+            location.href = `${url}&` + `page=${item.textContent - 1}`
+        }
+        else {
+            location.href = `${url}?` + `page=${item.textContent - 1}`
+        }
         })
     })
 }
@@ -75,18 +85,27 @@ function getParameterByName(name) {
 const url = new URL(location.href);
 
 if (getParameterByName("category")) {
-    // let pageNum = document.querySelectorAll(".pageNum");
-    //     pagingElem.innerHTML = '';
-    // for (let i=1; i<=pagingNum; i++) {
-    //     pagingElem.innerHTML += `
-    // <p class="pageNum">${i}</p>
-    // `
-    // }
-    //
-    // pageNum.forEach((item)=> {
-    //     item.addEventListener("click", ()=> {
-    //         location.href = `${url}` + '&page=' + item.textContent;
-    //     })
-    // })
+
     makePagingNum();
 }
+
+//로그아웃
+
+let logoutBtn = document.querySelector(".logout-btn");
+
+logoutBtn.addEventListener("click", ()=> {
+    location.href="http://localhost:9000/logout";
+})
+
+//클릭 시 디테일 이동
+
+let titleElem = document.querySelectorAll(".table-body");
+
+titleElem.forEach((item)=> {
+
+    let iboard = item.childNodes[3].textContent;
+
+    item.childNodes[7].addEventListener("click", ()=> {
+        location.href = "http://localhost:9000/board/detail?iboard=" + `${iboard}`;
+    })
+})

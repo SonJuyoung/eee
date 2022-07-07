@@ -3,6 +3,11 @@
     padding: 0;
 }
 
+.logout {
+    display: flex;
+    justify-content: end;
+}
+
 .board-top > h1 {
     text-align: center;
 }
@@ -32,6 +37,7 @@ th {
 
 td {
     text-align: center;
+    padding: 5px 0px;
 }
 
 .toWrite {
@@ -52,4 +58,20 @@ td {
 
 .bold {
     font-weight: bolder;
+}
+
+.title {
+    width: 60%;
+}
+
+.rdt {
+    width: 10%;
+}
+
+tr:hover {
+    background-color: lightgray;
+}
+
+.table-body>.title:hover {
+    cursor: pointer;
 }

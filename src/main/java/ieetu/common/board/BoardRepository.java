@@ -14,6 +14,16 @@ import java.util.List;
 public interface BoardRepository extends JpaRepository<BoardEntity, Integer> {
     List<BoardEntity> findAllByOrderByFixDescIboardDesc();
 
+    BoardEntity findByIboard(int iboard);
+
+    @Query("SELECT b FROM BoardEntity as b WHERE b.iboard < :iboard order by b.iboard desc")
+    List<BoardEntity> findPrev(int iboard);
+
+    @Query("SELECT b FROM BoardEntity as b WHERE b.iboard > :iboard order by b.iboard asc")
+    List<BoardEntity> findNext(int iboard);
+
+    void deleteByIboard(int iboard);
+
     @Query("SELECT b FROM BoardEntity as b WHERE b.fix = 1 order by b.iboard desc")
     List<BoardEntity> fixList();
 

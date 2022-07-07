@@ -23,7 +23,12 @@ public class UserController {
     private UserRepository userRepository;
 
     @GetMapping("/login")
-    public String login() {
+    public String login(HttpSession hs) {
+
+        if (hs.getAttribute("loginUser") != null) {
+            return "redirect:/board/list";
+        }
+
         return "/login/login";
     }
 
@@ -59,7 +64,7 @@ public class UserController {
 
     @PostMapping("/login")
     @ResponseBody
-    public int loginPost(@RequestBody UserDto dto, HttpSession hs, Model model) {
+    public int loginPost(@RequestBody UserDto dto, HttpSession hs) {
 
         UserEntity entity = new UserEntity();
 
@@ -73,5 +78,14 @@ public class UserController {
         } else {
             return 0;
         }
+    }
+
+    @GetMapping("/logout")
+    public String logout(HttpSession hs) {
+        if (hs.getAttribute("loginUser") != null) {
+            hs.invalidate();
+            return "redirect:/login";
+        }
+        return "/login/login";
     }
 }

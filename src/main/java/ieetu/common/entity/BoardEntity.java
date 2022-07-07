@@ -3,6 +3,7 @@ package ieetu.common.entity;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.springframework.lang.Nullable;
 
 import javax.persistence.*;
 
@@ -23,7 +24,8 @@ public class BoardEntity {
 
     private String rdt;
 
-    private String file;
-
     private int fix;
+
+    @Nullable
+    private String file;
 }

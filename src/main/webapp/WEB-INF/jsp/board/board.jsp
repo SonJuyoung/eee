@@ -7,6 +7,9 @@
 </head>
 <body>
 <div class="board-top">
+    <div class="logout">
+        <button class="logout-btn">로그아웃</button>
+    </div>
     <h1>공지사항</h1>
     <div class="count-search">
         <div class="count">
@@ -31,18 +34,18 @@
         <th>상태</th>
         <th>NO</th>
         <th><input type="checkbox"></th>
-        <th>제목</th>
+        <th class="title">제목</th>
         <th>작성자</th>
-        <th>최종 수정일자</th>
+        <th class="rdt">최종 수정일자</th>
     </tr>
     <c:forEach var="item" items="${fixList}">
         <tr class="table-body">
             <td>${item.fix}</td>
             <td>${item.iboard}</td>
             <td><input type="checkbox"></td>
-            <td>${item.title}</td>
+            <td class="title">${item.title}</td>
             <td>${item.writer}</td>
-            <td>${item.rdt}</td>
+            <td class="rdt">${item.rdt}</td>
         </tr>
     </c:forEach>
     <c:forEach var="item" items="${list}">
@@ -50,9 +53,9 @@
             <td>${item.fix}</td>
             <td>${item.iboard}</td>
             <td><input type="checkbox"></td>
-            <td>${item.title}</td>
+            <td class="title">${item.title}</td>
             <td>${item.writer}</td>
-            <td>${item.rdt}</td>
+            <td class="rdt">${item.rdt}</td>
         </tr>
     </c:forEach>
 </table>

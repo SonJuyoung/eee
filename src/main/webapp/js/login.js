@@ -22,7 +22,7 @@ loginBtn.addEventListener("click", (e)=> {
     }).then(data => {
         console.log(data)
         if (data === 1) {
-            // location.href = "http://localhost:9000/board/list"
+            location.href = "http://localhost:9000/board/list"
         } else {
             alert("아이디 혹은 비밀번호를 확인해주세요.");
         }

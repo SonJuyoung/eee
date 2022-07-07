@@ -1,6 +1,18 @@
-.write-top > h5 {
+.write-top {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+}
+
+.write-top>div:first-child {
+    width: 80%;
+}
+
+.write-top>div:last-child {
     display: flex;
     justify-content: end;
+    width: 80%;
 }
 
 .write-top > div > h1 {
@@ -10,7 +22,8 @@
 
 table {
     border: 1px solid lightslategray;
-    width: 100%;
+    border-collapse: collapse;
+    width: 80%;
 }
 
 td {
@@ -25,6 +38,12 @@ td {
 
 .write-bottom {
     margin-top: 5px;
+    display: flex;
+    justify-content: center;
+}
+
+.write-bottom > div {
+    width: 80%;
     display: flex;
     justify-content: space-between;
 }
