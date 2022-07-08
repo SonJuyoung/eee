@@ -4,11 +4,16 @@
 <head>
     <title>Board</title>
     <link rel="stylesheet" href="/css/board/list.css">
+    <!-- Latest compiled and minified CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Latest compiled JavaScript -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
 </head>
 <body>
 <div class="board-top">
     <div class="logout">
-        <button class="logout-btn">로그아웃</button>
+        <button class="btn btn-warning logout-btn">로그아웃</button>
     </div>
     <h1>공지사항</h1>
     <div class="count-search">
@@ -17,14 +22,14 @@
             <div hidden class="fix-count">${fixListCount}</div>
         </div>
         <div class="search">
-            <select name="search" class="search-option">
+            <select name="search" class="form-select search-option">
                 <option value="0">전체</option>
                 <option value="1">제목</option>
                 <option value="2">내용</option>
                 <option value="3">작성자</option>
             </select>
-            <input class="search-text" type="text">
-            <button class="search-btn">검색</button>
+            <input class="form-control search-text" type="text">
+            <button class="search-btn btn btn-light">검색</button>
         </div>
     </div>
 </div>
@@ -60,7 +65,7 @@
     </c:forEach>
 </table>
 <div class="toWrite">
-    <a href="/board/write"><button>글쓰기</button></a>
+    <a href="/board/write"><button class="btn btn-primary">글쓰기</button></a>
 </div>
 <div class="pagination">
 <%--    <p><</p>--%>

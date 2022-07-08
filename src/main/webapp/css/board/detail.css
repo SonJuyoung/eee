@@ -43,3 +43,20 @@
 .hidden {
     display: none;
 }
+
+.file {
+    display: flex;
+    flex-direction: column;
+}
+
+.attached-file {
+    display: flex;
+}
+
+.attached-file > span {
+    margin-left: 5px;
+}
+
+.attached-file > span:hover {
+    cursor: pointer;
+}

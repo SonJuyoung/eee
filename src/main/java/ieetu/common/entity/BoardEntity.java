@@ -25,7 +25,4 @@ public class BoardEntity {
     private String rdt;
 
     private int fix;
-
-    @Nullable
-    private String file;
 }

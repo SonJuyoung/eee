@@ -14,6 +14,8 @@ import java.util.List;
 public interface BoardRepository extends JpaRepository<BoardEntity, Integer> {
     List<BoardEntity> findAllByOrderByFixDescIboardDesc();
 
+    BoardEntity findFirstByOrderByIboardDesc();
+
     BoardEntity findByIboard(int iboard);
 
     @Query("SELECT b FROM BoardEntity as b WHERE b.iboard < :iboard order by b.iboard desc")

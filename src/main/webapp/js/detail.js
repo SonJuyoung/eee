@@ -64,3 +64,23 @@ nextBtn.addEventListener("click", ()=> {
         location.href = "http://localhost:9000/board/detail?iboard=" + nextIboard;
     }
 })
+
+//파일 다운로드
+
+fileNmElem = document.querySelectorAll(".attached-file > span")
+fileNmList = [];
+
+fileNmElem.forEach((item)=> {
+
+    let fileNm = item.textContent.replaceAll("\\", "/");
+    fileNmList.push(fileNm);
+
+    item.addEventListener("click", (e)=> {
+        e.preventDefault();
+
+        location.href = "http://localhost:9000/board/download?fileName="+ fileNm;
+    })
+})
+
+console.log(fileNmList);
+

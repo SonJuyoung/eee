@@ -13,7 +13,7 @@ public class BoardService {
     public int write(BoardEntity entity) {
         try {
             boardRepository.save(entity);
-            return 1;
+            return boardRepository.findFirstByOrderByIboardDesc().getIboard();
         } catch (Exception e) {
             System.out.println(e);
             return 0;

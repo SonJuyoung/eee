@@ -18,7 +18,9 @@
     <div>
         <h1>공지사항 등록</h1>
     </div>
-    <h5>(*)필수 입력 항목</h5>
+    <div>
+        <h5>(*)필수 입력 항목</h5>
+    </div>
 </div>
 <div class="write-body">
     <table>
@@ -50,7 +52,7 @@
         <tr>
             <td>첨부파일</td>
             <td colspan="3">
-                <button>파일선택</button>
+                <input type="file" id="file-upload" name="file-upload" multiple="multiple">파일선택</input>
                 <span>※ 첨부파일 당 최대 5MB까지 업로드 가능하며, 최대5개까지 등록할 수 있습니다.</span></td>
         </tr>
         <tr>
@@ -60,8 +62,10 @@
     </table>
 </div>
 <div class="write-bottom">
-    <button class="cancel">취소</button>
-    <button class="save-btn">저장</button>
+    <div>
+        <button class="cancel">취소</button>
+        <button class="save-btn">저장</button>
+    </div>
 </div>
 <script>
     $('#summernote').summernote({

@@ -10,6 +10,7 @@
 
 .board-top > h1 {
     text-align: center;
+    margin-bottom: 30px;
 }
 
 body{
@@ -21,10 +22,27 @@ body{
     height: 100%;
 }
 
+.search {
+    display: flex;
+    width: 50%;
+    align-items: center;
+}
+
+.search-option {
+    width: 30%!important;
+    margin-right: 5px;
+}
+
+.search-btn {
+    margin-left: 10px;
+    width: 20%;
+}
+
 .count-search {
     width: 80vw;
     display: flex;
     justify-content: space-between;
+    margin: 10px 0px;
 }
 
 table {
@@ -33,6 +51,7 @@ table {
 
 th {
     background-color: lightgray;
+    text-align: center!important;
 }
 
 td {
@@ -41,7 +60,7 @@ td {
 }
 
 .toWrite {
-    margin: 5px;
+    margin: 10px;
     width: 80vw;
     display: flex;
     justify-content: end;
@@ -73,5 +92,9 @@ tr:hover {
 }
 
 .table-body>.title:hover {
+    cursor: pointer;
+}
+
+.pageNum:hover {
     cursor: pointer;
 }

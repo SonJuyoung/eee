@@ -18,7 +18,11 @@
         <button class="del hidden">삭제</button>
     </div>
 <div class="file">
-    <span><h5>첨부파일 : </h5>${detail.file}</span>
+<c:forEach var="item" items="${file}">
+    <div class="attached-file">
+        <h5>첨부파일 : </h5><span>${item.fileNm}</span>
+    </div>
+</c:forEach>
 </div>
     <div class="ctnt">
         <h3>${detail.ctnt}</h3>
