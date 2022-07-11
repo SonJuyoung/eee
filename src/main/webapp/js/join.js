@@ -13,6 +13,11 @@ joinBtn.addEventListener("click", (e)=> {
 
     e.preventDefault();
 
+    if (!joinBtn.classList.contains("pass")) {
+        alert("중복확인을 해 주세요.");
+        return;
+    }
+
     if (pw.value !== pwchk.value) {
         alert("비밀번호를 확인해 주세요.");
         return;
@@ -32,6 +37,9 @@ joinBtn.addEventListener("click", (e)=> {
         }),
     }).then(res => {
         console.log(res)
+    }).then(data => {
+        console.log(data);
+        location.href="/login"
     }).catch(e=> console.log(e));
 })
 
@@ -52,9 +60,12 @@ idchk.addEventListener("click", (e)=> {
         console.log(data);
         if (data === 1) {
             alert("이미 존재하는 아이디입니다.");
+            id.value = "";
+            joinBtn.classList.remove("pass");
             return;
         } else {
             alert("사용가능한 아이디입니다.");
+            joinBtn.classList.add("pass");
         }
     })
         .catch(e=> console.log(e));

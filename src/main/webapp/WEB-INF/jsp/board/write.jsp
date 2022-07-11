@@ -54,7 +54,6 @@
             <td colspan="3">
                 <input type="file" id="file-upload" name="file-upload" multiple="multiple">파일선택</input>
                 <span>※ 첨부파일 당 최대 5MB까지 업로드 가능하며, 최대5개까지 등록할 수 있습니다.</span>
-            <button class="test">테스트</button>
             </td>
         </tr>
         <tr>

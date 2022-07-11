@@ -1,10 +1,14 @@
 package ieetu.common.user;
 
+import ieetu.common.dto.UserDto;
 import ieetu.common.entity.UserEntity;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.stringtemplate.v4.ST;
 
 import javax.servlet.http.HttpSession;
+import javax.transaction.Transactional;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -12,9 +16,27 @@ import java.util.List;
 public class UserService {
 
     @Autowired
+    private BCryptPasswordEncoder encoder;
+    @Autowired
     private UserRepository userRepository;
 
-    public int join(UserEntity entity) {
+    @Transactional
+    public int join(UserDto dto) {
+
+        UserEntity entity = new UserEntity();
+
+        //아이디 비밀번호 암호화
+        String rawPassword = dto.getPw();
+        String encPassword = encoder.encode(rawPassword);
+//        String rawId = dto.getId();
+//        String encId = encoder.encode(rawId);
+
+//        entity.setUid(encId);
+        entity.setUid(dto.getId());
+        entity.setUpw(encPassword);
+        entity.setMail(dto.getMail());
+        entity.setName(dto.getName());
+        entity.setPhone(dto.getPhone());
 
         userRepository.save(entity);
 
@@ -38,14 +60,15 @@ public class UserService {
         }
     }
 
-    public int login(UserEntity entity) {
+    public UserEntity login(UserEntity entity) {
 
-        if (userRepository.findByUidAndUpw(entity.getUid(), entity.getUpw()) == null) {
-            System.out.println("로그인 실패");
-            return 0;
-        } else {
-            System.out.println("로그인 성공");
-            return 1;
-        }
+//        if (userRepository.findByUidAndUpw(entity.getUid(), entity.getUpw()) == null) {
+//            System.out.println("로그인 실패");
+//            return 0;
+//        } else {
+//            System.out.println("로그인 성공");
+//            return 1;
+//        }
+        return userRepository.findByUidAndUpw(entity.getUid(), entity.getUpw());
     }
 }

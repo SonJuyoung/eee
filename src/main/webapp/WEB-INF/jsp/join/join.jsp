@@ -3,6 +3,12 @@
 <head>
     <title>Join</title>
     <link rel="stylesheet" href="/css/user/join.css">
+    <!-- Latest compiled and minified CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Latest compiled JavaScript -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+
 </head>
 <body>
 <form method="post" action="/user/join" id="joinForm">
@@ -16,34 +22,36 @@
             <h5>(*) 필수입력항목</h5>
         </div>
         <div class="join-input">
+            <form method="post" action="/join">
             <div>
                 <div class="join-detail join-detail-top">
-                    <label for="id">(*)아이디</label><input type="text" id="id" name="id">
-                    <button class="idchk">중복확인</button>
+                    <label for="id">(*)아이디</label><input class="form-control" type="text" id="id" name="id">
+                    <button class="idchk btn btn-light">중복확인</button>
                 </div>
                 <div class="join-detail">
-                    <label for="pw">(*)비밀번호</label><input type="password" id="pw" name="pw">
+                    <label for="pw">(*)비밀번호</label><input class="form-control" type="password" id="pw" name="pw">
                 </div>
                 <div class="join-detail">
-                    <label for="id">(*)휴대폰번호</label><input type="text" id="phone" name="phone">
+                    <label for="id">(*)휴대폰번호</label><input class="form-control" type="text" id="phone" name="phone">
                 </div>
             </div>
             <div>
                 <div class="join-detail join-detail-top">
-                    <label for="id">(*)이름</label><input type="text" id="name" name="name">
+                    <label for="id">(*)이름</label><input class="form-control" type="text" id="name" name="name">
                 </div>
                 <div class="join-detail">
-                    <label for="pw">(*)비밀번호 확인</label><input type="password" id="pwchk" name="pwchk">
+                    <label for="pw">(*)비밀번호 확인</label><input class="form-control" type="password" id="pwchk" name="pwchk">
                 </div>
                 <div class="join-detail">
-                    <label for="id">(*)이메일 주소</label><input type="email" id="mail" name="mail">
+                    <label for="id">(*)이메일 주소</label><input class="form-control" type="email" id="mail" name="mail">
                 </div>
             </div>
+            </form>
         </div>
 
     </div>
     <div class="join-bottom">
-        <button type="submit">가입</button>
+        <button type="submit" class="btn btn-primary">가입</button>
     </div>
 </form>
 <script src="/js/join.js"></script>

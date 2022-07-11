@@ -5,6 +5,7 @@ import ieetu.common.dto.FileDto;
 import ieetu.common.entity.BoardEntity;
 import ieetu.common.entity.FileEntity;
 import ieetu.common.file.FileRepository;
+import ieetu.common.securityConfig.AuthenticationFacade;
 import ieetu.common.user.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.FileSystemResource;
@@ -46,14 +47,16 @@ public class BoardController {
     private BoardService boardService;
     @Autowired
     private BoardRepository boardRepository;
+    @Autowired
+    private AuthenticationFacade authenticationFacade;
 
     @Autowired
     private FileRepository fileRepository;
 
     @GetMapping("/list")
     public String board(Model model, @PageableDefault Pageable pageable, HttpSession hs) {
-
-        if (hs.getAttribute("loginUser") == null) {
+//
+        if (authenticationFacade.getLoginUserPk() < 1) {
             return "redirect:/login";
         }
 
@@ -90,15 +93,13 @@ public class BoardController {
     }
 
     @GetMapping("/write")
-    public String write(Model model, HttpSession hs) {
+    public String write(Model model) {
 
-        if (hs.getAttribute("loginUser") == null) {
+        if (authenticationFacade.getLoginUserPk() < 1) {
             return "redirect:/login";
         }
 
-        String userNm = (String) hs.getAttribute("loginUser");
-
-        model.addAttribute("loginUser", userNm);
+        model.addAttribute("loginUser", authenticationFacade.getLoginUser().getName());
         return "/board/write";
     }
 
@@ -120,16 +121,14 @@ public class BoardController {
     }
 
     @GetMapping("/mod")
-    public String mod(Model model, HttpSession hs, @RequestParam int iboard) {
+    public String mod(Model model, @RequestParam int iboard) {
 
-        String sUser = (String) hs.getAttribute("loginUser");
+        String sUser = authenticationFacade.getLoginUser().getName();
         String bUser = boardRepository.findByIboard(iboard).getWriter();
 
-        String userNm = (String) hs.getAttribute("loginUser");
+        model.addAttribute("loginUser", sUser);
 
-        model.addAttribute("loginUser", userNm);
-
-        if (hs.getAttribute("loginUser") == null) {
+        if (authenticationFacade.getLoginUserPk() < 1) {
             return "redirect:/login";
         } else if (sUser.equals(bUser)) {
             model.addAttribute("detail", boardRepository.findByIboard(iboard));
@@ -158,7 +157,11 @@ public class BoardController {
     }
 
     @GetMapping("/detail")
-    public String detail(@RequestParam int iboard, Model model, HttpSession hs) {
+    public String detail(@RequestParam int iboard, Model model) {
+
+        if (authenticationFacade.getLoginUserPk() < 1) {
+            return "redirect:/login";
+        }
 
         if (boardRepository.findByIboard(iboard) == null) {
             return "redirect:/board/list";
@@ -166,7 +169,7 @@ public class BoardController {
 
         model.addAttribute("detail", boardRepository.findByIboard(iboard));
 
-        String sUser = (String) hs.getAttribute("loginUser");
+        String sUser = authenticationFacade.getLoginUser().getName();
         String bUser = boardRepository.findByIboard(iboard).getWriter();
 
         System.out.println("세션 유저: " + sUser);
@@ -204,9 +207,9 @@ public class BoardController {
     }
 
     @GetMapping("/delete")
-    public String delete(@RequestParam int iboard, HttpSession hs) {
+    public String delete(@RequestParam int iboard) {
 
-        String sUser = (String) hs.getAttribute("loginUser");
+        String sUser = authenticationFacade.getLoginUser().getName();
         String bUser = boardRepository.findByIboard(iboard).getWriter();
 
         if (sUser.equals(bUser)) {

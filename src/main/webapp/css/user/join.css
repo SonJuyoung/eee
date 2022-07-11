@@ -22,13 +22,14 @@ body {
 }
 
 .join-top > h5 {
-    padding-bottom: 10px;
+    padding: 10px 0px;
 }
 
 .join-info {
     display: flex;
     justify-content: space-between;
     padding: 5px 0px;
+    margin-top: 10px;
 }
 
 .join-input {
@@ -39,6 +40,10 @@ body {
 .join-detail {
     padding: 5px 0px;
     border-bottom: 1px solid lightslategray;
+    height: 5rem;
+    display: flex;
+    width: 45vw;
+    align-items: center;
 }
 
 .join-detail-top {
@@ -49,4 +54,14 @@ body {
     display: flex;
     justify-content: center;
     padding: 10px 0px;
+}
+
+input {
+    width: 50%!important;
+    height: 50%;
+    margin: 0px 5px!important;
+}
+
+.idchk {
+    height: 50%;
 }
