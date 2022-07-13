@@ -23,6 +23,18 @@ joinBtn.addEventListener("click", (e)=> {
         return;
     }
 
+    //아이디 유효성 검사
+    if (!isId(id.value)) {
+        alert("아이디는 영문자로 시작하는 영문자 또는 숫자 6~20자 입니다.");
+        return;
+    }
+
+    //비밀번호 유효성 검사
+    if (!isPassword(pw.value)) {
+        alert("비밀번호는 8 ~ 20자 영문, 숫자, 특수문자를 최소 한가지씩 조합해야 합니다.");
+        return;
+    }
+
     fetch("http://localhost:9000/join", {
         method: "POST",
         headers: {
@@ -64,9 +76,28 @@ idchk.addEventListener("click", (e)=> {
             joinBtn.classList.remove("pass");
             return;
         } else {
-            alert("사용가능한 아이디입니다.");
-            joinBtn.classList.add("pass");
+            if (isId(id.value)) {
+                alert("사용가능한 아이디입니다.");
+                joinBtn.classList.add("pass");
+            } else {
+                alert("아이디는 영문자로 시작하는 영문자 또는 숫자 6~20자 입니다.");
+                return;
+            }
         }
     })
         .catch(e=> console.log(e));
 })
+
+//아이디, 비밀번호 유효성 검사
+
+function isId(asValue) {
+    let regExp = /^[a-z]+[a-z0-9]{5,19}$/g;
+
+    return regExp.test(asValue); // 형식에 맞는 경우 true 리턴
+}
+
+function isPassword(asValue) {
+    let regExp = /^(?=.*[a-zA-z])(?=.*[0-9])(?=.*[$`~!@$!%*#^?&\\(\\)\-_=+]).{8,20}$/;
+
+    return regExp.test(asValue); // 형식에 맞는 경우 true 리턴
+}

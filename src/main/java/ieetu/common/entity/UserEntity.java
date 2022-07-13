@@ -22,5 +22,5 @@ public class UserEntity {
 
     private String mail;
 
-    private int phone;
+    private String phone;
 }

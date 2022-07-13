@@ -19,7 +19,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Bean
     public BCryptPasswordEncoder encoder() {
-        return new BCryptPasswordEncoder(); //아이디 db에서 select가 안되는거 같은데
+        return new BCryptPasswordEncoder();
     }
 
     @Autowired
@@ -29,21 +29,21 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http
-                .csrf().disable()
+                .csrf().disable()//개발단계에서 csrf 해제
                 .authorizeRequests()
-                .antMatchers("/join", "/login", "/js/**", "/css/**")
-                .permitAll()
-                .anyRequest()
-                .permitAll()
+                .antMatchers("/join", "/login", "/js/**", "/css/**")//해당 주소 요청은
+                .permitAll()//다 허용한다
+                .anyRequest()//나머지 요청은
+                .authenticated()//인증 해야됨
                 .and()
                 .formLogin()
-                .loginPage("/login")
-                .loginProcessingUrl("/login")
-                .failureUrl("/err")//
-                .defaultSuccessUrl("/board/list")
+                .loginPage("/login")//시큐리티 기본 로그인 페이지가 아닌 로그인페이지 설정
+                .loginProcessingUrl("/login")//해당주소에서 로그인 처리
+                .failureUrl("/err")//에러페이지
+                .defaultSuccessUrl("/board/list")//로그인 성공 시 페이지
                 .and()
-                .logout()
-                .logoutSuccessUrl("/login")
-                .invalidateHttpSession(true);
+                .logout()//시큐리티 기본 로그아웃(세션제거) /logout
+                .logoutSuccessUrl("/login")//로그아웃 성공 시 페이지
+                .invalidateHttpSession(true);//브라우저가 완전히 종료되면 로그인한 정보(세션) 삭제
     }
 }

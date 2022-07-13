@@ -30,10 +30,17 @@ public class UserController {
     @Autowired
     private AuthenticationFacade authenticationFacade;
 
+    //기본 인덱스 주소로 접속 시 로그인 페이지로
+    @GetMapping
+    public String index() {
+        return "redirect:/login";
+    }
 
+    //로그인 페이지
     @GetMapping("/login")
     public String login() {
 
+        //로그인 한 유저인 경우 게시판으로 이동
         if (authenticationFacade.getLoginUserPk() > 0) {
             return "redirect:/board/list";
         }
@@ -41,24 +48,23 @@ public class UserController {
         return "/login/login";
     }
 
+    //회원가입 페이지
     @GetMapping("/join")
     public String join() {
         return "/join/join";
     }
 
+    //회원가입
     @PostMapping("/join")
     @ResponseBody
     public int joinPost(@RequestBody UserDto dto) {
-
-
-
-//        System.out.println(entity);
 
         userService.join(dto);
 
         return 1;
     }
 
+    //아이디 중복 검사
     @PostMapping("/join/idchk")
     @ResponseBody
     public int idchk(@RequestBody String id) {
@@ -66,32 +72,42 @@ public class UserController {
         return userService.idchk(id);
     }
 
+    //아이디 찾기
     @PostMapping("/findId")
     @ResponseBody
     public String findId(@RequestBody UserDto dto) {
 
-        if (userRepository.findByNameAndPhoneAndMail(dto.getName(), dto.getPhone(), dto.getMail()) != null) {
+        if (userRepository.findByNameAndPhoneAndMail(dto.getName(), dto.getPhone(), dto.getMail()) != null) { //이름, 휴대폰번호, 메일으로 찾았을 때 아이디가 있는 경우
             System.out.println("아이디 : " + userRepository.findByNameAndPhoneAndMail(dto.getName(), dto.getPhone(), dto.getMail()));
-            return userRepository.findByNameAndPhoneAndMail(dto.getName(), dto.getPhone(), dto.getMail()).getUid();
-        } else {
+            return userRepository.findByNameAndPhoneAndMail(dto.getName(), dto.getPhone(), dto.getMail()).getUid(); //아이디 리턴
+        } else { //아이디가 없는 경우
             System.out.println("아이디 없음 : " + userRepository.findByNameAndPhoneAndMail(dto.getName(), dto.getPhone(), dto.getMail()));
-            return "empty";
+            return "";
         }
     }
 
+    //비밀번호 찾기
     @PostMapping("/findPw")
     @ResponseBody
     public int findPw(@RequestBody UserDto dto) {
 
-        if (userRepository.findByUidAndNameAndPhoneAndMail(dto.getId(), dto.getName(), dto.getPhone(), dto.getMail()) != null) {
+        if (userRepository.findByUidAndNameAndPhoneAndMail(dto.getId(), dto.getName(), dto.getPhone(), dto.getMail()) != null) { //아이디, 이름, 휴대폰번호, 메일으로 찾았을 때 일치하는 정보가 있는 경우
             System.out.println("아이디 : " + userRepository.findByUidAndNameAndPhoneAndMail(dto.getId(), dto.getName(), dto.getPhone(), dto.getMail()));
             return 1;
-        } else {
+        } else { //일치하는 정보가 없는 경우
             System.out.println("아이디 없음 : " + userRepository.findByUidAndNameAndPhoneAndMail(dto.getId(), dto.getName(), dto.getPhone(), dto.getMail()));
             return 0;
         }
     }
 
+    //비밀번호 변경
+    @PostMapping("/changePw")
+    @ResponseBody
+    public int changePw(@RequestBody UserDto dto) {
+
+        return userService.pwChange(dto);
+
+    }
 //
 //    @PostMapping("/login")
 //    @ResponseBody

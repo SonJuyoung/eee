@@ -9,5 +9,5 @@ public class UserDto {
     private String name;
     private String pw;
     private String mail;
-    private int phone;
+    private String phone;
 }

@@ -4,11 +4,7 @@
 }
 
 body {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    height: 100vh;
+    padding-top: 20vh;
 }
 
 .join-top {
@@ -23,13 +19,30 @@ body {
 
 .join-top > h5 {
     padding: 10px 0px;
+    font-size: small;
+    font-weight: bold;
 }
 
 .join-info {
     display: flex;
+    flex-direction: column;
+}
+
+.join-info > div {
+    display: flex;
     justify-content: space-between;
     padding: 5px 0px;
-    margin-top: 10px;
+    margin: 10px 0px;
+}
+
+.join-info > h5 {
+    text-align: center;
+    font-size: smaller;
+    font-weight: bold;
+}
+
+.join-info > div > h5 {
+    margin: 0px 5rem;
 }
 
 .join-input {
@@ -42,8 +55,8 @@ body {
     border-bottom: 1px solid lightslategray;
     height: 5rem;
     display: flex;
-    width: 45vw;
     align-items: center;
+    width: 30vw;
 }
 
 .join-detail-top {

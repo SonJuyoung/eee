@@ -31,6 +31,8 @@ function getParameterByName(name) {
 delBtn.addEventListener("click", ()=> {
     let iboard = getParameterByName("iboard");
 
+    confirm("게시글을 삭제 하시겠습니까?");
+
     fetch(`http://localhost:9000/board/delete?iboard=` + `${iboard}`)
         .then(data => {
             console.log(data);
@@ -38,6 +40,26 @@ delBtn.addEventListener("click", ()=> {
         }).catch(e=> {
             console.error(e);
     })
+
+    // fileNmElem.forEach((item)=> {
+    //     fetch("http://localhost:9000/board/fileDelete", {
+    //         method : "POST",
+    //         headers: {
+    //             "Content-Type": "application/json",
+    //         },
+    //         body : JSON.stringify({
+    //             "iboard" : iboard,
+    //             "fileNm" : item.textContent
+    //         })
+    //     }).then(res => {
+    //         console.log(res);
+    //         return res.json();
+    //     }).then(data => {
+    //         console.log(data);
+    //     }).catch(e=> {
+    //         console.error(e);
+    //     })
+    // })
 })
 
 //수정 페이지 이동
@@ -67,8 +89,8 @@ nextBtn.addEventListener("click", ()=> {
 
 //파일 다운로드
 
-fileNmElem = document.querySelectorAll(".attached-file > span")
-fileNmList = [];
+let fileNmElem = document.querySelectorAll(".attached-file > span")
+let fileNmList = [];
 
 fileNmElem.forEach((item)=> {
 
@@ -80,6 +102,8 @@ fileNmElem.forEach((item)=> {
 
         location.href = "http://localhost:9000/board/download?fileName="+ fileNm;
     })
+
+    item.textContent = item.textContent.substring(item.textContent.lastIndexOf("\\")+1);
 })
 
 console.log(fileNmList);

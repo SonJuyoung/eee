@@ -16,6 +16,50 @@ function getParameterByName(name) {
     return results;
 }
 
+const url = new URL(location.href).href;
+
+let originDelFileName = [];
+let delFileName = [];
+
+let attacedFileElems = document.querySelectorAll(".attached-file > span");
+
+//원래 첨부파일명 배열에 담기
+attacedFileElems.forEach((item)=> {
+    originDelFileName.push(item.textContent);
+})
+
+if (url.includes("mod")) {
+
+    let iboard = getParameterByName("iboard");
+
+    //첨부파일 삭제
+    let fileDelBtnElems = document.querySelectorAll(".file-del-btn");
+
+    //수정 페이지에서 파일 삭제 누를 시 화면에서만 첨부파일 없애고 저장 버튼 누를 때 실제 삭제
+    // fileDelBtnElems.forEach((item)=> {
+    //     item.addEventListener("click", ()=> {
+    //         confirm("업로드 된 파일을 삭제하시겠습니까?");
+    //         //배열에 삭제할 파일명 저장
+    //         delFileName.push(item.previousElementSibling.textContent);
+    //         //화면에서 지움
+    //         item.parentElement.remove();
+    //     })
+    // })
+
+    for (let i=0; i<fileDelBtnElems.length; i++) {
+        fileDelBtnElems[i].addEventListener("click", ()=> {
+            confirm("업로드 된 파일을 삭제하시겠습니까?");
+            delFileName.push(originDelFileName[i]);
+            //화면에서 지움
+            fileDelBtnElems[i].parentElement.remove();
+        })
+    }
+
+    attacedFileElems.forEach((item)=> {
+        item.textContent = item.textContent.substring(item.textContent.lastIndexOf("\\")+1);
+    })
+}
+
 //글쓰기 && 수정 ajax
 saveBtn.addEventListener("click", (e) => {
     e.preventDefault();
@@ -56,6 +100,10 @@ saveBtn.addEventListener("click", (e) => {
         }).then(data => {
             console.log(data)
 
+            if (files.length > 5) {
+                alert("첨부파일은 최대 5개 입니다.");
+                return;
+            }
             //첨부파일 있을 때 파일 추가
             if (files.length > 0) {
                 //파일 용량 제한
@@ -74,7 +122,7 @@ saveBtn.addEventListener("click", (e) => {
                         return false;
                     }
 
-                    formData.append("uploadFile", files[i]);
+                    formData.append("uploadFile", files[i], files[i].name + '_' + iboard);
                     console.log(fileUpload.files[i]);
                 }
 
@@ -108,16 +156,41 @@ saveBtn.addEventListener("click", (e) => {
                             }).then(res => {
                                 return res.json();
                             })
-                                .then(data => console.log(data))
+                                .then(data => {
+                                    console.log(data);
+                                })
                                 .catch(e => console.error(e))
                         })
 
                     })
                     .catch(e => console.error(e))
             }
-
+            //실제 첨부파일 삭제 적용
+            if (delFileName.length > 0) {
+                delFileName.forEach((item)=> {
+                    fetch("http://localhost:9000/board/fileDelete", {
+                        method : "POST",
+                        headers: {
+                            "Content-Type": "application/json",
+                        },
+                        body : JSON.stringify({
+                            "iboard" : iboard,
+                            "fileNm" : item
+                        })
+                    }).then(res => {
+                        console.log(res);
+                        return res.json();
+                    }).then(data => {
+                        console.log(data);
+                    }).catch(e=> {
+                        console.error(e);
+                    })
+                })
+            }
+            alert("수정 완료!");
             location.href = "http://localhost:9000/board/list";
         }).catch(e => console.log(e));
+
         //등록일 때
     } else {
 
@@ -142,7 +215,14 @@ saveBtn.addEventListener("click", (e) => {
             console.log(data)
             iboard = data;
             console.log("등록하는 게시물 iboard : " + iboard);
-//첨부파일 있을 때 파일 추가
+
+            //파일 업로드
+
+            if (files.length > 5) {
+                alert("첨부파일은 최대 5개 입니다.");
+                return;
+            }
+            //첨부파일 있을 때 파일 추가
             if (files.length > 0) {
                 //파일 용량 제한
                 function checkExtension(fileSize) {
@@ -153,14 +233,14 @@ saveBtn.addEventListener("click", (e) => {
                     return true;
                 }
 
-// formData에 파일 데이터 저장
+                // formData에 파일 데이터 저장
                 for (let i = 0; i < files.length; i++) {
 
                     if (!checkExtension(files[i].size)) {
                         return false;
                     }
 
-                    formData.append("uploadFile", files[i]);
+                    formData.append("uploadFile", files[i], files[i].name + '_' + 0);
                     console.log(fileUpload.files[i]);
                 }
 
@@ -194,15 +274,19 @@ saveBtn.addEventListener("click", (e) => {
                             }).then(res => {
                                 return res.json();
                             })
-                                .then(data => console.log(data))
+                                .then(data => {
+                                    console.log(data);
+                                })
                                 .catch(e => console.error(e))
                         })
-
+                        alert("글 작성 완료!");
+                        location.href = "/board/list";
                     })
                     .catch(e => console.error(e))
+            } else {
+                alert("글 작성 완료!");
+                location.href = "/board/list";
             }
-
-            location.href = "http://localhost:9000/board/list";
         }).catch(e => console.log(e));
     }
 })
@@ -214,10 +298,9 @@ cancelBtn.addEventListener("click", () => {
     location.href = "http://localhost:9000/board/list";
 })
 
-//파일 업로드
-let testBtn = document.querySelector(".test");
-
-testBtn.addEventListener("click", () => {
+// let testBtn = document.querySelector(".test");
+//
+// testBtn.addEventListener("click", () => {
 //     const formData = new FormData(); // 업로드 할 파일 저장 객체
 //
 // // input 태그의 id를 이용하여 input의 value 값(업로드 할 파일들)을 가져와서 저장
@@ -256,5 +339,5 @@ testBtn.addEventListener("click", () => {
 //         .then(data => console.log(data))
 //         .catch(e => console.error(e))
 
-})
+// })
 

@@ -7,6 +7,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.stringtemplate.v4.ST;
 
+import javax.persistence.Entity;
 import javax.servlet.http.HttpSession;
 import javax.transaction.Transactional;
 import java.util.ArrayList;
@@ -25,7 +26,7 @@ public class UserService {
 
         UserEntity entity = new UserEntity();
 
-        //아이디 비밀번호 암호화
+        //비밀번호 암호화
         String rawPassword = dto.getPw();
         String encPassword = encoder.encode(rawPassword);
 //        String rawId = dto.getId();
@@ -38,9 +39,14 @@ public class UserService {
         entity.setName(dto.getName());
         entity.setPhone(dto.getPhone());
 
-        userRepository.save(entity);
+        try {
+            userRepository.save(entity);
 
-        return 1;
+            return 1;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return 0;
+        }
     }
 
     public int idchk(String id) {
@@ -60,15 +66,41 @@ public class UserService {
         }
     }
 
-    public UserEntity login(UserEntity entity) {
+    //시큐리티가 로그인 관리해주기 때문에 필요 없음
+//    public UserEntity login(UserEntity entity) {
+//
+////        if (userRepository.findByUidAndUpw(entity.getUid(), entity.getUpw()) == null) {
+////            System.out.println("로그인 실패");
+////            return 0;
+////        } else {
+////            System.out.println("로그인 성공");
+////            return 1;
+////        }
+//        return userRepository.findByUidAndUpw(entity.getUid(), entity.getUpw());
+//    }
 
-//        if (userRepository.findByUidAndUpw(entity.getUid(), entity.getUpw()) == null) {
-//            System.out.println("로그인 실패");
-//            return 0;
-//        } else {
-//            System.out.println("로그인 성공");
-//            return 1;
-//        }
-        return userRepository.findByUidAndUpw(entity.getUid(), entity.getUpw());
+    //비밀번호 변경
+    @Transactional //jpa로 DB변경시 붙여줌. 원자성, 일관성, 격리성, 지속성 유지를 위해서
+    public int pwChange(UserDto dto) {
+
+        UserEntity entity = new UserEntity();
+
+        //비밀번호 암호화
+        String rawPassword = dto.getPw();
+        String encPassword = encoder.encode(rawPassword);
+
+        entity = userRepository.findByUid(dto.getId()).get();
+
+        //비밀번호 변경 성공 시 1리턴 실패시 0리턴
+        try {
+            entity.setUpw(encPassword);
+
+            userRepository.save(entity);
+
+            return 1;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return 0;
+        }
     }
 }

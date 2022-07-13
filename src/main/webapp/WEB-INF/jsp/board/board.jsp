@@ -11,11 +11,15 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
 </head>
 <body>
+<div class="container">
 <div class="board-top">
     <div class="logout">
+        <div class="user-greet">
+            <span><strong>${user.name}</strong>님 환영합니다!</span>
+        </div>
         <button class="btn btn-warning logout-btn">로그아웃</button>
     </div>
-    <h1>공지사항</h1>
+    <h1>게시판</h1>
     <div class="count-search">
         <div class="count">
             <h5>전체 | ${count}</h5>
@@ -34,7 +38,7 @@
     </div>
 </div>
 
-<table>
+<table class="table">
     <tr class="table-top">
         <th>상태</th>
         <th>NO</th>
@@ -67,12 +71,8 @@
 <div class="toWrite">
     <a href="/board/write"><button class="btn btn-primary">글쓰기</button></a>
 </div>
-<div class="pagination">
-<%--    <p><</p>--%>
-<%--    <c:forEach var="i" begin="1" end="${count/10+1}">--%>
-<%--        <p class="pageNum">${i}</p>--%>
-<%--    </c:forEach>--%>
-<%--    <p>></p>--%>
+<ul class="pagination">
+</ul>
 </div>
 <script src="/js/board.js"></script>
 </body>

@@ -164,33 +164,71 @@ findUserPw.addEventListener("click", (e) => {
         return res.json();
     }).then(data => {
         console.log(data);
-        let resultElem = document.querySelector(".resultPw");
-        let pwSetElem = document.querySelector(".pw-set");
-        // resultElem.innerHTML = `
-        //     찾으시는 아이디는 <strong style="color: tomato">${data}</strong> 입니다.
-        //     `
+        if (data == 1) {
+            let resultElem = document.querySelector(".resultPw");
+            let pwSetElem = document.querySelector(".pw-set");
+            // resultElem.innerHTML = `
+            //     찾으시는 아이디는 <strong style="color: tomato">${data}</strong> 입니다.
+            //     `
 
-        pwSetElem.innerHTML = `
-        <button type="button" class="btn btn-primary pw-change" data-bs-toggle="modal" data-bs-target="#myModal4">비밀번호 변경</button>
+            pwSetElem.innerHTML = `
+        <button type="button" class="btn btn-primary pw-change">비밀번호 변경</button>
         <button type="button" class="btn btn-danger" data-bs-dismiss="modal">닫기</button>
         `
 
-        resultElem.innerHTML = `
-        <input class="form-control" type="password" id="pw" name="password" placeholder="비밀번호를 입력해 주세요.">
-        <input class="form-control" type="password" id="pwchk" name="pwchk" placeholder="비밀번호를 입력해 주세요.">
+            resultElem.innerHTML = `
+<div>변경할 비밀번호</div>
+        <input class="form-control" type="password" id="pw-set" name="password" placeholder="변경할 비밀번호를 입력해 주세요.">
+        <div>비밀번호 확인</div>
+        <input class="form-control" type="password" id="pw-chk" name="pwchk" placeholder="비밀번호를 다시 입력해 주세요.">
         `
 
-        let pwChange = document.querySelector(".pw-change");
+            let pwChange = document.querySelector(".pw-change");
 
-        let pwElem = document.querySelector("")
-    }).catch(e => {
-        console.log(e);
+            pwChange.addEventListener("click", () => {
 
-        let resultElem = document.querySelector(".result > h3");
+                let pwElem = document.querySelector("#pw-set");
+                let pwChkElem = document.querySelector("#pw-chk");
 
-        resultElem.innerHTML = `
-            <div>일치하는 아이디가 없습니다.</div> 
-            <div>다시 확인해 주세요.</div>
+                let pwVal = pwElem.value;
+                let pwChkVal = pwChkElem.value;
+                let idVal = findPwId.value;
+
+                console.log(pwVal);
+
+                if (pwVal === '' || pwChkVal === '') {
+                    alert("비밀번호를 빠짐없이 입력해주세요.");
+                    return;
+                } else if (pwVal !== pwChkVal) {
+                    alert("비밀번호를 다시 확인해 주세요.");
+                    return;
+                }
+
+                fetch("http://localhost:9000/changePw", {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json",
+                    },
+                    body: JSON.stringify({
+                        "id": idVal,
+                        "pw": pwVal
+                    }),
+                }).then(res => {
+                    console.log(res);
+                    return res.json();
+                }).then(data => {
+                    console.log(data);
+                    alert("비밀번호 변경 완료.");
+                    location.href = "/login";
+                })
+            })
+        } else {
+            let resultPwElem = document.querySelector(".resultPw");
+
+            resultPwElem.innerHTML = `
+            <div>일치하는 정보가 없습니다.</div>
             `
-    });
+        }
+    })
+        .catch(e => console.error(e));
 })

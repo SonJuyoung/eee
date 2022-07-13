@@ -14,19 +14,20 @@
     <script src="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote.min.js"></script>
 </head>
 <body>
+<div class="container">
 <div class="write-top">
     <div>
-        <h1>공지사항 등록</h1>
+        <h1>게시글 등록</h1>
     </div>
     <div>
         <h5>(*)필수 입력 항목</h5>
     </div>
 </div>
 <div class="write-body">
-    <table>
+    <table class="table">
         <tr>
             <td>제목(*)</td>
-            <td><input class="title" id="title" name="title" type="text"></td>
+            <td><input class="title form-control" id="title" name="title" type="text"></td>
             <td>상단공지 여부(*)</td>
             <td>
                 <form class="fix">
@@ -37,36 +38,31 @@
         </tr>
         <tr>
             <td>작성자(*)</td>
-            <td><input class="writer" id="writer" name="writer" value="${loginUser}" type="text" readonly></td>
+            <td><input class="writer form-control" id="writer" name="writer" value="${loginUser}" type="text" readonly></td>
             <td>작성일자(*)</td>
             <td><input class="rdt" type="date" id="rdt" name="rdt"></td>
         </tr>
         <tr>
             <td>내용(*)</td>
-            <td colspan="3"><textarea class="ctnt" style="text-align: left" id="summernote" name="ctnt" placeholder="내용을 입력하세요."></textarea></td>
-        </tr>
-        <tr>
-            <td>영상파일</td>
-            <td colspan="3"></td>
+            <td class="ctnt-elem" colspan="3"><textarea class="ctnt" style="text-align: left" id="summernote" name="ctnt" placeholder="내용을 입력하세요."></textarea></td>
         </tr>
         <tr>
             <td>첨부파일</td>
             <td colspan="3">
-                <input type="file" id="file-upload" name="file-upload" multiple="multiple">파일선택</input>
-                <span>※ 첨부파일 당 최대 5MB까지 업로드 가능하며, 최대5개까지 등록할 수 있습니다.</span>
+                <div class="attached-file-elem">
+                    <input type="file" id="file-upload" name="file-upload" multiple="multiple">
+                    <span style="font-size: small">※ 첨부파일 당 최대 5MB까지 업로드 가능하며, 최대5개까지 등록할 수 있습니다.</span>
+                </div>
             </td>
-        </tr>
-        <tr>
-            <td></td>
-            <td colspan="3">첨부파일~</td>
         </tr>
     </table>
 </div>
 <div class="write-bottom">
     <div>
-        <button class="cancel">취소</button>
-        <button class="save-btn">저장</button>
+        <button class="cancel btn btn-danger">취소</button>
+        <button class="save-btn btn btn-primary">저장</button>
     </div>
+</div>
 </div>
 <script>
     $('#summernote').summernote({

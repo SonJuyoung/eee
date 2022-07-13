@@ -51,6 +51,14 @@
 
 .attached-file {
     display: flex;
+    margin-bottom: 5px;
+    align-items: center;
+}
+
+.attached-file > h5 {
+    font-size: smaller;
+    font-weight: bold;
+    margin: 0;
 }
 
 .attached-file > span {

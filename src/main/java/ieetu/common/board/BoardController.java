@@ -7,6 +7,7 @@ import ieetu.common.entity.FileEntity;
 import ieetu.common.file.FileRepository;
 import ieetu.common.securityConfig.AuthenticationFacade;
 import ieetu.common.user.UserRepository;
+import org.apache.commons.io.FileUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.FileSystemResource;
 import org.springframework.core.io.InputStreamResource;
@@ -27,17 +28,11 @@ import javax.servlet.http.HttpSession;
 import java.io.File;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.text.SimpleDateFormat;
-import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.UUID;
-import java.util.logging.Logger;
-
 
 @Controller
 @RequestMapping("/board")
@@ -54,51 +49,62 @@ public class BoardController {
     private FileRepository fileRepository;
 
     @GetMapping("/list")
-    public String board(Model model, @PageableDefault Pageable pageable, HttpSession hs) {
-//
+    public String board(Model model, @PageableDefault Pageable pageable) {
+
+        //로그인 유저 정보 없을 시 로그인 페이지로
         if (authenticationFacade.getLoginUserPk() < 1) {
             return "redirect:/login";
         }
 
-        model.addAttribute("fixList", boardRepository.fixList());
-        model.addAttribute("fixListCount", boardRepository.fixList().size());
-        model.addAttribute("list", boardRepository.List(pageable));
-        model.addAttribute("count", boardRepository.findAllByOrderByFixDescIboardDesc().size());
+        model.addAttribute("fixList", boardRepository.fixList()); //공지사항 게시물
+        model.addAttribute("fixListCount", boardRepository.fixList().size()); //공지사항 게시물 갯수
+        model.addAttribute("list", boardRepository.List(pageable)); //일반 게시물
+        model.addAttribute("count", boardRepository.findAllByOrderByFixDescIboardDesc().size()); //일반 게시물 갯수
+        model.addAttribute("user", authenticationFacade.getLoginUser()); //로그인 유저 정보
 
         return "/board/board";
     }
 
+    //게시판 검색 시 페이지
     @GetMapping("/list/search")
     public String boardSearch(Model model, @RequestParam int category, String searchTxt, Pageable pageable) {
 
+        //로그인 유저 정보 없을 시 로그인 페이지로
+        if (authenticationFacade.getLoginUserPk() < 1) {
+            return "redirect:/login";
+        }
 
-        model.addAttribute("fixList", boardRepository.fixList());
+        model.addAttribute("user", authenticationFacade.getLoginUser()); //로그인 유저 정보
+        model.addAttribute("fixList", boardRepository.fixList()); //공지사항 게시물
 
         if (category == 0) {
-            model.addAttribute("list", boardRepository.searchByAll(searchTxt, pageable));
-            model.addAttribute("count", boardRepository.searchByAll(searchTxt).size());
+            model.addAttribute("list", boardRepository.searchByAll(searchTxt, pageable)); //전체 검색 게시물
+            model.addAttribute("count", boardRepository.searchByAll(searchTxt).size()); //전체 검색 게시물 갯수
         } else if (category == 1) {
-            model.addAttribute("list", boardRepository.searchByTitle(searchTxt));
-            model.addAttribute("count", boardRepository.searchByTitle(searchTxt).size());
+            model.addAttribute("list", boardRepository.searchByTitle(searchTxt, pageable)); //제목 검색 게시물
+            model.addAttribute("count", boardRepository.searchByTitle(searchTxt).size()); //제목 검색 게시물 갯수
         } else if (category == 2) {
-            model.addAttribute("list", boardRepository.searchByCtnt(searchTxt, pageable));
-            model.addAttribute("count", boardRepository.searchByCtnt(searchTxt).size());
+            model.addAttribute("list", boardRepository.searchByCtnt(searchTxt, pageable)); //내용 검색 게시물
+            model.addAttribute("count", boardRepository.searchByCtnt(searchTxt).size()); //내용 검색 게시물 갯수
         } else if (category == 3) {
-            model.addAttribute("list", boardRepository.searchByWriter(searchTxt, pageable));
-            model.addAttribute("count", boardRepository.searchByWriter(searchTxt).size());
+            model.addAttribute("list", boardRepository.searchByWriter(searchTxt, pageable)); //작성자 검색 게시물
+            model.addAttribute("count", boardRepository.searchByWriter(searchTxt).size()); //작성자 검색 게시물 갯수
         }
         System.out.println("검색 된 것: " + model.getAttribute("list"));
 
         return "/board/board";
     }
 
+    //글 작성 페이지
     @GetMapping("/write")
     public String write(Model model) {
 
+        //로그인 유저 정보 없을 시 로그인 페이지로
         if (authenticationFacade.getLoginUserPk() < 1) {
             return "redirect:/login";
         }
 
+        //로그인된 유저 이름
         model.addAttribute("loginUser", authenticationFacade.getLoginUser().getName());
         return "/board/write";
     }
@@ -106,6 +112,8 @@ public class BoardController {
     @PostMapping("/write")
     @ResponseBody
     public int writePost(@RequestBody BoardDto dto) {
+
+        //dto를 통해 ajax로 받아온 데이터를 BoardEntity 객체에 set
 
         BoardEntity entity = new BoardEntity();
 
@@ -117,21 +125,33 @@ public class BoardController {
 
         System.out.println(entity);
 
-        return boardService.write(entity);
+        return boardService.write(entity); //글 작성 로직은 service에서 처리
     }
 
+    //글 수정 페이지
     @GetMapping("/mod")
     public String mod(Model model, @RequestParam int iboard) {
 
+        BoardEntity boardEntity = new BoardEntity();
+        boardEntity.setIboard(iboard);
+
+        //로그인 유저 정보 없을 시 로그인 페이지로
+        if (authenticationFacade.getLoginUserPk() < 1) {
+            return "redirect:/login";
+        }
+
+        //로그인 된 유저와 게시물의 유저 정보
         String sUser = authenticationFacade.getLoginUser().getName();
         String bUser = boardRepository.findByIboard(iboard).getWriter();
 
         model.addAttribute("loginUser", sUser);
 
-        if (authenticationFacade.getLoginUserPk() < 1) {
-            return "redirect:/login";
-        } else if (sUser.equals(bUser)) {
-            model.addAttribute("detail", boardRepository.findByIboard(iboard));
+        if (sUser.equals(bUser)) { //로그인 된 유저와 게시물의 유저 정보 비교, 같을 때
+            model.addAttribute("detail", boardRepository.findByIboard(iboard)); //해당 게시물 정보 불러옴
+            if (fileRepository.findAllByIboard(boardEntity).size() > 0) { //해당 게시물에 첨부파일 정보가 있을 경우 불러옴
+                System.out.println("첨부파일 : " + fileRepository.findAllByIboard(boardEntity));
+                model.addAttribute("file", fileRepository.findAllByIboard(boardEntity));
+            }
             return "/board/mod";
         } else {
             return "redirect:/board/list";
@@ -142,6 +162,8 @@ public class BoardController {
     @ResponseBody
     public int modPost(@RequestBody BoardDto dto) {
 
+        //dto를 통해 ajax로 받아온 데이터를 BoardEntity 객체에 set
+
         BoardEntity entity = new BoardEntity();
 
         entity.setIboard(dto.getIboard());
@@ -153,43 +175,51 @@ public class BoardController {
 
         System.out.println(entity);
 
-        return boardService.write(entity);
+        return boardService.write(entity); //글 작성 로직은 service에서 처리, jpa에서 id가 같은 튜플 insert할 때 자동으로 update 해줌
     }
 
+    //글 상세 페이지 화면
     @GetMapping("/detail")
     public String detail(@RequestParam int iboard, Model model) {
 
+        BoardEntity boardEntity = new BoardEntity();
+        boardEntity.setIboard(iboard);
+
+        //로그인 유저 정보 없을 시 로그인 페이지로
         if (authenticationFacade.getLoginUserPk() < 1) {
             return "redirect:/login";
         }
 
+        //존재하지 않는 iboard 값을 가진 페이지로 접속 할 경우 글 목록 페이지로
         if (boardRepository.findByIboard(iboard) == null) {
             return "redirect:/board/list";
         }
 
         model.addAttribute("detail", boardRepository.findByIboard(iboard));
 
+        //로그인 된 유저와 게시물의 유저 정보
         String sUser = authenticationFacade.getLoginUser().getName();
         String bUser = boardRepository.findByIboard(iboard).getWriter();
 
         System.out.println("세션 유저: " + sUser);
         System.out.println("게시판 유저: " + bUser);
 
+        //로그인 된 유저와 게시물의 유저가 같을 시
         if (sUser.equals(bUser)) {
             model.addAttribute("user", "same");
             System.out.println("아이디 같음");
         }
 
         //이전, 다음 게시물
-        if (boardRepository.findPrev(iboard).size() != 0) {
+        if (boardRepository.findPrev(iboard).size() > 0) { //이전 게시물이 있으면 게시물 정보 불러옴
             int prevIboard = boardRepository.findPrev(iboard).get(0).getIboard();
             System.out.println("이전 게시물 :" + prevIboard);
             model.addAttribute("prevIboard", prevIboard);
-        } else {
+        } else { //이전 게시물 없으면 처음 게시물 표시
             model.addAttribute("prevIboard", "first");
         }
 
-        if (boardRepository.findNext(iboard).size() != 0) {
+        if (boardRepository.findNext(iboard).size() > 0) { //다음 게시물이 있으면 게시물 정보 불러옴
             int nextIboard = boardRepository.findNext(iboard).get(0).getIboard();
             System.out.println("다음 게시물 :" + nextIboard);
             model.addAttribute("nextIboard", nextIboard);
@@ -198,17 +228,20 @@ public class BoardController {
         }
 
         //첨부 파일 있으면
-        if (fileRepository.findAllByIboard(iboard).size() > 0) {
-            System.out.println("첨부파일 : " + fileRepository.findAllByIboard(iboard));
-            model.addAttribute("file", fileRepository.findAllByIboard(iboard));
+        if (fileRepository.findAllByIboard(boardEntity).size() > 0) {
+            System.out.println("첨부파일 : " + fileRepository.findAllByIboard(boardEntity));
+            model.addAttribute("file", fileRepository.findAllByIboard(boardEntity));
         }
 
         return "/board/detail";
     }
 
+    //글 삭제
     @GetMapping("/delete")
     public String delete(@RequestParam int iboard) {
 
+        //로그인 된 유저와 게시물의 유저 정보
+        //url로 직접 접속해서 글 삭제 방지
         String sUser = authenticationFacade.getLoginUser().getName();
         String bUser = boardRepository.findByIboard(iboard).getWriter();
 
@@ -218,42 +251,75 @@ public class BoardController {
         return "redirect:/board/list";
     }
 
+    //파일 첨부
     @PostMapping("/uploadAjaxAction")
     @ResponseBody
     public List<FileDto> uploadAjaxPost(MultipartFile[] uploadFile) {
+
         System.out.println("update ajax post.................");
 
         List<FileDto> list = new ArrayList<>();
-        String uploadFolder = "C:\\upload";
+        String uploadFolder = "C:\\upload"; //업로드 폴더 경로 설정
 
-        String uploadFolderPath = getFolder();
-        // make folder ----------
-        File uploadPath = new File(uploadFolder, getFolder());
-        System.out.println("upload path : " + uploadPath);
+        int iboard = 0;
 
-        if (uploadPath.exists() == false) {
-            uploadPath.mkdirs();
-        }
+        for (int i = 0; i<uploadFile.length; i++) {
+            System.out.println("파일 이름 : " + uploadFile[i].getName());
+            //각 파일의 iboard값 설정
+            iboard = Integer.parseInt(uploadFile[i].getOriginalFilename().split("_")[1]);
 
-        for (MultipartFile multipartFile : uploadFile) {
+            //등록일때 파일 업로드 경로, 다음 iboard 값
+            //게시글 등록 후 파일이 생성되므로 최신 iboard값이 등록할 때 해당하는 iboard값이다
+            if (iboard == 0) {
+                iboard = boardRepository.findFirstByOrderByIboardDesc().getIboard();
+            }
 
+            System.out.println("파일 iboard : " + iboard);
+            String uploadFolderPath = getFolder(iboard);
+            // make folder ----------
+            File uploadPath = new File(uploadFolder, getFolder(iboard));
+            System.out.println("upload path : " + uploadPath);
+
+            //기존 iboard에 해당하는 폴더가 있으면 삭제하고 다시 만듦, 파일 계속 축적되는 것 방지
+            if (i==0) {
+                if (!uploadPath.exists()) {
+                    uploadPath.mkdirs();
+                } else {
+                    String path = String.valueOf(uploadPath);
+                    System.out.println("path : " + path);
+
+                    try {
+                        File dir = new File(path);
+                        FileUtils.deleteDirectory(dir);
+
+                        uploadPath.mkdirs();
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+
+                }
+            }
+
+            //파일이름 중복일 경우 대비해서 파일이름 랜덤으로 저장
             FileDto fileDto = new FileDto();
 
-            String uploadFileName = multipartFile.getOriginalFilename();
+            String uploadFileName = uploadFile[i].getOriginalFilename();
 
-            //IE has file path
             uploadFileName = uploadFileName.substring(uploadFileName.lastIndexOf("\\") + 1);
+            uploadFileName = uploadFileName.substring(0, uploadFileName.lastIndexOf("_"));
             System.out.println("only file name : " + uploadFileName);
             fileDto.setFileNm(uploadFileName);
 
+            //랜덤 이름 생성
             UUID uuid = UUID.randomUUID();
 
             uploadFileName = uuid.toString() + "_" + uploadFileName;
 
             //File saveFile = new File(uploadFolder, uploadFileName);
+            //경로에 파일 생성
             try {
                 File saveFile = new File(uploadPath, uploadFileName);
-                multipartFile.transferTo(saveFile);
+                uploadFile[i].transferTo(saveFile);
 
                 fileDto.setUuid(uuid.toString());
                 fileDto.setUploadPath(uploadFolderPath);
@@ -264,20 +330,31 @@ public class BoardController {
                 System.out.println(e.getMessage());
             }
         }
+
+        BoardEntity boardEntity = new BoardEntity();
+        boardEntity.setIboard(iboard);
+
+        System.out.println("게시물에 있는 파일 수 : " + fileRepository.findAllByIboard(boardEntity));
+        //파일 첨부가 있는 수정일 때, DB에 기존 데이터 삭제 후 새로운 파일 첨부
+        if (fileRepository.findAllByIboard(boardEntity).size() > 0) {
+            fileRepository.deleteAllByIboard(boardEntity);
+        }
+
         return list;
     }
 
-    // 오늘 날짜의 경로를 문자열로 생성한다.
-    private String getFolder() {
+    //오늘 날짜 + iboard의 경로를 문자열로 생성한다.
+    private String getFolder(int iboard) {
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
 
         Date date = new Date();
 
-        String str = sdf.format(date);
+        String str = sdf.format(date) + "-" + iboard;
 
         return str.replace("-", File.separator);
     }
 
+    //DB에 파일 데이터 저장
     @PostMapping("/fileSave")
     @ResponseBody
     public int fileSave(@RequestBody FileDto dto) {
@@ -285,13 +362,16 @@ public class BoardController {
         String uploadFolder = "C:\\upload";
 
         FileEntity entity = new FileEntity();
-
+        System.out.println("저장할 파일 이름 : " + dto.getFileNm());
         String fileNm = dto.getFileNm().substring(0, dto.getFileNm().lastIndexOf("."));
         String ext = dto.getFileNm().substring(dto.getFileNm().lastIndexOf("."));
         System.out.println("파일 이름 : " + fileNm);
         System.out.println("확장자 : " + ext);
 
-        entity.setIboard(dto.getIboard());
+        BoardEntity boardEntity = new BoardEntity();
+        boardEntity.setIboard(dto.getIboard());
+
+        entity.setIboard(boardEntity);
         entity.setFileNm(uploadFolder + "\\" + dto.getUploadPath() + "\\" + dto.getUuid() + "_" + fileNm + ext);
 
         System.out.println("파일 데이터 : " + entity);
@@ -301,6 +381,7 @@ public class BoardController {
         return 1;
     }
 
+    //첨부파일 다운로드
     @GetMapping(value = "/download", produces = MediaType.APPLICATION_OCTET_STREAM_VALUE)
     @ResponseBody
     public ResponseEntity<Resource> downloadFile(String fileName){
@@ -320,5 +401,36 @@ public class BoardController {
             e.printStackTrace();
         }
         return new ResponseEntity<Resource>(resource, headers, HttpStatus.OK);
+    }
+
+    @PostMapping("/fileDelete")
+    @ResponseBody
+    public int fileDelete(@RequestBody FileDto dto) {
+
+        //첨부파일 삭제 시 경로에 있는 실제 파일 삭제
+        File file = new File(dto.getFileNm());
+
+        if (file.exists()) {
+            if (file.delete()) {
+                System.out.println("파일 삭제 성공");
+            } else  {
+                System.out.println("파일 삭제 실패");
+            }
+        } else {
+            System.out.println("파일이 존재하지 않습니다다");
+       }
+
+        //DB에 file 데이터 삭제
+        BoardEntity boardEntity = new BoardEntity();
+        boardEntity.setIboard(dto.getIboard());
+
+        System.out.println("삭제 파일 이름 : " + dto.getFileNm());
+        try {
+            fileRepository.deleteByFileNmAndIboard(dto.getFileNm(), boardEntity);
+            return 1;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return 0;
+        }
     }
 }

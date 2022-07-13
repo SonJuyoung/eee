@@ -1,3 +1,7 @@
+.container {
+    padding-bottom: 5rem;
+}
+
 .write-top {
     display: flex;
     flex-direction: column;
@@ -21,13 +25,17 @@
 }
 
 table {
-    border: 1px solid lightslategray;
-    border-collapse: collapse;
+    /*border: 1px solid lightslategray!important;*/
+    /*border-collapse: collapse;*/
     width: 80%;
 }
 
 td {
-    border: 1px solid lightslategray;
+    /*border: 1px solid lightslategray;*/
+    text-align: center;
+}
+.ctnt-elem {
+    text-align: start;
 }
 
 .write-body {
@@ -46,4 +54,45 @@ td {
     width: 80%;
     display: flex;
     justify-content: space-between;
+}
+
+.attached-file-elem {
+    display: flex;
+    justify-content: space-between;
+    padding: 10px 0px;
+    align-items: center;
+}
+
+.attached-file-elem > div {
+    display: flex;
+    flex-direction: column;
+}
+
+.attached-file {
+    display: flex;
+    align-items: center;
+    margin-bottom: 5px;
+}
+
+.attached-file > button {
+    margin-left: 10px;
+}
+
+.attached-file > h5 {
+    font-weight: bold;
+}
+
+.file-del-btn {
+    font-size: smaller!important;
+    padding: 3px!important;
+}
+
+.cancel {
+    font-size: larger!important;
+    font-weight: bold!important;
+}
+
+.save-btn {
+    font-size: larger!important;
+    font-weight: bold!important;
 }

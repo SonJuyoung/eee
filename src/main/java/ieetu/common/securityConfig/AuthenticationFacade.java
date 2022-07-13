@@ -13,6 +13,7 @@ public class AuthenticationFacade {
     @Autowired
     private UserRepository userRepository;
 
+    //로그인된 유저정보
     public UserEntity getLoginUser() {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         String Uid = auth.getName();
@@ -28,6 +29,7 @@ public class AuthenticationFacade {
         return null;
     }
 
+    //로그인된 유저의 iuser값 리턴, 로그인상태 아니면 0 리턴
     public int getLoginUserPk() {
         int loginUserPk = 0;
         try {

@@ -11,18 +11,21 @@
 
 </head>
 <body>
-<form method="post" action="/user/join" id="joinForm">
+<div class="container">
+<%--<form method="post" action="/user/join" id="joinForm">--%>
     <div class="join-top">
         <h1>회원가입</h1>
         <h5>정확한 정보를 입력해주십시오. 타 정보 무단 도용 또는 허위 정보 입력 시 회원가입 승인이 되지 않으며 불이익을 받으실 수 있습니다.</h5>
     </div>
     <div class="join-body">
         <div class="join-info">
-            <h5>회원정보</h5>
-            <h5>(*) 필수입력항목</h5>
+            <div>
+                <h5 style="font-weight: bold">회원정보</h5>
+                <h5 style="font-size: small" >(*) 필수입력항목</h5>
+            </div>
+            <h5>아이디는 영문자로 시작하는 영문자 또는 숫자 6~20자 / 비밀번호는 8 ~ 20자 영문, 숫자, 특수문자를 최소 한가지씩 조합하세요.</h5>
         </div>
         <div class="join-input">
-            <form method="post" action="/join">
             <div>
                 <div class="join-detail join-detail-top">
                     <label for="id">(*)아이디</label><input class="form-control" type="text" id="id" name="id">
@@ -46,14 +49,13 @@
                     <label for="id">(*)이메일 주소</label><input class="form-control" type="email" id="mail" name="mail">
                 </div>
             </div>
-            </form>
         </div>
 
     </div>
     <div class="join-bottom">
         <button type="submit" class="btn btn-primary">가입</button>
     </div>
-</form>
+</div>
 <script src="/js/join.js"></script>
 </body>
 </html>
