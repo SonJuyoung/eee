@@ -13,6 +13,7 @@
 <body>
 <div class="container">
     <div class="user-chk" hidden>${user}</div>
+    <div class="loginUserPk" hidden>${loginUserPk}</div>
     <div class="title">
         <h1>${detail.title}</h1>
     </div>
@@ -22,16 +23,41 @@
         <button class="mod hidden btn btn-warning">수정</button>
         <button class="del hidden btn btn-danger">삭제</button>
     </div>
-<div class="file">
-<c:forEach var="item" items="${file}">
-    <div class="attached-file">
-        <h5>첨부파일 : </h5><span>${item.fileNm}</span>
+    <div class="file">
+        <c:forEach var="item" items="${file}">
+            <div class="attached-file">
+                <h5>첨부파일 : </h5><span>${item.fileNm}</span>
+            </div>
+        </c:forEach>
     </div>
-</c:forEach>
-</div>
     <div class="ctnt">
         <h3>${detail.ctnt}</h3>
     </div>
+    <div class="reply-elem d-flex">
+        <input type="text" class="form-control reply-ctnt" id="reply" name="reply" placeholder="댓글을 입력해 주세요.">
+        <button class="reply-btn btn btn-primary">댓글 등록</button>
+        <div class="replies">
+
+        </div>
+    </div>
+    <table class="table reply-table">
+        <tr>
+            <th class="reply-name-elem">이름</th>
+            <th class="reply-ctnt-elem">댓글 내용</th>
+            <th></th>
+        </tr>
+        <c:forEach var="item" items="${replies}">
+        <tr class="table-body" data-set="${item.ireply}">
+            <td>${item.name}</td>
+            <td class="reply-ctnt">${item.ctnt}</td>
+            <td>
+                <c:if test="${loginUserPk == item.iuser.iuser}">
+                    <button class="btn btn-danger reply-del-btn">삭제</button>
+                </c:if>
+            </td>
+            </c:forEach>
+        </tr>
+    </table>
 
     <div class="btns">
         <div class="prevIboard" style="display: none">${prevIboard}</div>

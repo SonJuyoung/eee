@@ -40,7 +40,7 @@
                 <td>작성자(*)</td>
                 <td><input class="writer form-control" id="writer" name="writer" value="${loginUser}" type="text" readonly></td>
                 <td>작성일자(*)</td>
-                <td><input class="rdt" type="date" id="rdt" name="rdt"></td>
+                <td><input class="rdt" type="date" id="rdt" name="rdt" disabled></td>
             </tr>
             <tr>
                 <td>내용(*)</td>

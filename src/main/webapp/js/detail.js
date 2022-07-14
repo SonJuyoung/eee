@@ -31,16 +31,20 @@ function getParameterByName(name) {
 delBtn.addEventListener("click", ()=> {
     let iboard = getParameterByName("iboard");
 
-    confirm("게시글을 삭제 하시겠습니까?");
+    let delChk = confirm("게시글을 삭제 하시겠습니까?");
 
-    // 작성자가 아닌 유저가 get방식으로 직접 삭제 시도할 때 자바에서 감지 후 삭제하지 않고 board/list로 보냄
-    fetch(`http://localhost:9000/board/delete?iboard=` + `${iboard}`)
-        .then(data => {
-            console.log(data);
-            location.href="http://localhost:9000/board/list";
-        }).catch(e=> {
+    if (delChk === false) {
+        return;
+    } else {
+        // 작성자가 아닌 유저가 get방식으로 직접 삭제 시도할 때 자바에서 감지 후 삭제하지 않고 board/list로 보냄
+        fetch(`http://localhost:9000/board/delete?iboard=` + `${iboard}`)
+            .then(data => {
+                console.log(data);
+                location.href="http://localhost:9000/board/list";
+            }).catch(e=> {
             console.error(e);
-    })
+        })
+    }
 })
 
 //수정 페이지 이동
@@ -88,3 +92,85 @@ fileNmElem.forEach((item)=> {
     item.textContent = item.textContent.substring(item.textContent.lastIndexOf("\\")+1);
 })
 
+//댓글 달기
+
+let replyCtntElem = document.querySelector(".reply-ctnt");
+let replyBtnElem = document.querySelector(".reply-btn");
+let loginUserPk = document.querySelector(".loginUserPk").textContent;
+
+replyBtnElem.addEventListener("click", ()=> {
+
+    if (replyCtntElem.value.length > 200) {
+        alert("댓글은 200자 이내로 작성해 주세요.");
+        return;
+    }
+
+    let data = {
+        "iboard" : parseInt(getParameterByName("iboard")),
+        "ctnt" : replyCtntElem.value,
+        "iuser" : loginUserPk
+    }
+    console.log(data);
+
+    fetch("/board/reply", {
+        method : 'POST',
+        headers: {
+            "Content-Type": "application/json",
+        },
+        body : JSON.stringify(data)
+    }).then(res => {
+        console.log(res);
+        return res.json();
+        }
+    ).then(data => {
+        console.log(data);
+        alert("댓글달기 성공");
+        window.location.reload();
+    }).catch(e => {
+        console.error(e);
+    })
+})
+
+//댓글 삭제
+let replyDelBtnElem = document.querySelectorAll(".reply-del-btn");
+
+replyDelBtnElem.forEach((item)=> {
+    item.addEventListener("click", ()=> {
+        let ireplyElem = item.parentElement.parentElement;
+        let ireply = item.parentElement.parentElement.dataset.set;
+        let iboard = getParameterByName("iboard");
+
+        let delChk = confirm("댓글을 삭제하시겠습니까?");
+
+        if (delChk === false) {
+            return;
+        } else {
+            fetch("/board/reply/delete", {
+                method: 'POST',
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify({
+                    'iboard': iboard,
+                    'ireply': ireply
+                })
+            }).then(res => {
+                console.log(res);
+                return res.json();
+            }).then(data => {
+                console.log(data);
+                ireplyElem.remove();
+            }).catch(e=> {
+                console.error(e);
+            })
+        }
+    })
+})
+
+//댓글 삭제 버튼
+
+// let replyBodyElem = document.querySelectorAll(".table-body");
+//
+// replyBodyElem.forEach((item)=> {
+//     if (userChkElem)
+// })

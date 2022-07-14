@@ -147,7 +147,6 @@
 
                 <!-- Modal body -->
                 <div class="modal-body resultPw">
-
                 </div>
 
                 <!-- Modal footer -->

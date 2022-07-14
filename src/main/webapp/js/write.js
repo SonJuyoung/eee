@@ -69,6 +69,14 @@ if (url.includes("mod")) {
 saveBtn.addEventListener("click", (e) => {
     e.preventDefault();
 
+    if (titleElem.value === '') {
+        alert("제목을 입력하세요");
+        return;
+    } else if (ctntElem.value === '') {
+        alert("내용을 입력하세요");
+        return;
+    }
+
     let iboard = getParameterByName("iboard");
 
     const formData = new FormData(); // 업로드 할 파일 저장 객체

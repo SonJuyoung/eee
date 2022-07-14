@@ -1,9 +1,14 @@
 package ieetu.common.board;
 
+import ieetu.common.board.reply.ReplyRepository;
+import ieetu.common.board.reply.ReplyService;
 import ieetu.common.dto.BoardDto;
 import ieetu.common.dto.FileDto;
+import ieetu.common.dto.ReplyDto;
 import ieetu.common.entity.BoardEntity;
 import ieetu.common.entity.FileEntity;
+import ieetu.common.entity.ReplyEntity;
+import ieetu.common.entity.UserEntity;
 import ieetu.common.file.FileRepository;
 import ieetu.common.securityConfig.AuthenticationFacade;
 import ieetu.common.user.UserRepository;
@@ -44,9 +49,12 @@ public class BoardController {
     private BoardRepository boardRepository;
     @Autowired
     private AuthenticationFacade authenticationFacade;
-
     @Autowired
     private FileRepository fileRepository;
+    @Autowired
+    private ReplyService replyService;
+    @Autowired
+    private ReplyRepository replyRepository;
 
     @GetMapping("/list")
     public String board(Model model, @PageableDefault Pageable pageable) {
@@ -197,6 +205,9 @@ public class BoardController {
 
         model.addAttribute("detail", boardRepository.findByIboard(iboard));
 
+        //로그인 유저 정보
+        model.addAttribute("loginUserPk", authenticationFacade.getLoginUserPk());
+
         //로그인 된 유저와 게시물의 유저 정보
         String sUser = authenticationFacade.getLoginUser().getName();
         String bUser = boardRepository.findByIboard(iboard).getWriter();
@@ -233,12 +244,18 @@ public class BoardController {
             model.addAttribute("file", fileRepository.findAllByIboard(boardEntity));
         }
 
+        System.out.println("리플 : " + replyRepository.findAllByIboardOrderByIreplyDesc(boardEntity));
+        //댓글 있으면
+        if (replyRepository.findAllByIboardOrderByIreplyDesc(boardEntity).size() > 0) {
+            model.addAttribute("replies", replyRepository.findAllByIboardOrderByIreplyDesc(boardEntity));
+        }
+
         return "/board/detail";
     }
 
     //글 삭제
     @GetMapping("/delete")
-    public String delete(@RequestParam int iboard) {
+    public String delete(@RequestParam int iboard) throws IOException {
 
         //로그인 된 유저와 게시물의 유저 정보
         //url로 직접 접속해서 글 삭제 방지
@@ -247,6 +264,27 @@ public class BoardController {
 
         if (sUser.equals(bUser)) {
             boardRepository.deleteByIboard(iboard);
+
+            //DB에서 첨부파일명 가져와서 실제 경로에 파일 삭제
+
+            BoardEntity entity = new BoardEntity();
+            entity.setIboard(iboard);
+
+            List<FileEntity> list = fileRepository.findAllByIboard(entity);
+
+            for (FileEntity fileEntity : list) {
+                System.out.println("삭제 파일 : " + fileEntity.getFileNm());
+                File file = new File(fileEntity.getFileNm());
+                if (file.exists()) {
+                    if (file.delete()) {
+                        System.out.println("파일삭제 성공");
+                    } else {
+                        System.out.println("파일삭제 실패");
+                    }
+                } else {
+                    System.out.println("파일이 존재하지 않습니다.");
+                }
+            }
         }
         return "redirect:/board/list";
     }
@@ -263,7 +301,7 @@ public class BoardController {
 
         int iboard = 0;
 
-        for (int i = 0; i<uploadFile.length; i++) {
+        for (int i = 0; i < uploadFile.length; i++) {
             System.out.println("파일 이름 : " + uploadFile[i].getName());
             //각 파일의 iboard값 설정
             iboard = Integer.parseInt(uploadFile[i].getOriginalFilename().split("_")[1]);
@@ -281,7 +319,7 @@ public class BoardController {
             System.out.println("upload path : " + uploadPath);
 
             //기존 iboard에 해당하는 폴더가 있으면 삭제하고 다시 만듦, 파일 계속 축적되는 것 방지
-            if (i==0) {
+            if (i == 0) {
                 if (!uploadPath.exists()) {
                     uploadPath.mkdirs();
                 } else {
@@ -384,7 +422,7 @@ public class BoardController {
     //첨부파일 다운로드
     @GetMapping(value = "/download", produces = MediaType.APPLICATION_OCTET_STREAM_VALUE)
     @ResponseBody
-    public ResponseEntity<Resource> downloadFile(String fileName){
+    public ResponseEntity<Resource> downloadFile(String fileName) {
         System.out.println("download file : " + fileName);
         Resource resource = new FileSystemResource(fileName);
 
@@ -397,7 +435,7 @@ public class BoardController {
         try {
             headers.add("Content-Disposition", "attachment; filename=" + new String(resourceName.getBytes("UTF-8"),
                     "ISO-8859-1"));
-        }catch (UnsupportedEncodingException e) {
+        } catch (UnsupportedEncodingException e) {
             e.printStackTrace();
         }
         return new ResponseEntity<Resource>(resource, headers, HttpStatus.OK);
@@ -413,12 +451,12 @@ public class BoardController {
         if (file.exists()) {
             if (file.delete()) {
                 System.out.println("파일 삭제 성공");
-            } else  {
+            } else {
                 System.out.println("파일 삭제 실패");
             }
         } else {
             System.out.println("파일이 존재하지 않습니다다");
-       }
+        }
 
         //DB에 file 데이터 삭제
         BoardEntity boardEntity = new BoardEntity();
@@ -433,4 +471,46 @@ public class BoardController {
             return 0;
         }
     }
+
+    @PostMapping("/reply")
+    @ResponseBody
+    public int reply(@RequestBody ReplyDto dto) {
+
+        BoardEntity boardEntity = new BoardEntity();
+        boardEntity.setIboard(dto.getIboard());
+
+        UserEntity userEntity = new UserEntity();
+        userEntity.setIuser(dto.getIuser());
+
+        ReplyEntity entity = new ReplyEntity();
+
+        //ReplyEntity 객체에 set해서 reply테이블에 insert
+        entity.setIboard(boardEntity);
+        entity.setName(authenticationFacade.getLoginUser().getName());
+        entity.setCtnt(dto.getCtnt());
+        entity.setIuser(userEntity);
+
+        if (replyService.replySave(entity) == 1) {
+            return 1;
+        } else {
+            return 0;
+        }
+    }
+
+    @PostMapping("/reply/delete")
+    @ResponseBody
+    public int replyDelete(@RequestBody ReplyDto dto) {
+
+        //로그인 유저와 댓글 유저가 같을 시 삭제
+        int loginUserPk = authenticationFacade.getLoginUserPk();
+        int replyUserPk = replyRepository.findByIreply(dto.getIreply()).getIuser().getIuser();
+
+        if (loginUserPk == replyUserPk) {
+            replyRepository.deleteByIreply(dto.getIreply());
+            return 1;
+        } else {
+            return 0;
+        }
+    }
 }
+

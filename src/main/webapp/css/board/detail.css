@@ -38,6 +38,7 @@
     width: 80%;
     display: flex;
     justify-content: space-around;
+    padding: 1rem;
 }
 
 .hidden {
@@ -69,6 +70,21 @@
     cursor: pointer;
 }
 
+.reply-elem {
+    width: 80%;
+    margin: 2rem 0px;
+    padding-bottom: 1rem;
+    border-bottom: 1px solid #DFDFDE;
+}
+
+.reply-elem > input {
+    flex : 8;
+}
+
+.reply-elem > button {
+    margin-left: 5rem;
+    flex : 1;
+}
 
 .mod {
     background-color: #F6FFA4!important;
@@ -79,4 +95,25 @@
     background-color: #FFA8A8!important;
     border-color: #FFA8A8!important;
     color: black!important;
+}
+
+.reply-table {
+    width: 80%!important;
+}
+
+.reply-name-elem {
+    width: 20%;
+}
+
+.reply-ctnt-elem {
+    width: 70%;
+}
+
+.reply-del-btn {
+    font-size: smaller!important;
+    padding: 3px!important;
+}
+
+.reply-ctnt {
+    word-break: break-all;
 }

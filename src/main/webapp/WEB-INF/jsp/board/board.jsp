@@ -69,7 +69,7 @@
     </c:forEach>
 </table>
 <div class="toWrite">
-    <a href="/board/write"><button class="btn btn-primary">글쓰기</button></a>
+    <a href="/board/write"><button class="write-btn btn btn-primary">글쓰기</button></a>
 </div>
 <ul class="pagination">
 </ul>

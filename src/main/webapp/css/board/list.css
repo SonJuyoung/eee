@@ -118,3 +118,26 @@ tr:hover {
 .pageNum:hover {
     cursor: pointer;
 }
+
+.pageNum > a {
+    color: black!important;
+}
+
+.prev > a {
+    color: black!important;
+}
+
+.next > a {
+    color: black!important;
+}
+
+.active >a {
+    background-color: #cfe2ff!important;
+    border-color: #cfe2ff!important;
+}
+
+.write-btn {
+    background-color: #cfe2ff!important;
+    border-color: #cfe2ff!important;
+    color: black!important;
+}

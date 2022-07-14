@@ -199,7 +199,7 @@ findUserPw.addEventListener("click", (e) => {
             let resultPwElem = document.querySelector(".resultPw");
 
             resultPwElem.innerHTML = `
-            <div>일치하는 정보가 없습니다.</div>
+            <h3>일치하는 정보가 없습니다.</h3>
             `
         }
     })
