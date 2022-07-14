@@ -38,12 +38,19 @@ public class UserController {
 
     //로그인 페이지
     @GetMapping("/login")
-    public String login() {
+    public String login(@RequestParam(value = "error", required = false)String error,
+                        @RequestParam(value = "exception", required = false)String exception,
+                        Model model) {
 
         //로그인 한 유저인 경우 게시판으로 이동
         if (authenticationFacade.getLoginUserPk() > 0) {
             return "redirect:/board/list";
         }
+
+        System.out.println("에러 : " + error);
+        System.out.println("예외 : " + exception);
+        model.addAttribute("error", error);
+        model.addAttribute("exception", exception);
 
         return "/login/login";
     }

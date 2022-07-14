@@ -42,15 +42,15 @@
     </div>
     <table class="table reply-table">
         <tr>
-            <th class="reply-name-elem">이름</th>
-            <th class="reply-ctnt-elem">댓글 내용</th>
+            <th class="reply-name-elem text-center">이름</th>
+            <th class="reply-ctnt-elem text-center">댓글 내용</th>
             <th></th>
         </tr>
         <c:forEach var="item" items="${replies}">
         <tr class="table-body" data-set="${item.ireply}">
-            <td>${item.name}</td>
+            <td class="text-center">${item.name}</td>
             <td class="reply-ctnt">${item.ctnt}</td>
-            <td>
+            <td class="text-center">
                 <c:if test="${loginUserPk == item.iuser.iuser}">
                     <button class="btn btn-danger reply-del-btn">삭제</button>
                 </c:if>

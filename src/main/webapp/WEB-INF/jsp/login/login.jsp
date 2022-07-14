@@ -1,3 +1,4 @@
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
 <head>
@@ -32,6 +33,11 @@
         <input type="checkbox" id="saveIdChk" name="">
         <label for="saveIdChk">아이디 기억하기</label>
     </div>
+        <c:if test="${error}">
+        <h5 class="text-danger">
+            ${exception}
+        </h5>
+        </c:if>
     <div class="login-btn">
         <input class="btn btn-primary" id="login-btn" type="submit" name="btn" value="로그인">
     </div>

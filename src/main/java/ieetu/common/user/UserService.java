@@ -21,7 +21,7 @@ public class UserService {
     @Autowired
     private UserRepository userRepository;
 
-    @Transactional
+    @Transactional //jpa로 DB변경시 붙여줌. 원자성, 일관성, 격리성, 지속성 유지를 위해서
     public int join(UserDto dto) {
 
         UserEntity entity = new UserEntity();

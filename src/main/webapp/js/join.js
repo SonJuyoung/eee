@@ -32,7 +32,7 @@ joinBtn.addEventListener("click", (e)=> {
 
     //비밀번호 유효성 검사
     if (!isPassword(pw.value)) {
-        alert("비밀번호는 8 ~ 20자 영문, 숫자, 특수문자를 최소 한가지씩 조합해야 합니다.");
+        alert("비밀번호는 8 ~ 30자 영문, 숫자, 특수문자를 최소 한가지씩 조합해야 합니다.");
         return;
     }
 
@@ -93,7 +93,7 @@ idchk.addEventListener("click", ()=> {
         .catch(e=> console.log(e));
 })
 
-//아이디, 비밀번호 유효성 검사
+//아이디, 비밀번호 유효성 검사 함수
 
 function isId(asValue) {
     let regExp = /^[a-z]+[a-z0-9]{5,19}$/g; // 영문자로 시작하는 영문자 또는 숫자 6~20자
@@ -102,7 +102,7 @@ function isId(asValue) {
 }
 
 function isPassword(asValue) {
-    let regExp = /^(?=.*[a-zA-z])(?=.*[0-9])(?=.*[$`~!@$!%*#^?&\\(\\)\-_=+]).{8,20}$/; // 8 ~ 20자 영문, 숫자, 특수문자를 최소 한가지씩 조합
+    let regExp = /^(?=.*[a-zA-z])(?=.*[0-9])(?=.*[$`~!@$!%*#^?&\\(\\)\-_=+]).{8,30}$/; // 8 ~ 30자 영문, 숫자, 특수문자를 최소 한가지씩 조합
 
     return regExp.test(asValue); // 형식에 맞는 경우 true 리턴
 }
