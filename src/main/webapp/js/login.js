@@ -3,36 +3,9 @@ let pw = document.querySelector("#pw");
 
 let loginBtn = document.querySelector("#login-btn");
 
-// loginBtn.addEventListener("click", (e)=> {
-//
-//     e.preventDefault();
-//
-//     fetch("http://localhost:9000/login", {
-//         method: "POST",
-//         headers: {
-//             "Content-Type": "application/json",
-//         },
-//         body: JSON.stringify({
-//             "id": id.value,
-//             "pw": pw.value
-//         }),
-//     }).then(res => {
-//         console.log(res);
-//         return res.json();
-//     }).then(data => {
-//         console.log(data)
-//         if (data === 1) {
-//             location.href = "http://localhost:9000/board/list"
-//         } else {
-//             alert("아이디 혹은 비밀번호를 확인해주세요.");
-//         }
-//     }).catch(e=> console.log(e));
-// })
-
-//아이디 기억 쿠키 설정
-
 let loginSave = document.querySelector("#saveIdChk");
 
+//아이디 기억 쿠키 설정
 const setCookie = (cookie_name, value, days) => {
     let exdate = new Date();
     exdate.setDate(exdate.getDate() + days);
@@ -54,6 +27,7 @@ const getCookie = cookie_name => {
     }
 }
 
+// 아이디 기억 체크되어있는 경우 쿠키 설정
 const chk = () => {
     if (loginSave.checked) {
         setCookie('c_userid', id.value, '100');
@@ -88,8 +62,7 @@ let findPwMail = document.querySelector(".pw-findByMail");
 let findUserId = document.querySelector(".findUserId");
 let findUserPw = document.querySelector(".findUserPw");
 
-findUserId.addEventListener("click", (e) => {
-    e.preventDefault();
+findUserId.addEventListener("click", () => {
 
     console.log(findByName.value);
     console.log(findByPhone.value);

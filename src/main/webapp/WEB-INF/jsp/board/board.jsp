@@ -39,7 +39,7 @@
 </div>
 
 <table class="table">
-    <tr class="table-top">
+    <tr class="table-top table-primary">
         <th>상태</th>
         <th>NO</th>
         <th><input type="checkbox"></th>

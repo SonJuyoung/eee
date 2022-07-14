@@ -14,7 +14,7 @@
 .title {
     text-align: center;
     width: 80%;
-    border-bottom: 1px solid lightslategray;
+    border-bottom: 1px solid #DFDFDE;
     padding-bottom: 10px;
     margin-bottom: 10px;
 }
@@ -30,7 +30,7 @@
     min-height: 50vh;
     width: 80%;
     display: flex;
-    border: 1px solid lightslategray;
+    border: 1px solid #DFDFDE;
     margin: 10px 0px;
 }
 
@@ -41,7 +41,7 @@
 }
 
 .hidden {
-    display: none;
+    display: none!important;
 }
 
 .file {
@@ -67,4 +67,16 @@
 
 .attached-file > span:hover {
     cursor: pointer;
+}
+
+
+.mod {
+    background-color: #F6FFA4!important;
+    border-color: #F6FFA4!important;
+}
+
+.del {
+    background-color: #FFA8A8!important;
+    border-color: #FFA8A8!important;
+    color: black!important;
 }

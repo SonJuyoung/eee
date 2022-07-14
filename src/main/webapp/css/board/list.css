@@ -52,7 +52,7 @@ body{
 }
 
 th {
-    background-color: lightgray!important;
+    /*background-color: #DDDDDD!important;*/
     text-align: center!important;
 }
 
@@ -108,7 +108,7 @@ td {
 }
 
 tr:hover {
-    background-color: lightgray;
+    background-color: #EEEEEE;
 }
 
 .table-body>.title:hover {

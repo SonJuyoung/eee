@@ -31,7 +31,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         http
                 .csrf().disable()//개발단계에서 csrf 해제
                 .authorizeRequests()
-                .antMatchers("/join", "/login", "/js/**", "/css/**")//해당 주소 요청은
+                .antMatchers("/join/**", "/login", "/js/**", "/css/**", "/findId", "/findPw", "/changePw")//해당 주소 요청은
                 .permitAll()//다 허용한다
                 .anyRequest()//나머지 요청은
                 .authenticated()//인증 해야됨

@@ -48,10 +48,15 @@ if (url.includes("mod")) {
 
     for (let i=0; i<fileDelBtnElems.length; i++) {
         fileDelBtnElems[i].addEventListener("click", ()=> {
-            confirm("업로드 된 파일을 삭제하시겠습니까?");
-            delFileName.push(originDelFileName[i]);
-            //화면에서 지움
-            fileDelBtnElems[i].parentElement.remove();
+            let delChk = confirm("업로드 된 파일을 삭제하시겠습니까?");
+
+            if (delChk === false) {
+                return;
+            } else {
+                delFileName.push(originDelFileName[i]);
+                //화면에서 지움
+                fileDelBtnElems[i].parentElement.remove();
+            }
         })
     }
 
@@ -193,6 +198,34 @@ saveBtn.addEventListener("click", (e) => {
 
         //등록일 때
     } else {
+        //첨부파일 갯수 검사
+        if (files.length > 5) {
+            alert("첨부파일은 최대 5개 입니다.");
+            return;
+        }
+
+        //파일 업로드
+        //첨부파일 있을 때 파일 검사
+        if (files.length > 0) {
+            //파일 용량 제한
+            function checkExtension(fileSize) {
+                if (fileSize > maxSize) {
+                    alert("파일 사이즈 초과");
+                    return false;
+                }
+                return true;
+            }
+
+            // formData에 파일 데이터 저장
+            for (let i = 0; i < files.length; i++) {
+
+                if (!checkExtension(files[i].size)) {
+                    return;
+                }
+
+                formData.append("uploadFile", files[i], files[i].name + '_' + 0);
+                console.log(fileUpload.files[i]);
+            }}
 
         let iboard;
 
@@ -217,32 +250,8 @@ saveBtn.addEventListener("click", (e) => {
             console.log("등록하는 게시물 iboard : " + iboard);
 
             //파일 업로드
-
-            if (files.length > 5) {
-                alert("첨부파일은 최대 5개 입니다.");
-                return;
-            }
             //첨부파일 있을 때 파일 추가
             if (files.length > 0) {
-                //파일 용량 제한
-                function checkExtension(fileSize) {
-                    if (fileSize > maxSize) {
-                        alert("파일 사이즈 초과");
-                        return false;
-                    }
-                    return true;
-                }
-
-                // formData에 파일 데이터 저장
-                for (let i = 0; i < files.length; i++) {
-
-                    if (!checkExtension(files[i].size)) {
-                        return false;
-                    }
-
-                    formData.append("uploadFile", files[i], files[i].name + '_' + 0);
-                    console.log(fileUpload.files[i]);
-                }
 
                 fetch("http://localhost:9000/board/uploadAjaxAction", {
                     method: 'POST',
@@ -297,47 +306,3 @@ let cancelBtn = document.querySelector(".cancel");
 cancelBtn.addEventListener("click", () => {
     location.href = "http://localhost:9000/board/list";
 })
-
-// let testBtn = document.querySelector(".test");
-//
-// testBtn.addEventListener("click", () => {
-//     const formData = new FormData(); // 업로드 할 파일 저장 객체
-//
-// // input 태그의 id를 이용하여 input의 value 값(업로드 할 파일들)을 가져와서 저장
-//     let fileUpload = document.querySelector("#file-upload");
-//     let files = fileUpload.files;
-//     console.log(files);
-//
-//     const maxSize = 5242880; //5MB
-//
-//     function checkExtension(fileSize){
-//         if(fileSize > maxSize){
-//             alert("파일 사이즈 초과");
-//             return false;
-//         }
-//         return true;
-//     }
-//
-// // formData에 파일 데이터 저장
-//     for (let i=0; i<files.length; i++) {
-//
-//         if(!checkExtension(files[i].size)){
-//             return false;
-//         }
-//
-//         formData.append("uploadFile", files[i]);
-//         console.log(fileUpload.files[i]);
-//     }
-//
-//     fetch("http://localhost:9000/board/uploadAjaxAction", {
-//         method: 'POST',
-//         processData : false,
-//         body: formData
-//     }).then(res => {
-//         return res.json();
-//     })
-//         .then(data => console.log(data))
-//         .catch(e => console.error(e))
-
-// })
-

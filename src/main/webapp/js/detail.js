@@ -33,6 +33,7 @@ delBtn.addEventListener("click", ()=> {
 
     confirm("게시글을 삭제 하시겠습니까?");
 
+    // 작성자가 아닌 유저가 get방식으로 직접 삭제 시도할 때 자바에서 감지 후 삭제하지 않고 board/list로 보냄
     fetch(`http://localhost:9000/board/delete?iboard=` + `${iboard}`)
         .then(data => {
             console.log(data);
@@ -40,26 +41,6 @@ delBtn.addEventListener("click", ()=> {
         }).catch(e=> {
             console.error(e);
     })
-
-    // fileNmElem.forEach((item)=> {
-    //     fetch("http://localhost:9000/board/fileDelete", {
-    //         method : "POST",
-    //         headers: {
-    //             "Content-Type": "application/json",
-    //         },
-    //         body : JSON.stringify({
-    //             "iboard" : iboard,
-    //             "fileNm" : item.textContent
-    //         })
-    //     }).then(res => {
-    //         console.log(res);
-    //         return res.json();
-    //     }).then(data => {
-    //         console.log(data);
-    //     }).catch(e=> {
-    //         console.error(e);
-    //     })
-    // })
 })
 
 //수정 페이지 이동
@@ -103,8 +84,7 @@ fileNmElem.forEach((item)=> {
         location.href = "http://localhost:9000/board/download?fileName="+ fileNm;
     })
 
+    //첨부파일 이름에서 경로를 없앰
     item.textContent = item.textContent.substring(item.textContent.lastIndexOf("\\")+1);
 })
-
-console.log(fileNmList);
 

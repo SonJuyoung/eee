@@ -53,7 +53,7 @@
                         <input type="file" id="file-upload" name="file-upload" multiple="multiple">
                         <div>
                             <span style="font-size: small">※ 첨부파일 당 최대 5MB까지 업로드 가능하며, 최대5개까지 등록할 수 있습니다.</span>
-                            <span style="font-size: small">※ 수정화면에서 파일첨부 후 저장 시 기존 첨부파일은 새로운 첨부파일으로 대체됩니다.</span>
+                            <span style="font-size: small">※ 수정화면에서 파일첨부 후, 저장 시 기존 첨부파일은 새로운 첨부파일으로 대체됩니다.</span>
                         </div>
                     </div>
                 </td>
