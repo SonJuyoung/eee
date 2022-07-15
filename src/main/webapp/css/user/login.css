@@ -77,3 +77,9 @@ body {
 .modal-footer {
     justify-content: space-between!important;
 }
+
+.err-msg {
+    font-size: small;
+    font-weight: bold;
+    text-align: center;
+}

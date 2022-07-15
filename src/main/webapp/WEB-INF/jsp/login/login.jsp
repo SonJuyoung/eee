@@ -34,7 +34,7 @@
         <label for="saveIdChk">아이디 기억하기</label>
     </div>
         <c:if test="${error}">
-        <h5 class="text-danger">
+        <h5 class="text-danger err-msg">
             ${exception}
         </h5>
         </c:if>
