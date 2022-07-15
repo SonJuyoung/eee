@@ -80,7 +80,7 @@ public class UserService {
 //    }
 
     //비밀번호 변경
-    @Transactional //jpa로 DB변경시 붙여줌. 원자성, 일관성, 격리성, 지속성 유지를 위해서
+    @Transactional //jpa로 DB변경시 붙여줌. 원자성, 일관성, 격리성, 지속성 유지를 위해서, 메서드가 포함하고 있는 작업 중에 하나라도 실패할 경우 전체 작업을 취소한다.
     public int pwChange(UserDto dto) {
 
         UserEntity entity = new UserEntity();

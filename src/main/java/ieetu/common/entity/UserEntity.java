@@ -20,7 +20,9 @@ public class UserEntity {
 
     private String upw;
 
+    @Column(unique = true)
     private String mail;
 
+    @Column(unique = true)
     private String phone;
 }
