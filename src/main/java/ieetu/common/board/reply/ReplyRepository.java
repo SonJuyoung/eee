@@ -2,7 +2,6 @@ package ieetu.common.board.reply;
 
 import ieetu.common.entity.BoardEntity;
 import ieetu.common.entity.ReplyEntity;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

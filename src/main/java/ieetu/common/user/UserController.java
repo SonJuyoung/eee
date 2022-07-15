@@ -115,41 +115,4 @@ public class UserController {
         return userService.pwChange(dto);
 
     }
-//
-//    @PostMapping("/login")
-//    @ResponseBody
-//    public int loginPost(@RequestBody UserDto dto, HttpSession hs) {
-//
-//        UserEntity entity = new UserEntity();
-//
-//        entity.setUid(dto.getId());
-//        entity.setUpw(dto.getPw());
-//        System.out.println("123123");
-//        System.out.println(entity);
-//
-//
-////        entity = userRepository.findByUidAndUpw(dto.getId(),dto.getPw());
-////
-////        if (userService.login(entity) == 1) {
-////            System.out.println(entity.getName());
-////            hs.setAttribute("loginUser", entity.getName());
-////            System.out.println(hs.getAttribute("loginUser"));
-////            return 1;
-////        } else {
-////            return 0;
-////        }
-//        if (userService.login(entity) != null) {
-//            hs.setAttribute("loginUser", entity.getName());
-//            return 1;
-//        } else return 0;
-//    }
-
-//    @GetMapping("/logout")
-//    public String logout(HttpSession hs) {
-//        if (hs.getAttribute("loginUser") != null) {
-//            hs.invalidate();
-//            return "redirect:/login";
-//        }
-//        return "/login/login";
-//    }
 }

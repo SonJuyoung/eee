@@ -11,14 +11,10 @@ import ieetu.common.entity.ReplyEntity;
 import ieetu.common.entity.UserEntity;
 import ieetu.common.file.FileRepository;
 import ieetu.common.securityConfig.AuthenticationFacade;
-import ieetu.common.user.UserRepository;
 import org.apache.commons.io.FileUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.FileSystemResource;
-import org.springframework.core.io.InputStreamResource;
 import org.springframework.core.io.Resource;
-import org.springframework.data.jpa.repository.Query;
-import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -29,7 +25,6 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.data.domain.Pageable;
 import org.springframework.web.multipart.MultipartFile;
 
-import javax.servlet.http.HttpSession;
 import java.io.File;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
@@ -57,7 +52,7 @@ public class BoardController {
     private ReplyRepository replyRepository;
 
     @GetMapping("/list")
-    public String board(Model model, @PageableDefault Pageable pageable) {
+    public String board(Model model, Pageable pageable) {
 
         //로그인 유저 정보 없을 시 로그인 페이지로
         if (authenticationFacade.getLoginUserPk() < 1) {
