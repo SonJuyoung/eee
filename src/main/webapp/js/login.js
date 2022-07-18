@@ -175,6 +175,9 @@ findUserPw.addEventListener("click", (e) => {
                 } else if (pwVal !== pwChkVal) {
                     alert("비밀번호를 다시 확인해 주세요.");
                     return;
+                } else if (!isPassword(pwVal)) {
+                    alert("비밀번호는 8 ~ 30자 영문, 숫자, 특수문자를 최소 한가지씩 조합하여야 합니다.");
+                    return;
                 }
 
                 fetch("http://localhost:9000/changePw", {
@@ -205,3 +208,9 @@ findUserPw.addEventListener("click", (e) => {
     })
         .catch(e => console.error(e));
 })
+
+function isPassword(asValue) {
+    let regExp = /^(?=.*[a-zA-z])(?=.*[0-9])(?=.*[$`~!@$!%*#^?&\\(\\)\-_=+]).{8,30}$/; // 8 ~ 30자 영문, 숫자, 특수문자를 최소 한가지씩 조합
+
+    return regExp.test(asValue); // 형식에 맞는 경우 true 리턴
+}
