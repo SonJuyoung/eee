@@ -49,11 +49,18 @@ joinBtn.addEventListener("click", (e)=> {
             "phone": phone.value
         }),
     }).then(res => {
-        console.log(res)
+        console.log(res);
+        return res.json();
     }).then(data => {
         console.log(data);
-        location.href="/login"
-    }).catch(e=> console.log(e));
+        if (data === 1) {
+            alert("회원가입 성공!");
+            location.href="/login";
+        }
+    }).catch(e=> {
+        console.log(e);
+        alert("회원가입에 실패했습니다. 휴대폰번호 혹은 메일을 확인 후, 다시 시도해 주세요.");
+    });
 })
 
 //아이디 중복 검사

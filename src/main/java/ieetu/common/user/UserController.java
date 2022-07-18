@@ -66,9 +66,9 @@ public class UserController {
     @ResponseBody
     public int joinPost(@RequestBody UserDto dto) {
 
-        userService.join(dto);
-
-        return 1;
+        if (userService.join(dto) == 0) {
+            return 0;
+        } else return 1;
     }
 
     //아이디 중복 검사
