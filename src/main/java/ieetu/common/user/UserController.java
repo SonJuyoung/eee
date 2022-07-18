@@ -63,8 +63,8 @@ public class UserController {
 
     //회원가입
     @PostMapping("/join")
-    @ResponseBody
-    public int joinPost(@RequestBody UserDto dto) {
+    @ResponseBody // http요청 body를 자바 객체로 전달받을 수 있다.
+    public int joinPost(@RequestBody UserDto dto) { // http요청의 본문(body)이 그대로 전달된다.
 
         if (userService.join(dto) == 0) {
             return 0;

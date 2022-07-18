@@ -39,16 +39,16 @@ public interface BoardRepository extends JpaRepository<BoardEntity, Integer> {
     List<BoardEntity> searchByAll(String search); //전제 검색 게시물 정렬 갯수 파악
 
     @Query("SELECT b FROM BoardEntity as b WHERE b.fix = 0 and b.title like concat ('%',:search,'%') order by b.iboard desc")
-    List<BoardEntity> searchByTitle(String search); //제목 검색 게시물 정렬
+    List<BoardEntity> searchByTitle(String search, Pageable pageable); //제목 검색 게시물 정렬
 
     @Query("SELECT b FROM BoardEntity as b WHERE b.title like concat ('%',:search,'%') order by b.iboard desc")
-    List<BoardEntity> searchByTitle(String search, Pageable pageable); //제목 검색 게시물 정렬 갯수 파악
+    List<BoardEntity> searchByTitle(String search); //제목 검색 게시물 정렬 갯수 파악
 
     @Query("SELECT b FROM BoardEntity as b WHERE b.fix = 0 and b.ctnt like concat ('%',:search,'%') order by b.iboard desc")
-    List<BoardEntity> searchByCtnt(String search); //내용 검색 게시물 정렬
+    List<BoardEntity> searchByCtnt(String search, Pageable pageable); //내용 검색 게시물 정렬
 
     @Query("SELECT b FROM BoardEntity as b WHERE b.ctnt like concat ('%',:search,'%') order by b.iboard desc")
-    List<BoardEntity> searchByCtnt(String search, Pageable pageable); //내용 검색 게시물 정렬 갯수 파악
+    List<BoardEntity> searchByCtnt(String search); //내용 검색 게시물 정렬 갯수 파악
 
     @Query("SELECT b FROM BoardEntity as b WHERE b.fix = 0 and b.writer like concat ('%',:search,'%') order by b.iboard desc")
     List<BoardEntity> searchByWriter(String search, Pageable pageable); //작성자 검색 게시물 정렬
