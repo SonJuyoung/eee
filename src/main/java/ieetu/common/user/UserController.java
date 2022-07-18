@@ -82,14 +82,15 @@ public class UserController {
     //아이디 찾기
     @PostMapping("/findId")
     @ResponseBody
-    public String findId(@RequestBody UserDto dto) {
+    public UserEntity findId(@RequestBody UserDto dto) {
 
         if (userRepository.findByNameAndPhoneAndMail(dto.getName(), dto.getPhone(), dto.getMail()) != null) { //이름, 휴대폰번호, 메일으로 찾았을 때 아이디가 있는 경우
             System.out.println("아이디 : " + userRepository.findByNameAndPhoneAndMail(dto.getName(), dto.getPhone(), dto.getMail()));
-            return userRepository.findByNameAndPhoneAndMail(dto.getName(), dto.getPhone(), dto.getMail()).getUid(); //아이디 리턴
+            System.out.println("아이디 : " + userRepository.findByNameAndPhoneAndMail(dto.getName(), dto.getPhone(), dto.getMail()).getUid());
+            return userRepository.findByNameAndPhoneAndMail(dto.getName(), dto.getPhone(), dto.getMail()); //아이디 리턴
         } else { //아이디가 없는 경우
             System.out.println("아이디 없음 : " + userRepository.findByNameAndPhoneAndMail(dto.getName(), dto.getPhone(), dto.getMail()));
-            return "";
+            return null;
         }
     }
 

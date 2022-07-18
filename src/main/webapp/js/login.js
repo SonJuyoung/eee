@@ -95,7 +95,7 @@ findUserId.addEventListener("click", () => {
         let resultElem = document.querySelector(".result > h3");
 
         resultElem.innerHTML = `
-            찾으시는 아이디는 <strong style="color: tomato">${data}</strong> 입니다.
+            찾으시는 아이디는 <strong style="color: tomato">${data.uid}</strong> 입니다.
             `
 
     }).catch(e => {
