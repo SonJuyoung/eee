@@ -190,3 +190,11 @@ titleElem.forEach((item) => {
         location.href = "http://localhost:9000/board/detail?iboard=" + `${iboard}`;
     })
 })
+
+//프로필 사진 클릭 시 마이페이지 이동
+
+let profileImg = document.querySelector(".profile-img");
+
+profileImg.addEventListener("click", ()=> {
+    location.href = "/mypage";
+})

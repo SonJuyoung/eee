@@ -2,6 +2,7 @@ let titleElem = document.querySelector(".title");
 let writerElem = document.querySelector(".writer");
 let ctntElem = document.querySelector(".ctnt");
 let rdtElem = document.querySelector(".rdt");
+let iuser = document.querySelector(".writer").dataset.set;
 
 
 let saveBtn = document.querySelector(".save-btn");
@@ -201,7 +202,7 @@ saveBtn.addEventListener("click", (e) => {
                 })
             }
             alert("수정 완료!");
-            location.href = "http://localhost:9000/board/list";
+            location.href = "http://localhost:9000/board/detail?iboard=" + iboard;
         }).catch(e => console.log(e));
 
         //등록일 때
@@ -247,7 +248,8 @@ saveBtn.addEventListener("click", (e) => {
                 "writer": writerElem.value,
                 "ctnt": ctntElem.value,
                 "rdt": rdtElem.value,
-                "fix": fixElem.value
+                "fix": fixElem.value,
+                "iuser": iuser
             }),
         }).then(res => {
             console.log(res);

@@ -141,3 +141,16 @@ tr:hover {
     border-color: #cfe2ff!important;
     color: black!important;
 }
+
+.mypage-btn {
+    margin-right: 5px;
+}
+
+.profile-img {
+    width: 2.5rem;
+    height: 2.5rem;
+}
+
+.profile-img:hover {
+    cursor: pointer;
+}

@@ -1,4 +1,4 @@
-package ieetu.common.file;
+package ieetu.common.board;
 
 import ieetu.common.entity.BoardEntity;
 import ieetu.common.entity.FileEntity;

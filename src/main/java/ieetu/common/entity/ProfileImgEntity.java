@@ -1,28 +1,22 @@
 package ieetu.common.entity;
 
 import lombok.Data;
+
 import javax.persistence.*;
 
 @Entity
-@Table(name = "board")
+@Table(name = "profileimg")
 @Data
-public class BoardEntity {
+public class ProfileImgEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int iboard;
+    @Column(insertable = false)
+    private int idx;
 
-    private String writer;
+    private String fileNm;
 
-    private String title;
-
-    private String ctnt;
-
-    private String rdt;
-
-    private int fix;
-
-    @ManyToOne
+    @OneToOne
     @JoinColumn(name = "iuser")
     private UserEntity iuser;
 }

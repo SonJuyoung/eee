@@ -38,7 +38,7 @@
         </tr>
         <tr>
             <td>작성자(*)</td>
-            <td><input class="writer form-control" id="writer" name="writer" value="${loginUser}" type="text" readonly></td>
+            <td><input class="writer form-control" id="writer" name="writer" value="${loginUser.name}" type="text" data-set="${loginUser.iuser}" readonly></td>
             <td>작성일자(*)</td>
             <td><input class="rdt" type="date" id="rdt" name="rdt" disabled></td>
         </tr>

@@ -17,6 +17,7 @@
         <div class="user-greet">
             <span><strong>${user.name}</strong>님 환영합니다!</span>
         </div>
+        <img src="../${profileImg}" alt="user-image" class="profile-img rounded-circle" onerror="this.src='/images/default-img.png'">
         <button class="btn btn-warning logout-btn">로그아웃</button>
     </div>
     <h1>게시판</h1>
@@ -48,7 +49,7 @@
         <th class="rdt">최종 수정일자</th>
     </tr>
     <c:forEach var="item" items="${fixList}">
-        <tr class="table-body">
+        <tr class="table-body fix-list">
             <td>${item.fix}</td>
             <td>${item.iboard}</td>
             <td><input type="checkbox"></td>

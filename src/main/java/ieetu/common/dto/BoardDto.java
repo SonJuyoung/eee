@@ -12,4 +12,5 @@ public class BoardDto {
     private String rdt;
     private int fix;
     private String file;
+    private int iuser;
 }

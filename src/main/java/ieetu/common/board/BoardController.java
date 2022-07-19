@@ -9,8 +9,8 @@ import ieetu.common.entity.BoardEntity;
 import ieetu.common.entity.FileEntity;
 import ieetu.common.entity.ReplyEntity;
 import ieetu.common.entity.UserEntity;
-import ieetu.common.file.FileRepository;
 import ieetu.common.securityConfig.AuthenticationFacade;
+import ieetu.common.user.ProfileImgRepository;
 import org.apache.commons.io.FileUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.FileSystemResource;
@@ -50,6 +50,8 @@ public class BoardController {
     private ReplyService replyService;
     @Autowired
     private ReplyRepository replyRepository;
+    @Autowired
+    private ProfileImgRepository profileImgRepository;
 
     @GetMapping("/list")
     public String board(Model model, Pageable pageable) {
@@ -57,6 +59,14 @@ public class BoardController {
         //로그인 유저 정보 없을 시 로그인 페이지로
         if (authenticationFacade.getLoginUserPk() < 1) {
             return "redirect:/login";
+        }
+
+        UserEntity entity = new UserEntity();
+        entity.setIuser(authenticationFacade.getLoginUserPk());
+
+        if (profileImgRepository.findByIuser(entity)!=null) {
+            System.out.println("파일 : " + profileImgRepository.findByIuser(entity).getFileNm());
+            model.addAttribute("profileImg", profileImgRepository.findByIuser(entity).getFileNm());
         }
 
         model.addAttribute("fixList", boardRepository.fixList()); //공지사항 게시물
@@ -108,13 +118,16 @@ public class BoardController {
         }
 
         //로그인된 유저 이름
-        model.addAttribute("loginUser", authenticationFacade.getLoginUser().getName());
+        model.addAttribute("loginUser", authenticationFacade.getLoginUser());
         return "/board/write";
     }
 
     @PostMapping("/write")
     @ResponseBody
     public int writePost(@RequestBody BoardDto dto) {
+
+        UserEntity userEntity = new UserEntity();
+        userEntity.setIuser(dto.getIuser());
 
         //dto를 통해 ajax로 받아온 데이터를 BoardEntity 객체에 set
 
@@ -125,6 +138,7 @@ public class BoardController {
         entity.setWriter(dto.getWriter());
         entity.setRdt(dto.getRdt());
         entity.setFix(dto.getFix());
+        entity.setIuser(userEntity);
 
         System.out.println(entity);
 
@@ -165,6 +179,9 @@ public class BoardController {
     @ResponseBody
     public int modPost(@RequestBody BoardDto dto) {
 
+        UserEntity userEntity = new UserEntity();
+        userEntity.setIuser(authenticationFacade.getLoginUserPk());
+
         //dto를 통해 ajax로 받아온 데이터를 BoardEntity 객체에 set
 
         BoardEntity entity = new BoardEntity();
@@ -175,6 +192,7 @@ public class BoardController {
         entity.setWriter(dto.getWriter());
         entity.setRdt(dto.getRdt());
         entity.setFix(dto.getFix());
+        entity.setIuser(userEntity);
 
         System.out.println(entity);
 
@@ -329,7 +347,6 @@ public class BoardController {
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
-
                 }
             }
 

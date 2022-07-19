@@ -1,0 +1,21 @@
+.my-photo {
+    width: 10rem;
+    height: 10rem;
+    border-radius: 50%;
+    overflow: hidden;
+}
+
+.profile-img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+}
+
+.profile-img:hover {
+    cursor: pointer;
+}
+
+.mypge-btns {
+    display: flex;
+    flex-direction: column;
+}
