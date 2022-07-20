@@ -30,8 +30,17 @@ body{
 
 .search {
     display: flex;
-    width: 50%;
+    width: 90%;
     align-items: center;
+}
+
+.search-date {
+    flex: 1;
+}
+
+.search-elem {
+    display: flex;
+    flex: 1.8;
 }
 
 .search-option {
@@ -154,3 +163,4 @@ tr:hover {
 .profile-img:hover {
     cursor: pointer;
 }
+

@@ -10,32 +10,56 @@ trElem.forEach((item) => {
 })
 
 //검색
-let searchOptionElem = document.querySelector(".search-option");
+let searchOptionElem1 = document.querySelector(".search-option1");
+let searchOptionElem2 = document.querySelector(".search-option2");
 let searchTxtElem = document.querySelector(".search-text");
 let searchBtnElem = document.querySelector(".search-btn");
+let startDateElem = document.querySelector(".start-date");
+let endDateElem = document.querySelector(".end-date");
 
 //검색버튼 눌렀을 때 get방식으로 주소 이동
 searchBtnElem.addEventListener("click", () => {
-    let searchOptionVal = searchOptionElem.value;
+    let searchOptionVal1 = searchOptionElem1.value;
+    let searchOptionVal2 = searchOptionElem2.value;
     let searchTxt = searchTxtElem.value;
+    let startDate = startDateElem.value;
+    let endDate = endDateElem.value;
 
-    location.href = "http://localhost:9000/board/list/search?" + `category=${searchOptionVal}` + '&' + `searchTxt=${searchTxt}`;
+    if (startDate === '' && endDate === '') {
+        location.href = "http://localhost:9000/board/list/search?" +`category1=${searchOptionVal1}` + '&' + `category2=${searchOptionVal2}` + '&' + `searchTxt=${searchTxt}`;
+    } else if ((startDate !== '' && endDate === '')||(startDate === '' && endDate !== '')) {
+        alert("시작 날짜와 종료 날짜를 빠짐없이 입력해 주세요.");
+        return;
+    } else {
+        location.href = "http://localhost:9000/board/list/search?" +`category1=${searchOptionVal1}` + '&' + `category2=${searchOptionVal2}` + '&' + `searchTxt=${searchTxt}` + '&' + `startDate=${startDate}` + '&' + `endDate=${endDate}`;
+    }
+
+
 })
 
 //검색했을 때 카테고리와 검색 텍스트 유지
 
-if (getParameterByName('category')) {
-    let searchOptionVal = searchOptionElem.value;
+if (getParameterByName('category1')) {
+    let searchOptionVal1 = searchOptionElem1.value;
+    let searchOptionVal2 = searchOptionElem2.value;
     let searchTxt = searchTxtElem.value;
 
-    searchOptionVal = getParameterByName("category");
+    searchOptionVal1 = getParameterByName("category1");
+    searchOptionVal2 = getParameterByName("category2");
     searchTxt = getParameterByName("searchTxt");
+    startDateVal = getParameterByName("startDate");
+    endDateVal = getParameterByName("endDate");
 
-    console.log(searchOptionVal);
+    console.log(searchOptionVal1);
+    console.log(searchOptionVal2);
     console.log(searchTxt)
 
-    searchOptionElem.value = searchOptionVal;
+    searchOptionElem1.value = searchOptionVal1;
+    searchOptionElem2.value = searchOptionVal2;
     searchTxtElem.value = searchTxt;
+
+    startDateElem.value = startDateVal;
+    endDateElem.value = endDateVal;
 }
 
 //페이징
@@ -46,7 +70,7 @@ let totalCount = parseInt(document.querySelector(".count > h5").textContent.spli
 let defaultNum = 10; //한 페이지 공지사항 제외 글 수
 let fixNum = document.querySelector(".fix-count").textContent;
 
-let pagingNum = Math.ceil((totalCount - fixNum) / defaultNum);
+let pagingNum = Math.ceil((totalCount) / defaultNum);
 //현재 페이지
 let currnetPage = 1;
 

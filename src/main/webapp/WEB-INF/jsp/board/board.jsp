@@ -17,7 +17,7 @@
         <div class="user-greet">
             <span><strong>${user.name}</strong>님 환영합니다!</span>
         </div>
-        <img src="../${profileImg}" alt="user-image" class="profile-img rounded-circle" onerror="this.src='/images/default-img.png'">
+        <img src="${pageContext.request.contextPath}/${profileImg}" alt="user-image" class="profile-img rounded-circle" onerror="this.src='/images/default-img.png'">
         <button class="btn btn-warning logout-btn">로그아웃</button>
     </div>
     <h1>게시판</h1>
@@ -27,14 +27,30 @@
             <div hidden class="fix-count">${fixListCount}</div>
         </div>
         <div class="search">
-            <select name="search" class="form-select search-option">
-                <option value="0">전체</option>
-                <option value="1">제목</option>
-                <option value="2">내용</option>
-                <option value="3">작성자</option>
-            </select>
-            <input class="form-control search-text" type="text">
-            <button class="search-btn btn btn-light">검색</button>
+            <div class="search-date" style="display: flex">
+                <label for="start-date">시작 날짜</label>
+                <input type="date" class="start-date" id="start-date">
+                <label for="end-date">종료 날짜</label>
+                <input type="date" class="end-date" id="end-date">
+            </div>
+            <div class="search-elem">
+                <select name="search" class="form-select search-option1">
+                    <option value="0">전체</option>
+                    <option value="1">공지사항</option>
+                    <option value="2">일반</option>
+                </select>
+                <select name="search" class="form-select search-option2">
+                    <option value="0">전체</option>
+                    <option value="1">제목</option>
+                    <option value="2">내용</option>
+                    <option value="3">작성자</option>
+                    <option value="4">제목+내용</option>
+                    <option value="5">제목+작성자</option>
+                    <option value="6">내용+작성자</option>
+                </select>
+                <input class="form-control search-text" type="text">
+                <button class="search-btn btn btn-light">검색</button>
+            </div>
         </div>
     </div>
 </div>
@@ -48,16 +64,16 @@
         <th>작성자</th>
         <th class="rdt">최종 수정일자</th>
     </tr>
-    <c:forEach var="item" items="${fixList}">
-        <tr class="table-body fix-list">
-            <td>${item.fix}</td>
-            <td>${item.iboard}</td>
-            <td><input type="checkbox"></td>
-            <td class="title">${item.title}</td>
-            <td>${item.writer}</td>
-            <td class="rdt">${item.rdt}</td>
-        </tr>
-    </c:forEach>
+<%--    <c:forEach var="item" items="${fixList}">--%>
+<%--        <tr class="table-body fix-list">--%>
+<%--            <td>${item.fix}</td>--%>
+<%--            <td>${item.iboard}</td>--%>
+<%--            <td><input type="checkbox"></td>--%>
+<%--            <td class="title">${item.title}</td>--%>
+<%--            <td>${item.writer}</td>--%>
+<%--            <td class="rdt">${item.rdt}</td>--%>
+<%--        </tr>--%>
+<%--    </c:forEach>--%>
     <c:forEach var="item" items="${list}">
         <tr class="table-body">
             <td>${item.fix}</td>

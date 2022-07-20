@@ -19,6 +19,7 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.lang.Nullable;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -64,14 +65,16 @@ public class BoardController {
         UserEntity entity = new UserEntity();
         entity.setIuser(authenticationFacade.getLoginUserPk());
 
-        if (profileImgRepository.findByIuser(entity)!=null) {
+        if (profileImgRepository.findByIuser(entity) != null) {
             System.out.println("파일 : " + profileImgRepository.findByIuser(entity).getFileNm());
             model.addAttribute("profileImg", profileImgRepository.findByIuser(entity).getFileNm());
         }
+        model.addAttribute("list", boardRepository.findAllByOrderByIboardDesc(pageable));
+        System.out.println("리스트 : " + boardRepository.findAll(pageable));
 
         model.addAttribute("fixList", boardRepository.fixList()); //공지사항 게시물
         model.addAttribute("fixListCount", boardRepository.fixList().size()); //공지사항 게시물 갯수
-        model.addAttribute("list", boardRepository.List(pageable)); //일반 게시물
+        model.addAttribute("normalList", boardRepository.List(pageable)); //일반 게시물
         model.addAttribute("count", boardRepository.findAllByOrderByFixDescIboardDesc().size()); //일반 게시물 갯수
         model.addAttribute("user", authenticationFacade.getLoginUser()); //로그인 유저 정보
 
@@ -80,30 +83,172 @@ public class BoardController {
 
     //게시판 검색 시 페이지
     @GetMapping("/list/search")
-    public String boardSearch(Model model, @RequestParam int category, String searchTxt, Pageable pageable) {
+    public String boardSearch(Model model, @RequestParam int category1, int category2, String searchTxt, @Nullable String startDate, @Nullable String endDate, Pageable pageable) {
 
         //로그인 유저 정보 없을 시 로그인 페이지로
         if (authenticationFacade.getLoginUserPk() < 1) {
             return "redirect:/login";
         }
 
+        UserEntity entity = new UserEntity();
+        entity.setIuser(authenticationFacade.getLoginUserPk());
+
+        if (profileImgRepository.findByIuser(entity) != null) {
+            System.out.println("파일 : " + profileImgRepository.findByIuser(entity).getFileNm());
+            model.addAttribute("profileImg", profileImgRepository.findByIuser(entity).getFileNm());
+        }
+
         model.addAttribute("user", authenticationFacade.getLoginUser()); //로그인 유저 정보
+        model.addAttribute("list", boardRepository.findAllByOrderByIboardDesc(pageable));
+        System.out.println("리스트 : " + boardRepository.findAll(pageable));
         model.addAttribute("fixList", boardRepository.fixList()); //공지사항 게시물
 
-        if (category == 0) {
-            model.addAttribute("list", boardRepository.searchByAll(searchTxt, pageable)); //전체 검색 게시물
-            model.addAttribute("count", boardRepository.searchByAll(searchTxt).size()); //전체 검색 게시물 갯수
-        } else if (category == 1) {
-            model.addAttribute("list", boardRepository.searchByTitle(searchTxt, pageable)); //제목 검색 게시물
-            model.addAttribute("count", boardRepository.searchByTitle(searchTxt).size()); //제목 검색 게시물 갯수
-        } else if (category == 2) {
-            model.addAttribute("list", boardRepository.searchByCtnt(searchTxt, pageable)); //내용 검색 게시물
-            model.addAttribute("count", boardRepository.searchByCtnt(searchTxt).size()); //내용 검색 게시물 갯수
-        } else if (category == 3) {
-            model.addAttribute("list", boardRepository.searchByWriter(searchTxt, pageable)); //작성자 검색 게시물
-            model.addAttribute("count", boardRepository.searchByWriter(searchTxt).size()); //작성자 검색 게시물 갯수
+        if (startDate == null || endDate == null) {
+            if (category1 == 0) {
+                if (category2 == 0) {
+                    model.addAttribute("list", boardRepository.searchByAll(searchTxt, pageable)); //전체 검색 게시물
+                    model.addAttribute("count", boardRepository.searchByAll(searchTxt).size()); //전체 검색 게시물 갯수
+                } else if (category2 == 1) {
+                    model.addAttribute("list", boardRepository.searchByTitle(searchTxt, pageable)); //제목 검색 게시물
+                    model.addAttribute("count", boardRepository.searchByTitle(searchTxt).size()); //제목 검색 게시물 갯수
+                } else if (category2 == 2) {
+                    model.addAttribute("list", boardRepository.searchByCtnt(searchTxt, pageable)); //내용 검색 게시물
+                    model.addAttribute("count", boardRepository.searchByCtnt(searchTxt).size()); //내용 검색 게시물 갯수
+                } else if (category2 == 3) {
+                    model.addAttribute("list", boardRepository.searchByWriter(searchTxt, pageable)); //작성자 검색 게시물
+                    model.addAttribute("count", boardRepository.searchByWriter(searchTxt).size()); //작성자 검색 게시물 갯수
+                } else if (category2 == 4) {
+                    model.addAttribute("list", boardRepository.searchByTitleAndCtnt(searchTxt, pageable)); //제목+내용 검색 게시물
+                    model.addAttribute("count", boardRepository.searchByTitleAndCtnt(searchTxt).size()); //제목+내용 검색 게시물 갯수
+                } else if (category2 == 5) {
+                    model.addAttribute("list", boardRepository.searchByTitleAndWriter(searchTxt, pageable)); //제목+작성자 검색 게시물
+                    model.addAttribute("count", boardRepository.searchByTitleAndWriter(searchTxt).size()); //제목+작성자 검색 게시물 갯수
+                } else if (category2 == 6) {
+                    model.addAttribute("list", boardRepository.searchByCtntAndWriter(searchTxt, pageable)); //내용+작성자 검색 게시물
+                    model.addAttribute("count", boardRepository.searchByCtntAndWriter(searchTxt).size()); //내용+작성자 검색 게시물 갯수
+                }
+            } else if (category1 == 1) {
+                if (category2 == 0) {
+                    model.addAttribute("list", boardRepository.searchByAllFix(searchTxt, pageable)); //공지사항 검색 게시물
+                    model.addAttribute("count", boardRepository.searchByAllFix(searchTxt).size()); //공지사항 검색 게시물 갯수
+                } else if (category2 == 1) {
+                    model.addAttribute("list", boardRepository.searchByTitleFix(searchTxt, pageable)); //공지사항 제목 검색 게시물
+                    model.addAttribute("count", boardRepository.searchByTitleFix(searchTxt).size()); //공지사항 제목 검색 게시물 갯수
+                } else if (category2 == 2) {
+                    model.addAttribute("list", boardRepository.searchByCtntFix(searchTxt, pageable)); //공지사항 내용 검색 게시물
+                    model.addAttribute("count", boardRepository.searchByCtntFix(searchTxt).size()); //공지사항 내용 검색 게시물 갯수
+                } else if (category2 == 3) {
+                    model.addAttribute("list", boardRepository.searchByWriterFix(searchTxt, pageable)); //공지사항 작성자 검색 게시물
+                    model.addAttribute("count", boardRepository.searchByWriterFix(searchTxt).size()); //공지사항 작성자 검색 게시물 갯수
+                } else if (category2 == 4) {
+                    model.addAttribute("list", boardRepository.searchByTitleAndCtntFix(searchTxt, pageable)); //공지사항 제목+내용 검색 게시물
+                    model.addAttribute("count", boardRepository.searchByTitleAndCtntFix(searchTxt).size()); //공지사항 제목+내용 검색 게시물 갯수
+                } else if (category2 == 5) {
+                    model.addAttribute("list", boardRepository.searchByTitleAndWriterFix(searchTxt, pageable)); //공지사항 제목+작성자 검색 게시물
+                    model.addAttribute("count", boardRepository.searchByTitleAndWriterFix(searchTxt).size()); //공지사항 제목+작성자 검색 게시물 갯수
+                } else if (category2 == 6) {
+                    model.addAttribute("list", boardRepository.searchByCtntAndWriterFix(searchTxt, pageable)); //공지사항 내용+작성자 검색 게시물
+                    model.addAttribute("count", boardRepository.searchByCtntAndWriterFix(searchTxt).size()); //공지사항 내용+작성자 검색 게시물 갯수
+                }
+            } else {
+                if (category2 == 0) {
+                    model.addAttribute("list", boardRepository.searchByAllNormal(searchTxt, pageable)); //일반 검색 게시물
+                    model.addAttribute("count", boardRepository.searchByAllNormal(searchTxt).size()); //일반 검색 게시물 갯수
+                } else if (category2 == 1) {
+                    model.addAttribute("list", boardRepository.searchByTitleNormal(searchTxt, pageable)); //일반 제목 검색 게시물
+                    model.addAttribute("count", boardRepository.searchByTitleNormal(searchTxt).size()); //일반 제목 검색 게시물 갯수
+                } else if (category2 == 2) {
+                    model.addAttribute("list", boardRepository.searchByCtntNormal(searchTxt, pageable)); //일반 내용 검색 게시물
+                    model.addAttribute("count", boardRepository.searchByCtntNormal(searchTxt).size()); //일반 내용 검색 게시물 갯수
+                } else if (category2 == 3) {
+                    model.addAttribute("list", boardRepository.searchByWriterNormal(searchTxt, pageable)); //일반 작성자 검색 게시물
+                    model.addAttribute("count", boardRepository.searchByWriterNormal(searchTxt).size()); //일반 작성자 검색 게시물 갯수
+                } else if (category2 == 4) {
+                    model.addAttribute("list", boardRepository.searchByTitleAndCtntNormal(searchTxt, pageable)); //일반 제목+내용 검색 게시물
+                    model.addAttribute("count", boardRepository.searchByTitleAndCtntNormal(searchTxt).size()); //일반 제목+내용 검색 게시물 갯수
+                } else if (category2 == 5) {
+                    model.addAttribute("list", boardRepository.searchByTitleAndWriterNormal(searchTxt, pageable)); //일반 제목+작성자 검색 게시물
+                    model.addAttribute("count", boardRepository.searchByTitleAndWriterNormal(searchTxt).size()); //일반 제목+작성자 검색 게시물 갯수
+                } else if (category2 == 6) {
+                    model.addAttribute("list", boardRepository.searchByCtntAndWriterNormal(searchTxt, pageable)); //일반 내용+작성자 검색 게시물
+                    model.addAttribute("count", boardRepository.searchByCtntAndWriterNormal(searchTxt).size()); //일반 내용+작성자 검색 게시물 갯수
+                }
+            }
+        } else {
+            if (category1 == 0) {
+                if (category2 == 0) {
+                    model.addAttribute("list", boardRepository.searchByAll(searchTxt, startDate, endDate, pageable)); //전체 날짜 검색 게시물
+                    model.addAttribute("count", boardRepository.searchByAll(searchTxt, startDate, endDate).size()); //전체 날짜 검색 게시물 갯수
+                } else if (category2 == 1) {
+                    model.addAttribute("list", boardRepository.searchByTitle(searchTxt, startDate, endDate, pageable)); //제목 날짜 검색 게시물
+                    model.addAttribute("count", boardRepository.searchByTitle(searchTxt, startDate, endDate).size()); //제목 날짜 검색 게시물 갯수
+                } else if (category2 == 2) {
+                    model.addAttribute("list", boardRepository.searchByCtnt(searchTxt, startDate, endDate, pageable)); //내용 날짜 검색 게시물
+                    model.addAttribute("count", boardRepository.searchByCtnt(searchTxt, startDate, endDate).size()); //내용 날짜 검색 게시물 갯수
+                } else if (category2 == 3) {
+                    model.addAttribute("list", boardRepository.searchByWriter(searchTxt, startDate, endDate, pageable)); //작성자 날짜 검색 게시물
+                    model.addAttribute("count", boardRepository.searchByWriter(searchTxt, startDate, endDate).size()); //작성자 날짜 검색 게시물 갯수
+                } else if (category2 == 4) {
+                    model.addAttribute("list", boardRepository.searchByTitleAndCtnt(searchTxt, startDate, endDate, pageable)); //제목+내용 날짜 검색 게시물
+                    model.addAttribute("count", boardRepository.searchByTitleAndCtnt(searchTxt, startDate, endDate).size()); //제목+내용 날짜 검색 게시물 갯수
+                } else if (category2 == 5) {
+                    model.addAttribute("list", boardRepository.searchByTitleAndWriter(searchTxt, startDate, endDate, pageable)); //제목+작성자 날짜 검색 게시물
+                    model.addAttribute("count", boardRepository.searchByTitleAndWriter(searchTxt, startDate, endDate).size()); //제목+작성자 날짜 검색 게시물 갯수
+                } else if (category2 == 6) {
+                    model.addAttribute("list", boardRepository.searchByCtntAndWriter(searchTxt, startDate, endDate, pageable)); //내용+작성자 날짜 검색 게시물
+                    model.addAttribute("count", boardRepository.searchByCtntAndWriter(searchTxt, startDate, endDate).size()); //내용+작성자 날짜 검색 게시물 갯수
+                }
+            } else if (category1 == 1) {
+                if (category2 == 0) {
+                    model.addAttribute("list", boardRepository.searchByAllFix(searchTxt, startDate, endDate, pageable)); //공지사항 날짜 검색 게시물
+                    model.addAttribute("count", boardRepository.searchByAllFix(searchTxt, startDate, endDate).size()); //공지사항 날짜 검색 게시물 갯수
+                } else if (category2 == 1) {
+                    model.addAttribute("list", boardRepository.searchByTitleFix(searchTxt, startDate, endDate, pageable)); //공지사항 제목 날짜 검색 게시물
+                    model.addAttribute("count", boardRepository.searchByTitleFix(searchTxt, startDate, endDate).size()); //공지사항 제목 날짜 검색 게시물 갯수
+                } else if (category2 == 2) {
+                    model.addAttribute("list", boardRepository.searchByCtntFix(searchTxt, startDate, endDate, pageable)); //공지사항 내용 날짜 검색 게시물
+                    model.addAttribute("count", boardRepository.searchByCtntFix(searchTxt, startDate, endDate).size()); //공지사항 내용 날짜 검색 게시물 갯수
+                } else if (category2 == 3) {
+                    model.addAttribute("list", boardRepository.searchByWriterFix(searchTxt, startDate, endDate, pageable)); //공지사항 작성자 날짜 검색 게시물
+                    model.addAttribute("count", boardRepository.searchByWriterFix(searchTxt, startDate, endDate).size()); //공지사항 작성자 날짜 검색 게시물 갯수
+                } else if (category2 == 4) {
+                    model.addAttribute("list", boardRepository.searchByTitleAndCtntFix(searchTxt, startDate, endDate, pageable)); //공지사항 제목+내용 날짜 검색 게시물
+                    model.addAttribute("count", boardRepository.searchByTitleAndCtntFix(searchTxt, startDate, endDate).size()); //공지사항 제목+내용 날짜 검색 게시물 갯수
+                } else if (category2 == 5) {
+                    model.addAttribute("list", boardRepository.searchByTitleAndWriterFix(searchTxt, startDate, endDate, pageable)); //공지사항 제목+작성자 날짜 검색 게시물
+                    model.addAttribute("count", boardRepository.searchByTitleAndWriterFix(searchTxt, startDate, endDate).size()); //공지사항 제목+작성자 날짜 검색 게시물 갯수
+                } else if (category2 == 6) {
+                    model.addAttribute("list", boardRepository.searchByCtntAndWriterFix(searchTxt, startDate, endDate, pageable)); //공지사항 내용+작성자 날짜 검색 게시물
+                    model.addAttribute("count", boardRepository.searchByCtntAndWriterFix(searchTxt, startDate, endDate).size()); //공지사항 내용+작성자 날짜 검색 게시물 갯수
+                }
+            } else {
+                if (category2 == 0) {
+                    model.addAttribute("list", boardRepository.searchByAllNormal(searchTxt, startDate, endDate, pageable)); //일반 날짜 검색 게시물
+                    model.addAttribute("count", boardRepository.searchByAllNormal(searchTxt, startDate, endDate).size()); //일반 날짜 검색 게시물 갯수
+                } else if (category2 == 1) {
+                    model.addAttribute("list", boardRepository.searchByTitleNormal(searchTxt, startDate, endDate, pageable)); //일반 제목 날짜 검색 게시물
+                    model.addAttribute("count", boardRepository.searchByTitleNormal(searchTxt, startDate, endDate).size()); //일반 제목 날짜 검색 게시물 갯수
+                } else if (category2 == 2) {
+                    model.addAttribute("list", boardRepository.searchByCtntNormal(searchTxt, startDate, endDate, pageable)); //일반 내용 날짜 검색 게시물
+                    model.addAttribute("count", boardRepository.searchByCtntNormal(searchTxt, startDate, endDate).size()); //일반 내용 날짜 검색 게시물 갯수
+                } else if (category2 == 3) {
+                    model.addAttribute("list", boardRepository.searchByWriterNormal(searchTxt, startDate, endDate, pageable)); //일반 작성자 날짜 검색 게시물
+                    model.addAttribute("count", boardRepository.searchByWriterNormal(searchTxt, startDate, endDate).size()); //일반 작성자 날짜 검색 게시물 갯수
+                } else if (category2 == 4) {
+                    model.addAttribute("list", boardRepository.searchByTitleAndCtntNormal(searchTxt, startDate, endDate, pageable)); //일반 제목+내용 날짜 검색 게시물
+                    model.addAttribute("count", boardRepository.searchByTitleAndCtntNormal(searchTxt, startDate, endDate).size()); //일반 제목+내용 날짜 검색 게시물 갯수
+                } else if (category2 == 5) {
+                    model.addAttribute("list", boardRepository.searchByTitleAndWriterNormal(searchTxt, startDate, endDate, pageable)); //일반 제목+작성자 날짜 검색 게시물
+                    model.addAttribute("count", boardRepository.searchByTitleAndWriterNormal(searchTxt, startDate, endDate).size()); //일반 제목+작성자 날짜 검색 게시물 갯수
+                } else if (category2 == 6) {
+                    model.addAttribute("list", boardRepository.searchByCtntAndWriterNormal(searchTxt, startDate, endDate, pageable)); //일반 내용+작성자 날짜 검색 게시물
+                    model.addAttribute("count", boardRepository.searchByCtntAndWriterNormal(searchTxt, startDate, endDate).size()); //일반 내용+작성자 날짜 검색 게시물 갯수
+                }
+
+            }
         }
-        System.out.println("검색 된 것: " + model.getAttribute("list"));
+
+        System.out.println("검색 된 것: " + model.getAttribute("count"));
 
         return "/board/board";
     }

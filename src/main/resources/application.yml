@@ -28,6 +28,7 @@ spring:
         default-page-size: 10
 
   servlet:
+
     multipart:
       location: /srv/base-proj-boot/upload
       maxFileSize: 100MB

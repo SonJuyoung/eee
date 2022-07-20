@@ -24,7 +24,8 @@ function getImgFile(e) {
         }
     })
     //파일 선택 x -> 리턴
-    if (img.length = 0) {
+    if (img.length === 0) {
+        console.log("프로필 사진 없음")
         return;
     }
 
