@@ -38,6 +38,8 @@ public class UserService {
         entity.setMail(dto.getMail());
         entity.setName(dto.getName());
         entity.setPhone(dto.getPhone());
+        entity.setPostcode(dto.getPostcode());
+        entity.setAddress(dto.getAddress());
         if (dto.getIuser()!=0) {
             entity.setIuser(dto.getIuser());
         }

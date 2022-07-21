@@ -4,6 +4,10 @@ let pw = document.querySelector("#pw");
 let pwchk = document.querySelector("#pwchk");
 let phone = document.querySelector("#phone");
 let mail = document.querySelector("#mail");
+let postcode = document.querySelector(".postcode");
+let address = document.querySelector(".main-address");
+let detailAddress = document.querySelector(".detail-address");
+let extraAddress = document.querySelector(".extra-address");
 
 let idchk = document.querySelector(".idchk");
 
@@ -11,6 +15,12 @@ let joinBtn = document.querySelector(".join-bottom > button");
 const url = new URL(location.href).href;
 //회원가입 validation
 joinBtn.addEventListener("click", (e)=> {
+
+    let postcodeVal = postcode.value;
+    let addressVal = address.value;
+    let detailAddressVal = detailAddress.value;
+    let extraAddressVal = extraAddress.value;
+
     if (url.includes("myinfo")) {
         let iuser = document.querySelector("#id").dataset.set;
 
@@ -75,6 +85,11 @@ joinBtn.addEventListener("click", (e)=> {
             return;
         }
 
+        if (addressVal === '') {
+            alert("주소를 입력해주세요.");
+            return;
+        }
+
         fetch("http://localhost:9000/join", {
             method: "POST",
             headers: {
@@ -85,7 +100,9 @@ joinBtn.addEventListener("click", (e)=> {
                 "name": nm.value,
                 "pw": pw.value,
                 "mail": mail.value,
-                "phone": phone.value
+                "phone": phone.value,
+                "postcode": postcodeVal,
+                "address" : addressVal + detailAddressVal + extraAddressVal
             }),
         }).then(res => {
             console.log(res);

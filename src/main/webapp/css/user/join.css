@@ -78,3 +78,8 @@ input {
 .idchk {
     height: 50%;
 }
+
+.address {
+    margin: 10px 0px;
+    width: 50vw!important;
+}

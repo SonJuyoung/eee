@@ -12,4 +12,6 @@ public class UserDto {
     private String phone;
     private String img;
     private int iuser;
+    private int postcode;
+    private String address;
 }
