@@ -1,6 +1,10 @@
 server:
   servlet:
     context-path: /
+    encoding:
+      charset: utf-8
+      enabled: true
+      force: true
   port: 9000
 
 spring:
