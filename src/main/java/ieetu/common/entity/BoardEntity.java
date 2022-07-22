@@ -1,11 +1,14 @@
 package ieetu.common.entity;
 
-import lombok.Data;
+import lombok.Builder;
+import lombok.Getter;
+
 import javax.persistence.*;
 
 @Entity
 @Table(name = "board")
-@Data
+@Getter
+@Builder
 public class BoardEntity {
 
     @Id
@@ -25,4 +28,17 @@ public class BoardEntity {
     @ManyToOne
     @JoinColumn(name = "iuser")
     private UserEntity iuser;
+
+    public BoardEntity() {
+    }
+
+    public void changeIboard(int iboard) {
+        this.iboard = iboard;
+    }
+
+    public void changeBoard(String title, String ctnt, int fix) {
+        this.title = title;
+        this.ctnt = ctnt;
+        this.fix = fix;
+    }
 }

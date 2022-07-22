@@ -2,11 +2,13 @@ package ieetu.common.user;
 
 import ieetu.common.dto.UserDto;
 import ieetu.common.entity.UserEntity;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.stringtemplate.v4.ST;
 
+import javax.annotation.Resource;
 import javax.persistence.Entity;
 import javax.servlet.http.HttpSession;
 import javax.transaction.Transactional;
@@ -14,17 +16,14 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Service
+@RequiredArgsConstructor
 public class UserService {
 
-    @Autowired
-    private BCryptPasswordEncoder encoder;
-    @Autowired
-    private UserRepository userRepository;
+    private final BCryptPasswordEncoder encoder;
+    private final UserRepository userRepository;
 
     @Transactional //jpa로 DB변경시 붙여줌. 원자성, 일관성, 격리성, 지속성 유지를 위해서
     public int join(UserDto dto) {
-
-        UserEntity entity = new UserEntity();
 
         //비밀번호 암호화
         String rawPassword = dto.getPw();
@@ -32,16 +31,26 @@ public class UserService {
 //        String rawId = dto.getId();
 //        String encId = encoder.encode(rawId);
 
+        UserEntity entity = UserEntity.builder()
+                .uid(dto.getId())
+                .upw(encPassword)
+                .mail(dto.getMail())
+                .name(dto.getName())
+                .phone(dto.getPhone())
+                .postcode(dto.getPostcode())
+                .address(dto.getAddress())
+                .build();
+
 //        entity.setUid(encId);
-        entity.setUid(dto.getId());
-        entity.setUpw(encPassword);
-        entity.setMail(dto.getMail());
-        entity.setName(dto.getName());
-        entity.setPhone(dto.getPhone());
-        entity.setPostcode(dto.getPostcode());
-        entity.setAddress(dto.getAddress());
-        if (dto.getIuser()!=0) {
-            entity.setIuser(dto.getIuser());
+//        entity.setUid(dto.getId());
+//        entity.setUpw(encPassword);
+//        entity.setMail(dto.getMail());
+//        entity.setName(dto.getName());
+//        entity.setPhone(dto.getPhone());
+//        entity.setPostcode(dto.getPostcode());
+//        entity.setAddress(dto.getAddress());
+        if (dto.getIuser() != 0) {
+            entity.changeIuser(dto.getIuser());
         }
 
         try {
@@ -98,9 +107,9 @@ public class UserService {
 
         //비밀번호 변경 성공 시 1리턴 실패시 0리턴
         try {
-            entity.setUpw(encPassword);
+            entity.changePw(encPassword);
 
-            userRepository.save(entity);
+//            userRepository.save(entity);
 
             return 1;
         } catch (Exception e) {
