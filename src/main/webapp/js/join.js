@@ -5,7 +5,7 @@ let pwchk = document.querySelector("#pwchk");
 let phone = document.querySelector("#phone");
 let mail = document.querySelector("#mail");
 let postcode = document.querySelector(".postcode");
-let address = document.querySelector(".main-address");
+let addressElem = document.querySelector(".main-address");
 let detailAddress = document.querySelector(".detail-address");
 let extraAddress = document.querySelector(".extra-address");
 
@@ -17,9 +17,12 @@ const url = new URL(location.href).href;
 joinBtn.addEventListener("click", (e)=> {
 
     let postcodeVal = postcode.value;
-    let addressVal = address.value;
+    let addressVal = addressElem.value;
     let detailAddressVal = detailAddress.value;
     let extraAddressVal = extraAddress.value;
+
+    let address = addressVal + " " +detailAddressVal + extraAddressVal;
+    console.log(address);
 
     if (url.includes("myinfo")) {
         let iuser = document.querySelector("#id").dataset.set;
@@ -34,6 +37,11 @@ joinBtn.addEventListener("click", (e)=> {
             return;
         }
 
+        if (addressVal === '') {
+            alert("주소를 입력해주세요.");
+            return;
+        }
+
         fetch("http://localhost:9000/join", {
             method: "POST",
             headers: {
@@ -45,7 +53,9 @@ joinBtn.addEventListener("click", (e)=> {
                 "name": nm.value,
                 "pw": pw.value,
                 "mail": mail.value,
-                "phone": phone.value
+                "phone": phone.value,
+                "postcode": postcodeVal,
+                "address" : address
             }),
         }).then(res => {
             console.log(res);
@@ -102,7 +112,7 @@ joinBtn.addEventListener("click", (e)=> {
                 "mail": mail.value,
                 "phone": phone.value,
                 "postcode": postcodeVal,
-                "address" : addressVal + detailAddressVal + extraAddressVal
+                "address" : address
             }),
         }).then(res => {
             console.log(res);

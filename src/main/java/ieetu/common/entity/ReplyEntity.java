@@ -1,6 +1,8 @@
 package ieetu.common.entity;
 
+import lombok.Builder;
 import lombok.Data;
+import lombok.Getter;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 
@@ -8,7 +10,8 @@ import javax.persistence.*;
 
 @Entity
 @Table(name = "reply")
-@Data
+@Getter
+@Builder
 public class ReplyEntity {
 
     @Id
@@ -30,4 +33,8 @@ public class ReplyEntity {
     private UserEntity iuser;
 
     private String name;
+
+    public ReplyEntity() {
+
+    }
 }
