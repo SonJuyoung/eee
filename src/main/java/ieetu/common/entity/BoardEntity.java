@@ -25,4 +25,6 @@ public class BoardEntity {
     @ManyToOne
     @JoinColumn(name = "iuser")
     private UserEntity iuser;
+
+    private int view;
 }
