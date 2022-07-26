@@ -65,8 +65,7 @@ public class BoardController {
             return "redirect:/login";
         }
 
-        UserEntity entity = new UserEntity();
-        entity.setIuser(authenticationFacade.getLoginUserPk());
+        UserEntity entity = new UserEntity(authenticationFacade.getLoginUserPk());
 
         if (profileImgRepository.findByIuser(entity) != null) {
             System.out.println("파일 : " + profileImgRepository.findByIuser(entity).getFileNm());
@@ -86,15 +85,14 @@ public class BoardController {
 
     //게시판 검색 시 페이지
     @GetMapping("/list/search")
-    public String boardSearch(Model model, @RequestParam int category1, int category2, String searchTxt, @Nullable String startDate, @Nullable String endDate, Pageable pageable) {
+    public String boardSearch(Model model, @RequestParam int category1, @RequestParam int category2, @RequestParam String searchTxt, @Nullable String startDate, @Nullable String endDate, Pageable pageable) {
 
         //로그인 유저 정보 없을 시 로그인 페이지로
         if (authenticationFacade.getLoginUserPk() < 1) {
             return "redirect:/login";
         }
 
-        UserEntity entity = new UserEntity();
-        entity.setIuser(authenticationFacade.getLoginUserPk());
+        UserEntity entity = new UserEntity(authenticationFacade.getLoginUserPk());
 
         if (profileImgRepository.findByIuser(entity) != null) {
             System.out.println("파일 : " + profileImgRepository.findByIuser(entity).getFileNm());
@@ -106,152 +104,22 @@ public class BoardController {
         System.out.println("리스트 : " + boardRepository.findAll(pageable));
         model.addAttribute("fixList", boardRepository.fixList()); //공지사항 게시물
 
-        if (startDate == null || endDate == null) {
-            if (category1 == 0) {
-                if (category2 == 0) {
-                    model.addAttribute("list", boardRepository.searchByAll(searchTxt, pageable)); //전체 검색 게시물
-                    model.addAttribute("count", boardRepository.searchByAll(searchTxt).size()); //전체 검색 게시물 갯수
-                } else if (category2 == 1) {
-                    model.addAttribute("list", boardRepository.searchByTitle(searchTxt, pageable)); //제목 검색 게시물
-                    model.addAttribute("count", boardRepository.searchByTitle(searchTxt).size()); //제목 검색 게시물 갯수
-                } else if (category2 == 2) {
-                    model.addAttribute("list", boardRepository.searchByCtnt(searchTxt, pageable)); //내용 검색 게시물
-                    model.addAttribute("count", boardRepository.searchByCtnt(searchTxt).size()); //내용 검색 게시물 갯수
-                } else if (category2 == 3) {
-                    model.addAttribute("list", boardRepository.searchByWriter(searchTxt, pageable)); //작성자 검색 게시물
-                    model.addAttribute("count", boardRepository.searchByWriter(searchTxt).size()); //작성자 검색 게시물 갯수
-                } else if (category2 == 4) {
-                    model.addAttribute("list", boardRepository.searchByTitleAndCtnt(searchTxt, pageable)); //제목+내용 검색 게시물
-                    model.addAttribute("count", boardRepository.searchByTitleAndCtnt(searchTxt).size()); //제목+내용 검색 게시물 갯수
-                } else if (category2 == 5) {
-                    model.addAttribute("list", boardRepository.searchByTitleAndWriter(searchTxt, pageable)); //제목+작성자 검색 게시물
-                    model.addAttribute("count", boardRepository.searchByTitleAndWriter(searchTxt).size()); //제목+작성자 검색 게시물 갯수
-                } else if (category2 == 6) {
-                    model.addAttribute("list", boardRepository.searchByCtntAndWriter(searchTxt, pageable)); //내용+작성자 검색 게시물
-                    model.addAttribute("count", boardRepository.searchByCtntAndWriter(searchTxt).size()); //내용+작성자 검색 게시물 갯수
-                }
-            } else if (category1 == 1) {
-                if (category2 == 0) {
-                    model.addAttribute("list", boardRepository.searchByAllFix(searchTxt, pageable)); //공지사항 검색 게시물
-                    model.addAttribute("count", boardRepository.searchByAllFix(searchTxt).size()); //공지사항 검색 게시물 갯수
-                } else if (category2 == 1) {
-                    model.addAttribute("list", boardRepository.searchByTitleFix(searchTxt, pageable)); //공지사항 제목 검색 게시물
-                    model.addAttribute("count", boardRepository.searchByTitleFix(searchTxt).size()); //공지사항 제목 검색 게시물 갯수
-                } else if (category2 == 2) {
-                    model.addAttribute("list", boardRepository.searchByCtntFix(searchTxt, pageable)); //공지사항 내용 검색 게시물
-                    model.addAttribute("count", boardRepository.searchByCtntFix(searchTxt).size()); //공지사항 내용 검색 게시물 갯수
-                } else if (category2 == 3) {
-                    model.addAttribute("list", boardRepository.searchByWriterFix(searchTxt, pageable)); //공지사항 작성자 검색 게시물
-                    model.addAttribute("count", boardRepository.searchByWriterFix(searchTxt).size()); //공지사항 작성자 검색 게시물 갯수
-                } else if (category2 == 4) {
-                    model.addAttribute("list", boardRepository.searchByTitleAndCtntFix(searchTxt, pageable)); //공지사항 제목+내용 검색 게시물
-                    model.addAttribute("count", boardRepository.searchByTitleAndCtntFix(searchTxt).size()); //공지사항 제목+내용 검색 게시물 갯수
-                } else if (category2 == 5) {
-                    model.addAttribute("list", boardRepository.searchByTitleAndWriterFix(searchTxt, pageable)); //공지사항 제목+작성자 검색 게시물
-                    model.addAttribute("count", boardRepository.searchByTitleAndWriterFix(searchTxt).size()); //공지사항 제목+작성자 검색 게시물 갯수
-                } else if (category2 == 6) {
-                    model.addAttribute("list", boardRepository.searchByCtntAndWriterFix(searchTxt, pageable)); //공지사항 내용+작성자 검색 게시물
-                    model.addAttribute("count", boardRepository.searchByCtntAndWriterFix(searchTxt).size()); //공지사항 내용+작성자 검색 게시물 갯수
-                }
-            } else {
-                if (category2 == 0) {
-                    model.addAttribute("list", boardRepository.searchByAllNormal(searchTxt, pageable)); //일반 검색 게시물
-                    model.addAttribute("count", boardRepository.searchByAllNormal(searchTxt).size()); //일반 검색 게시물 갯수
-                } else if (category2 == 1) {
-                    model.addAttribute("list", boardRepository.searchByTitleNormal(searchTxt, pageable)); //일반 제목 검색 게시물
-                    model.addAttribute("count", boardRepository.searchByTitleNormal(searchTxt).size()); //일반 제목 검색 게시물 갯수
-                } else if (category2 == 2) {
-                    model.addAttribute("list", boardRepository.searchByCtntNormal(searchTxt, pageable)); //일반 내용 검색 게시물
-                    model.addAttribute("count", boardRepository.searchByCtntNormal(searchTxt).size()); //일반 내용 검색 게시물 갯수
-                } else if (category2 == 3) {
-                    model.addAttribute("list", boardRepository.searchByWriterNormal(searchTxt, pageable)); //일반 작성자 검색 게시물
-                    model.addAttribute("count", boardRepository.searchByWriterNormal(searchTxt).size()); //일반 작성자 검색 게시물 갯수
-                } else if (category2 == 4) {
-                    model.addAttribute("list", boardRepository.searchByTitleAndCtntNormal(searchTxt, pageable)); //일반 제목+내용 검색 게시물
-                    model.addAttribute("count", boardRepository.searchByTitleAndCtntNormal(searchTxt).size()); //일반 제목+내용 검색 게시물 갯수
-                } else if (category2 == 5) {
-                    model.addAttribute("list", boardRepository.searchByTitleAndWriterNormal(searchTxt, pageable)); //일반 제목+작성자 검색 게시물
-                    model.addAttribute("count", boardRepository.searchByTitleAndWriterNormal(searchTxt).size()); //일반 제목+작성자 검색 게시물 갯수
-                } else if (category2 == 6) {
-                    model.addAttribute("list", boardRepository.searchByCtntAndWriterNormal(searchTxt, pageable)); //일반 내용+작성자 검색 게시물
-                    model.addAttribute("count", boardRepository.searchByCtntAndWriterNormal(searchTxt).size()); //일반 내용+작성자 검색 게시물 갯수
-                }
-            }
-        } else {
-            if (category1 == 0) {
-                if (category2 == 0) {
-                    model.addAttribute("list", boardRepository.searchByAll(searchTxt, startDate, endDate, pageable)); //전체 날짜 검색 게시물
-                    model.addAttribute("count", boardRepository.searchByAll(searchTxt, startDate, endDate).size()); //전체 날짜 검색 게시물 갯수
-                } else if (category2 == 1) {
-                    model.addAttribute("list", boardRepository.searchByTitle(searchTxt, startDate, endDate, pageable)); //제목 날짜 검색 게시물
-                    model.addAttribute("count", boardRepository.searchByTitle(searchTxt, startDate, endDate).size()); //제목 날짜 검색 게시물 갯수
-                } else if (category2 == 2) {
-                    model.addAttribute("list", boardRepository.searchByCtnt(searchTxt, startDate, endDate, pageable)); //내용 날짜 검색 게시물
-                    model.addAttribute("count", boardRepository.searchByCtnt(searchTxt, startDate, endDate).size()); //내용 날짜 검색 게시물 갯수
-                } else if (category2 == 3) {
-                    model.addAttribute("list", boardRepository.searchByWriter(searchTxt, startDate, endDate, pageable)); //작성자 날짜 검색 게시물
-                    model.addAttribute("count", boardRepository.searchByWriter(searchTxt, startDate, endDate).size()); //작성자 날짜 검색 게시물 갯수
-                } else if (category2 == 4) {
-                    model.addAttribute("list", boardRepository.searchByTitleAndCtnt(searchTxt, startDate, endDate, pageable)); //제목+내용 날짜 검색 게시물
-                    model.addAttribute("count", boardRepository.searchByTitleAndCtnt(searchTxt, startDate, endDate).size()); //제목+내용 날짜 검색 게시물 갯수
-                } else if (category2 == 5) {
-                    model.addAttribute("list", boardRepository.searchByTitleAndWriter(searchTxt, startDate, endDate, pageable)); //제목+작성자 날짜 검색 게시물
-                    model.addAttribute("count", boardRepository.searchByTitleAndWriter(searchTxt, startDate, endDate).size()); //제목+작성자 날짜 검색 게시물 갯수
-                } else if (category2 == 6) {
-                    model.addAttribute("list", boardRepository.searchByCtntAndWriter(searchTxt, startDate, endDate, pageable)); //내용+작성자 날짜 검색 게시물
-                    model.addAttribute("count", boardRepository.searchByCtntAndWriter(searchTxt, startDate, endDate).size()); //내용+작성자 날짜 검색 게시물 갯수
-                }
-            } else if (category1 == 1) {
-                if (category2 == 0) {
-                    model.addAttribute("list", boardRepository.searchByAllFix(searchTxt, startDate, endDate, pageable)); //공지사항 날짜 검색 게시물
-                    model.addAttribute("count", boardRepository.searchByAllFix(searchTxt, startDate, endDate).size()); //공지사항 날짜 검색 게시물 갯수
-                } else if (category2 == 1) {
-                    model.addAttribute("list", boardRepository.searchByTitleFix(searchTxt, startDate, endDate, pageable)); //공지사항 제목 날짜 검색 게시물
-                    model.addAttribute("count", boardRepository.searchByTitleFix(searchTxt, startDate, endDate).size()); //공지사항 제목 날짜 검색 게시물 갯수
-                } else if (category2 == 2) {
-                    model.addAttribute("list", boardRepository.searchByCtntFix(searchTxt, startDate, endDate, pageable)); //공지사항 내용 날짜 검색 게시물
-                    model.addAttribute("count", boardRepository.searchByCtntFix(searchTxt, startDate, endDate).size()); //공지사항 내용 날짜 검색 게시물 갯수
-                } else if (category2 == 3) {
-                    model.addAttribute("list", boardRepository.searchByWriterFix(searchTxt, startDate, endDate, pageable)); //공지사항 작성자 날짜 검색 게시물
-                    model.addAttribute("count", boardRepository.searchByWriterFix(searchTxt, startDate, endDate).size()); //공지사항 작성자 날짜 검색 게시물 갯수
-                } else if (category2 == 4) {
-                    model.addAttribute("list", boardRepository.searchByTitleAndCtntFix(searchTxt, startDate, endDate, pageable)); //공지사항 제목+내용 날짜 검색 게시물
-                    model.addAttribute("count", boardRepository.searchByTitleAndCtntFix(searchTxt, startDate, endDate).size()); //공지사항 제목+내용 날짜 검색 게시물 갯수
-                } else if (category2 == 5) {
-                    model.addAttribute("list", boardRepository.searchByTitleAndWriterFix(searchTxt, startDate, endDate, pageable)); //공지사항 제목+작성자 날짜 검색 게시물
-                    model.addAttribute("count", boardRepository.searchByTitleAndWriterFix(searchTxt, startDate, endDate).size()); //공지사항 제목+작성자 날짜 검색 게시물 갯수
-                } else if (category2 == 6) {
-                    model.addAttribute("list", boardRepository.searchByCtntAndWriterFix(searchTxt, startDate, endDate, pageable)); //공지사항 내용+작성자 날짜 검색 게시물
-                    model.addAttribute("count", boardRepository.searchByCtntAndWriterFix(searchTxt, startDate, endDate).size()); //공지사항 내용+작성자 날짜 검색 게시물 갯수
-                }
-            } else {
-                if (category2 == 0) {
-                    model.addAttribute("list", boardRepository.searchByAllNormal(searchTxt, startDate, endDate, pageable)); //일반 날짜 검색 게시물
-                    model.addAttribute("count", boardRepository.searchByAllNormal(searchTxt, startDate, endDate).size()); //일반 날짜 검색 게시물 갯수
-                } else if (category2 == 1) {
-                    model.addAttribute("list", boardRepository.searchByTitleNormal(searchTxt, startDate, endDate, pageable)); //일반 제목 날짜 검색 게시물
-                    model.addAttribute("count", boardRepository.searchByTitleNormal(searchTxt, startDate, endDate).size()); //일반 제목 날짜 검색 게시물 갯수
-                } else if (category2 == 2) {
-                    model.addAttribute("list", boardRepository.searchByCtntNormal(searchTxt, startDate, endDate, pageable)); //일반 내용 날짜 검색 게시물
-                    model.addAttribute("count", boardRepository.searchByCtntNormal(searchTxt, startDate, endDate).size()); //일반 내용 날짜 검색 게시물 갯수
-                } else if (category2 == 3) {
-                    model.addAttribute("list", boardRepository.searchByWriterNormal(searchTxt, startDate, endDate, pageable)); //일반 작성자 날짜 검색 게시물
-                    model.addAttribute("count", boardRepository.searchByWriterNormal(searchTxt, startDate, endDate).size()); //일반 작성자 날짜 검색 게시물 갯수
-                } else if (category2 == 4) {
-                    model.addAttribute("list", boardRepository.searchByTitleAndCtntNormal(searchTxt, startDate, endDate, pageable)); //일반 제목+내용 날짜 검색 게시물
-                    model.addAttribute("count", boardRepository.searchByTitleAndCtntNormal(searchTxt, startDate, endDate).size()); //일반 제목+내용 날짜 검색 게시물 갯수
-                } else if (category2 == 5) {
-                    model.addAttribute("list", boardRepository.searchByTitleAndWriterNormal(searchTxt, startDate, endDate, pageable)); //일반 제목+작성자 날짜 검색 게시물
-                    model.addAttribute("count", boardRepository.searchByTitleAndWriterNormal(searchTxt, startDate, endDate).size()); //일반 제목+작성자 날짜 검색 게시물 갯수
-                } else if (category2 == 6) {
-                    model.addAttribute("list", boardRepository.searchByCtntAndWriterNormal(searchTxt, startDate, endDate, pageable)); //일반 내용+작성자 날짜 검색 게시물
-                    model.addAttribute("count", boardRepository.searchByCtntAndWriterNormal(searchTxt, startDate, endDate).size()); //일반 내용+작성자 날짜 검색 게시물 갯수
-                }
+        int fix = -1;
+        String title = null;
+        String ctnt = null;
+        String writer = null;
 
-            }
+        if (category1 == 1) {
+            fix = 1;
+        } else if (category1 == 2){
+            fix = 0;
         }
 
-        System.out.println("검색 된 것: " + model.getAttribute("count"));
+        model.addAttribute("list", boardRepository.search(searchTxt, fix, ctnt, writer, title, startDate, endDate, pageable)); //검색 게시물
+        model.addAttribute("count", boardRepository.search(searchTxt, fix, ctnt, writer, title, startDate, endDate).size()); //검색 게시물 갯수
+
+
+        System.out.println("검색 된 것: " + model.getAttribute("list"));
 
         return "/board/board";
     }
@@ -274,19 +142,18 @@ public class BoardController {
     @ResponseBody
     public int writePost(@RequestBody BoardDto dto) {
 
-        UserEntity userEntity = new UserEntity();
-        userEntity.setIuser(dto.getIuser());
+        UserEntity userEntity = new UserEntity(authenticationFacade.getLoginUserPk());
 
         //dto를 통해 ajax로 받아온 데이터를 BoardEntity 객체에 set
 
-        BoardEntity entity = new BoardEntity();
-
-        entity.setTitle(dto.getTitle());
-        entity.setCtnt(dto.getCtnt());
-        entity.setWriter(dto.getWriter());
-        entity.setRdt(dto.getRdt());
-        entity.setFix(dto.getFix());
-        entity.setIuser(userEntity);
+        BoardEntity entity = BoardEntity.builder()
+                .title(dto.getTitle())
+                .ctnt(dto.getCtnt())
+                .writer(dto.getWriter())
+                .rdt(dto.getRdt())
+                .fix(dto.getFix())
+                .iuser(userEntity)
+                .build();
 
         System.out.println(entity);
 
@@ -297,8 +164,7 @@ public class BoardController {
     @GetMapping("/mod")
     public String mod(Model model, @RequestParam int iboard) {
 
-        BoardEntity boardEntity = new BoardEntity();
-        boardEntity.setIboard(iboard);
+        BoardEntity boardEntity = new BoardEntity(iboard);
 
         //로그인 유저 정보 없을 시 로그인 페이지로
         if (authenticationFacade.getLoginUserPk() < 1) {
@@ -327,20 +193,18 @@ public class BoardController {
     @ResponseBody
     public int modPost(@RequestBody BoardDto dto) {
 
-        UserEntity userEntity = new UserEntity();
-        userEntity.setIuser(authenticationFacade.getLoginUserPk());
+        UserEntity userEntity = new UserEntity(authenticationFacade.getLoginUserPk());
 
         //dto를 통해 ajax로 받아온 데이터를 BoardEntity 객체에 set
 
-        BoardEntity entity = new BoardEntity();
-
-        entity.setIboard(dto.getIboard());
-        entity.setTitle(dto.getTitle());
-        entity.setCtnt(dto.getCtnt());
-        entity.setWriter(dto.getWriter());
-        entity.setRdt(dto.getRdt());
-        entity.setFix(dto.getFix());
-        entity.setIuser(userEntity);
+        BoardEntity entity = BoardEntity.builder()
+                .title(dto.getTitle())
+                .ctnt(dto.getCtnt())
+                .writer(dto.getWriter())
+                .rdt(dto.getRdt())
+                .fix(dto.getFix())
+                .iuser(userEntity)
+                .build();
 
         System.out.println(entity);
 
@@ -351,8 +215,7 @@ public class BoardController {
     @GetMapping("/detail")
     public String detail(@RequestParam int iboard, Model model, HttpServletResponse response, HttpServletRequest request) {
 
-        BoardEntity boardEntity = new BoardEntity();
-        boardEntity.setIboard(iboard);
+        BoardEntity boardEntity = new BoardEntity(iboard);
 
         //로그인 유저 정보 없을 시 로그인 페이지로
         if (authenticationFacade.getLoginUserPk() < 1) {
@@ -403,7 +266,7 @@ public class BoardController {
             }
         } else {
             boardService.viewUp(iboard);
-            Cookie newCookie = new Cookie("postView","[" + iboard + "]");
+            Cookie newCookie = new Cookie("postView", "[" + iboard + "]");
             newCookie.setPath("/");
             newCookie.setMaxAge(60 * 60 * 24);
             response.addCookie(newCookie);
@@ -455,8 +318,7 @@ public class BoardController {
 
             //DB에서 첨부파일명 가져와서 실제 경로에 파일 삭제
 
-            BoardEntity entity = new BoardEntity();
-            entity.setIboard(iboard);
+            BoardEntity entity = new BoardEntity(iboard);
 
             List<FileEntity> list = fileRepository.findAllByIboard(entity);
 
@@ -556,8 +418,7 @@ public class BoardController {
             }
         }
 
-        BoardEntity boardEntity = new BoardEntity();
-        boardEntity.setIboard(iboard);
+        BoardEntity boardEntity = new BoardEntity(iboard);
 
         System.out.println("게시물에 있는 파일 수 : " + fileRepository.findAllByIboard(boardEntity));
         //파일 첨부가 있는 수정일 때, DB에 기존 데이터 삭제 후 새로운 파일 첨부
@@ -586,18 +447,17 @@ public class BoardController {
 
         String uploadFolder = "C:\\upload";
 
-        FileEntity entity = new FileEntity();
         System.out.println("저장할 파일 이름 : " + dto.getFileNm());
         String fileNm = dto.getFileNm().substring(0, dto.getFileNm().lastIndexOf("."));
         String ext = dto.getFileNm().substring(dto.getFileNm().lastIndexOf("."));
         System.out.println("파일 이름 : " + fileNm);
         System.out.println("확장자 : " + ext);
 
-        BoardEntity boardEntity = new BoardEntity();
-        boardEntity.setIboard(dto.getIboard());
+        BoardEntity boardEntity = new BoardEntity(dto.getIboard());
 
-        entity.setIboard(boardEntity);
-        entity.setFileNm(uploadFolder + "\\" + dto.getUploadPath() + "\\" + dto.getUuid() + "_" + fileNm + ext);
+        FileEntity entity = new FileEntity(boardEntity, uploadFolder + "\\" + dto.getUploadPath() + "\\" + dto.getUuid() + "_" + fileNm + ext);
+//        entity.setIboard(boardEntity);
+//        entity.setFileNm(uploadFolder + "\\" + dto.getUploadPath() + "\\" + dto.getUuid() + "_" + fileNm + ext);
 
         System.out.println("파일 데이터 : " + entity);
 
@@ -646,8 +506,7 @@ public class BoardController {
         }
 
         //DB에 file 데이터 삭제
-        BoardEntity boardEntity = new BoardEntity();
-        boardEntity.setIboard(dto.getIboard());
+        BoardEntity boardEntity = new BoardEntity(dto.getIboard());
 
         System.out.println("삭제 파일 이름 : " + dto.getFileNm());
         try {
@@ -663,19 +522,16 @@ public class BoardController {
     @ResponseBody
     public int reply(@RequestBody ReplyDto dto) {
 
-        BoardEntity boardEntity = new BoardEntity();
-        boardEntity.setIboard(dto.getIboard());
+        BoardEntity boardEntity = new BoardEntity(dto.getIboard());
 
-        UserEntity userEntity = new UserEntity();
-        userEntity.setIuser(dto.getIuser());
+        UserEntity userEntity = new UserEntity(authenticationFacade.getLoginUserPk());
 
-        ReplyEntity entity = new ReplyEntity();
-
-        //ReplyEntity 객체에 set해서 reply테이블에 insert
-        entity.setIboard(boardEntity);
-        entity.setName(authenticationFacade.getLoginUser().getName());
-        entity.setCtnt(dto.getCtnt());
-        entity.setIuser(userEntity);
+        ReplyEntity entity = ReplyEntity.builder()
+                .iboard(boardEntity)
+                .name(authenticationFacade.getLoginUser().getName())
+                .ctnt(dto.getCtnt())
+                .iuser(userEntity)
+                .build();
 
         if (replyService.replySave(entity) == 1) {
             return 1;

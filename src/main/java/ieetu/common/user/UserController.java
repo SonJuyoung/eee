@@ -129,8 +129,7 @@ public class UserController {
     @GetMapping("/mypage")
     public String myPage(Model model) throws MalformedURLException {
 
-        UserEntity entity = new UserEntity();
-        entity.setIuser(authenticationFacade.getLoginUserPk());
+        UserEntity entity = new UserEntity(authenticationFacade.getLoginUserPk());
 
         model.addAttribute("loginUser", authenticationFacade.getLoginUser());
 
@@ -146,13 +145,12 @@ public class UserController {
     @ResponseBody
     public int profileImg(@RequestBody ProfileImgDto dto) {
 
-        UserEntity userEntity = new UserEntity();
-        userEntity.setIuser(dto.getIuser());
+        UserEntity userEntity = new UserEntity(dto.getIuser());
 
-        ProfileImgEntity entity = new ProfileImgEntity();
-
-        entity.setIuser(userEntity);
-        entity.setFileNm(dto.getFileNm());
+        ProfileImgEntity entity = ProfileImgEntity.builder()
+                .iuser(userEntity)
+                .fileNm(dto.getFileNm())
+                .build();
 
         //프로필 사진이 있으면 삭제
         if (profileImgRepository.findByIuser(userEntity) != null) {
@@ -216,8 +214,7 @@ public class UserController {
     @GetMapping("/myarticle")
     public String myArticle(Model model, Pageable pageable) {
 
-        UserEntity entity = new UserEntity();
-        entity.setIuser(authenticationFacade.getLoginUserPk());
+        UserEntity entity = new UserEntity(authenticationFacade.getLoginUserPk());
 
         if (profileImgRepository.findByIuser(entity)!=null) {
             System.out.println("파일 : " + profileImgRepository.findByIuser(entity).getFileNm());

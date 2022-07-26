@@ -6,7 +6,10 @@ import javax.persistence.*;
 
 @Entity
 @Table(name = "user")
-@Data
+@Getter
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
 public class UserEntity {
 
     @Id
@@ -35,5 +38,13 @@ public class UserEntity {
 
     @Column(nullable = false)
     private int postcode;
+
+    public UserEntity(int iuser) {
+        this.iuser = iuser;
+    }
+
+    public void changeUpw(String upw) {
+        this.upw = upw;
+    }
 
 }

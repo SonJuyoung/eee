@@ -24,8 +24,6 @@ public class UserService {
     @Transactional //jpa로 DB변경시 붙여줌. 원자성, 일관성, 격리성, 지속성 유지를 위해서
     public int join(UserDto dto) {
 
-        UserEntity entity = new UserEntity();
-
         //비밀번호 암호화
         String rawPassword = dto.getPw();
         String encPassword = encoder.encode(rawPassword);
@@ -33,15 +31,19 @@ public class UserService {
 //        String encId = encoder.encode(rawId);
 
 //        entity.setUid(encId);
-        entity.setUid(dto.getId());
-        entity.setUpw(encPassword);
-        entity.setMail(dto.getMail());
-        entity.setName(dto.getName());
-        entity.setPhone(dto.getPhone());
-        entity.setPostcode(dto.getPostcode());
-        entity.setAddress(dto.getAddress());
+        UserEntity entity = UserEntity.builder()
+                .uid(dto.getId())
+                .upw(encPassword)
+                .mail(dto.getMail())
+                .name(dto.getName())
+                .phone(dto.getPhone())
+                .postcode(dto.getPostcode())
+                .address(dto.getAddress())
+                .build();
+
         if (dto.getIuser()!=0) {
-            entity.setIuser(dto.getIuser());
+            entity.builder().iuser(dto.getIuser()).build();
+//            entity.setIuser(dto.getIuser());
         }
 
         try {
@@ -98,7 +100,7 @@ public class UserService {
 
         //비밀번호 변경 성공 시 1리턴 실패시 0리턴
         try {
-            entity.setUpw(encPassword);
+            entity.changeUpw(encPassword);
 
             userRepository.save(entity);
 

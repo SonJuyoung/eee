@@ -1,11 +1,15 @@
 package ieetu.common.entity;
 
-import lombok.Data;
+import lombok.*;
+
 import javax.persistence.*;
 
 @Entity
 @Table(name = "board")
-@Data
+@Getter
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
 public class BoardEntity {
 
     @Id
@@ -27,4 +31,8 @@ public class BoardEntity {
     private UserEntity iuser;
 
     private int view;
+
+    public BoardEntity(int iboard) {
+        this.iboard = iboard;
+    }
 }

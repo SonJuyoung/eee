@@ -21,7 +21,7 @@ public class AuthenticationFacade {
         if (userRepository.findByUid(Uid).isPresent()) {
             UserEntity data = userRepository.findByUid(Uid).get();
             if (data == null) {
-                data.setIuser(0);
+                data = new UserEntity(0);
             }
 
             return data;

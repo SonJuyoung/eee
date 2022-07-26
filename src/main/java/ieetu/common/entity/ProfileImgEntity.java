@@ -1,14 +1,15 @@
 package ieetu.common.entity;
 
-import lombok.Builder;
-import lombok.Data;
-import lombok.Getter;
+import lombok.*;
 
 import javax.persistence.*;
 
 @Entity
 @Table(name = "profileimg")
-@Data
+@Getter
+@Builder
+@AllArgsConstructor
+@NoArgsConstructor
 public class ProfileImgEntity {
 
     @Id
