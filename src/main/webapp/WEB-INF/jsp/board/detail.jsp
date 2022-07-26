@@ -19,6 +19,7 @@
     </div>
     <div class="detail">
         <h5>작성자 : ${detail.writer}</h5>
+        <h5>조회수 : ${detail.view}</h5>
         <h5>작성 일자 : ${detail.rdt}</h5>
         <button class="mod hidden btn btn-warning">수정</button>
         <button class="del hidden btn btn-danger">삭제</button>

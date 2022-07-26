@@ -24,4 +24,5 @@ public class BoardService {
     public void viewUp(int iboard) {
         boardRepository.viewUp(iboard);
     }
+
 }
