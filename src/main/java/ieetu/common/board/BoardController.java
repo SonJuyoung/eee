@@ -26,6 +26,9 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.data.domain.Pageable;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import java.io.File;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
@@ -346,7 +349,7 @@ public class BoardController {
 
     //글 상세 페이지 화면
     @GetMapping("/detail")
-    public String detail(@RequestParam int iboard, Model model) {
+    public String detail(@RequestParam int iboard, Model model, HttpServletResponse response, HttpServletRequest request) {
 
         BoardEntity boardEntity = new BoardEntity();
         boardEntity.setIboard(iboard);
@@ -377,6 +380,33 @@ public class BoardController {
         if (sUser.equals(bUser)) {
             model.addAttribute("user", "same");
             System.out.println("아이디 같음");
+        }
+
+        //쿠키 활용 조회수 증가
+        Cookie oldCookie = null;
+        Cookie[] cookies = request.getCookies();
+        if (cookies != null) {
+            for (Cookie cookie : cookies) {
+                if (cookie.getName().equals("postView")) {
+                    oldCookie = cookie;
+                }
+            }
+        }
+
+        if (oldCookie != null) {
+            if (!oldCookie.getValue().contains("[" + iboard + "]")) {
+                boardService.viewUp(iboard);
+                oldCookie.setValue(oldCookie.getValue() + "_[" + iboard + "]");
+                oldCookie.setPath("/");
+                oldCookie.setMaxAge(60 * 60 * 24);
+                response.addCookie(oldCookie);
+            }
+        } else {
+            boardService.viewUp(iboard);
+            Cookie newCookie = new Cookie("postView","[" + iboard + "]");
+            newCookie.setPath("/");
+            newCookie.setMaxAge(60 * 60 * 24);
+            response.addCookie(newCookie);
         }
 
         //이전, 다음 게시물

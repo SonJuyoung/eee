@@ -62,6 +62,7 @@
         <th><input type="checkbox"></th>
         <th class="title">제목</th>
         <th>작성자</th>
+        <th>조회수</th>
         <th class="rdt">최종 수정일자</th>
     </tr>
 <%--    <c:forEach var="item" items="${fixList}">--%>
@@ -81,6 +82,7 @@
             <td><input type="checkbox"></td>
             <td class="title">${item.title}</td>
             <td>${item.writer}</td>
+            <td>${item.view}</td>
             <td class="rdt">${item.rdt}</td>
         </tr>
     </c:forEach>

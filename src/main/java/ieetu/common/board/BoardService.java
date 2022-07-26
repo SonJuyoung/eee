@@ -20,4 +20,8 @@ public class BoardService {
             return 0;
         }
     }
+
+    public void viewUp(int iboard) {
+        boardRepository.viewUp(iboard);
+    }
 }
