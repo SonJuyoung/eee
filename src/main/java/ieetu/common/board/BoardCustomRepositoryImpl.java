@@ -19,9 +19,7 @@ public class BoardCustomRepositoryImpl implements BoardCustomRepository {
     public List<BoardEntity> search(String search, int fix, String ctnt, String writer, String title, String startDate, String endDate, Pageable pageable) {
         return queryFactory.selectFrom(QBoardEntity.boardEntity)
                 .where(isFix(fix)
-                        ,(
-                                searchResult(search)
-                        )
+                        ,searchResult(search)
                         ,(isDate(startDate, endDate))
                 )
                 .orderBy(QBoardEntity.boardEntity.iboard.desc())
@@ -34,9 +32,7 @@ public class BoardCustomRepositoryImpl implements BoardCustomRepository {
     public List<BoardEntity> search(String search, int fix, String ctnt, String writer, String title, String startDate, String endDate) {
         return queryFactory.selectFrom(QBoardEntity.boardEntity)
                 .where(isFix(fix)
-                        ,(
-                                searchResult(search)
-                        )
+                        ,searchResult(search)
                         ,(isDate(startDate, endDate))
                 )
                 .orderBy(QBoardEntity.boardEntity.iboard.desc())
