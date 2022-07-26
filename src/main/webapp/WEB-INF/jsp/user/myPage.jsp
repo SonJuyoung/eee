@@ -12,10 +12,10 @@
 </head>
 <body>
 <div class="container">
-    <div class="mypage-top">
+    <div class="mypage-top d-flex justify-content-center">
         <h1>마이페이지</h1>
     </div>
-    <div class="mypage-info">
+    <div class="mypage-info d-flex flex-column align-items-center mb-2">
         <h5 data-set="${loginUser.iuser}"><strong>${loginUser.name}</strong></h5>
         <h5>${loginUser.mail}</h5>
         <div class="my-photo">
@@ -25,10 +25,10 @@
         </div>
     </div>
     <div class="mypge-btns">
-        <div>
+        <div class="mb-1">
             <a href="/myinfo" style="text-decoration: none"><i class="fas fa-user-circle">내 정보</i></a>
         </div>
-        <div>
+        <div class="mb-1">
             <a href="/myarticle"><i class="fas fa-edit">작성한 글</i></a>
         </div>
         <i class="fas fa-envelope-open">내 쪽지함</i>
