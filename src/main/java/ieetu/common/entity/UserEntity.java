@@ -1,14 +1,12 @@
 package ieetu.common.entity;
 
-import lombok.Builder;
-import lombok.Getter;
+import lombok.*;
 
 import javax.persistence.*;
 
 @Entity
 @Table(name = "user")
-@Getter
-@Builder
+@Data
 public class UserEntity {
 
     @Id
@@ -38,21 +36,4 @@ public class UserEntity {
     @Column(nullable = false)
     private int postcode;
 
-    public UserEntity() {
-
-    }
-
-    public void changePw(String upw) {
-        this.upw = upw;
-    }
-
-    public void changeIuser(int iuser) {
-        this.iuser = iuser;
-    }
-
-    public void changeUser(String upw, String address, int postcode) {
-        this.upw = upw;
-        this.address = address;
-        this.postcode = postcode;
-    }
 }

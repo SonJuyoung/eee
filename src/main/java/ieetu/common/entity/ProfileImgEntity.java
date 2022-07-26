@@ -1,14 +1,14 @@
 package ieetu.common.entity;
 
 import lombok.Builder;
+import lombok.Data;
 import lombok.Getter;
 
 import javax.persistence.*;
 
 @Entity
 @Table(name = "profileimg")
-@Getter
-@Builder
+@Data
 public class ProfileImgEntity {
 
     @Id
@@ -21,8 +21,4 @@ public class ProfileImgEntity {
     @OneToOne
     @JoinColumn(name = "iuser")
     private UserEntity iuser;
-
-    public ProfileImgEntity() {
-
-    }
 }

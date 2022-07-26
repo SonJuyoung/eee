@@ -6,8 +6,8 @@ import ieetu.common.dto.UserDto;
 import ieetu.common.entity.ProfileImgEntity;
 import ieetu.common.entity.UserEntity;
 import ieetu.common.securityConfig.AuthenticationFacade;
-import lombok.RequiredArgsConstructor;
 import org.apache.commons.io.FileUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Controller;
 
@@ -17,18 +17,26 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
 import java.net.MalformedURLException;
+import java.net.URL;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 @Controller
 @RequestMapping("")
-@RequiredArgsConstructor
 public class UserController {
 
-    private final UserService userService;
-    private final UserRepository userRepository;
-    private final AuthenticationFacade authenticationFacade;
-    private final ProfileImgService profileImgService;
-    private final ProfileImgRepository profileImgRepository;
-    private final BoardRepository boardRepository;
+    @Autowired
+    private UserService userService;
+    @Autowired
+    private UserRepository userRepository;
+    @Autowired
+    private AuthenticationFacade authenticationFacade;
+    @Autowired
+    private ProfileImgService profileImgService;
+    @Autowired
+    private ProfileImgRepository profileImgRepository;
+    @Autowired
+    private BoardRepository boardRepository;
 
     //기본 인덱스 주소로 접속 시 로그인 페이지로
     @GetMapping
@@ -122,7 +130,7 @@ public class UserController {
     public String myPage(Model model) throws MalformedURLException {
 
         UserEntity entity = new UserEntity();
-        entity.changeIuser(authenticationFacade.getLoginUserPk());
+        entity.setIuser(authenticationFacade.getLoginUserPk());
 
         model.addAttribute("loginUser", authenticationFacade.getLoginUser());
 
@@ -139,15 +147,12 @@ public class UserController {
     public int profileImg(@RequestBody ProfileImgDto dto) {
 
         UserEntity userEntity = new UserEntity();
-        userEntity.changeIuser(dto.getIuser());
+        userEntity.setIuser(dto.getIuser());
 
-        ProfileImgEntity entity = ProfileImgEntity.builder()
-                .iuser(userEntity)
-                .fileNm(dto.getFileNm())
-                .build();
+        ProfileImgEntity entity = new ProfileImgEntity();
 
-//        entity.setIuser(userEntity);
-//        entity.setFileNm(dto.getFileNm());
+        entity.setIuser(userEntity);
+        entity.setFileNm(dto.getFileNm());
 
         //프로필 사진이 있으면 삭제
         if (profileImgRepository.findByIuser(userEntity) != null) {
@@ -171,21 +176,21 @@ public class UserController {
         File uploadPath = new File(uploadFolder, String.valueOf(iuser));
 
         //기존 iuser에 해당하는 폴더가 있으면 삭제하고 다시 만듦, 파일 계속 축적되는 것 방지
-            if (!uploadPath.exists()) {
+        if (!uploadPath.exists()) {
+            uploadPath.mkdirs();
+        } else {
+            String path = String.valueOf(uploadPath);
+            System.out.println("path : " + path);
+
+            try {
+                File dir = new File(path);
+                FileUtils.deleteDirectory(dir);
+
                 uploadPath.mkdirs();
-            } else {
-                String path = String.valueOf(uploadPath);
-                System.out.println("path : " + path);
-
-                try {
-                    File dir = new File(path);
-                    FileUtils.deleteDirectory(dir);
-
-                    uploadPath.mkdirs();
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
+            } catch (Exception e) {
+                e.printStackTrace();
             }
+        }
 
         //경로에 파일 생성
         try {
@@ -212,7 +217,7 @@ public class UserController {
     public String myArticle(Model model, Pageable pageable) {
 
         UserEntity entity = new UserEntity();
-        entity.changeIuser(authenticationFacade.getLoginUserPk());
+        entity.setIuser(authenticationFacade.getLoginUserPk());
 
         if (profileImgRepository.findByIuser(entity)!=null) {
             System.out.println("파일 : " + profileImgRepository.findByIuser(entity).getFileNm());

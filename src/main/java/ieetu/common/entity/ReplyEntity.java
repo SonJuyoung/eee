@@ -10,8 +10,7 @@ import javax.persistence.*;
 
 @Entity
 @Table(name = "reply")
-@Getter
-@Builder
+@Data
 public class ReplyEntity {
 
     @Id
@@ -34,7 +33,4 @@ public class ReplyEntity {
 
     private String name;
 
-    public ReplyEntity() {
-
-    }
 }
