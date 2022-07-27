@@ -11,6 +11,15 @@ public class ProfileImgService {
     @Autowired
     ProfileImgRepository profileImgRepository;
 
+    public String profileImgCall(UserEntity entity) {
+        try {
+            return profileImgRepository.findByIuser(entity).getFileNm();
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
     public int profileImgSave(ProfileImgEntity entity) {
         try {
             profileImgRepository.save(entity);

@@ -11,6 +11,7 @@ import ieetu.common.entity.ReplyEntity;
 import ieetu.common.entity.UserEntity;
 import ieetu.common.securityConfig.AuthenticationFacade;
 import ieetu.common.user.ProfileImgRepository;
+import ieetu.common.user.ProfileImgService;
 import org.apache.commons.io.FileUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.FileSystemResource;
@@ -55,7 +56,7 @@ public class BoardController {
     @Autowired
     private ReplyRepository replyRepository;
     @Autowired
-    private ProfileImgRepository profileImgRepository;
+    private ProfileImgService profileImgService;
 
     @GetMapping("/list")
     public String board(Model model, Pageable pageable) {
@@ -67,16 +68,19 @@ public class BoardController {
 
         UserEntity entity = new UserEntity(authenticationFacade.getLoginUserPk());
 
-        if (profileImgRepository.findByIuser(entity) != null) {
-            System.out.println("파일 : " + profileImgRepository.findByIuser(entity).getFileNm());
-            model.addAttribute("profileImg", profileImgRepository.findByIuser(entity).getFileNm());
+        if (profileImgService.profileImgCall(entity) != null) {
+            model.addAttribute("profileImg", profileImgService.profileImgCall(entity));
         }
-        model.addAttribute("list", boardRepository.findAllByOrderByIboardDesc(pageable));
-        System.out.println("리스트 : " + boardRepository.findAll(pageable));
 
-        model.addAttribute("fixList", boardRepository.fixList()); //공지사항 게시물
-        model.addAttribute("fixListCount", boardRepository.fixList().size()); //공지사항 게시물 갯수
-        model.addAttribute("normalList", boardRepository.List(pageable)); //일반 게시물
+        //공지사항 || 일반 게시물
+        int noticeBoard = 1;
+        int normalBoard = 0;
+
+        model.addAttribute("list", boardRepository.findAllByOrderByIboardDesc(pageable));
+
+        model.addAttribute("fixList", boardRepository.fixList(noticeBoard)); //공지사항 게시물
+        model.addAttribute("fixListCount", boardRepository.fixList(noticeBoard).size()); //공지사항 게시물 갯수
+        model.addAttribute("normalList", boardRepository.List(normalBoard, pageable)); //일반 게시물
         model.addAttribute("count", boardRepository.findAllByOrderByFixDescIboardDesc().size()); //일반 게시물 갯수
         model.addAttribute("user", authenticationFacade.getLoginUser()); //로그인 유저 정보
 
@@ -94,15 +98,18 @@ public class BoardController {
 
         UserEntity entity = new UserEntity(authenticationFacade.getLoginUserPk());
 
-        if (profileImgRepository.findByIuser(entity) != null) {
-            System.out.println("파일 : " + profileImgRepository.findByIuser(entity).getFileNm());
-            model.addAttribute("profileImg", profileImgRepository.findByIuser(entity).getFileNm());
+        if (profileImgService.profileImgCall(entity) != null) {
+            model.addAttribute("profileImg", profileImgService.profileImgCall(entity));
         }
+
+        //공지사항 || 일반 게시물
+        int noticeBoard = 1;
+        int normalBoard = 0;
 
         model.addAttribute("user", authenticationFacade.getLoginUser()); //로그인 유저 정보
         model.addAttribute("list", boardRepository.findAllByOrderByIboardDesc(pageable));
         System.out.println("리스트 : " + boardRepository.findAll(pageable));
-        model.addAttribute("fixList", boardRepository.fixList()); //공지사항 게시물
+        model.addAttribute("fixList", boardRepository.fixList(noticeBoard)); //공지사항 게시물
 
         int fix = -1;
         String title = null;
@@ -258,14 +265,14 @@ public class BoardController {
 
         if (oldCookie != null) {
             if (!oldCookie.getValue().contains("[" + iboard + "]")) {
-                boardService.viewUp(iboard);
+                boardService.viewUp(iboard, boardRepository.findByIboard(iboard).getView());
                 oldCookie.setValue(oldCookie.getValue() + "_[" + iboard + "]");
                 oldCookie.setPath("/");
                 oldCookie.setMaxAge(60 * 60 * 24);
                 response.addCookie(oldCookie);
             }
         } else {
-            boardService.viewUp(iboard);
+            boardService.viewUp(iboard, boardRepository.findByIboard(iboard).getView());
             Cookie newCookie = new Cookie("postView", "[" + iboard + "]");
             newCookie.setPath("/");
             newCookie.setMaxAge(60 * 60 * 24);
@@ -273,16 +280,20 @@ public class BoardController {
         }
 
         //이전, 다음 게시물
-        if (boardRepository.findPrev(iboard).size() > 0) { //이전 게시물이 있으면 게시물 정보 불러옴
-            int prevIboard = boardRepository.findPrev(iboard).get(0).getIboard();
+
+        int prev = 0;
+        int next = 1;
+
+        if (boardRepository.findPrevOrNext(prev, iboard).size() > 0) { //이전 게시물이 있으면 게시물 정보 불러옴
+            int prevIboard = boardRepository.findPrevOrNext(prev, iboard).get(0).getIboard();
             System.out.println("이전 게시물 :" + prevIboard);
             model.addAttribute("prevIboard", prevIboard);
         } else { //이전 게시물 없으면 처음 게시물 표시
             model.addAttribute("prevIboard", "first");
         }
 
-        if (boardRepository.findNext(iboard).size() > 0) { //다음 게시물이 있으면 게시물 정보 불러옴
-            int nextIboard = boardRepository.findNext(iboard).get(0).getIboard();
+        if (boardRepository.findPrevOrNext(next, iboard).size() > 0) { //다음 게시물이 있으면 게시물 정보 불러옴
+            int nextIboard = boardRepository.findPrevOrNext(next, iboard).get(0).getIboard();
             System.out.println("다음 게시물 :" + nextIboard);
             model.addAttribute("nextIboard", nextIboard);
         } else {
