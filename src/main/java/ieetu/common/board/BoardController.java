@@ -205,12 +205,14 @@ public class BoardController {
         //dto를 통해 ajax로 받아온 데이터를 BoardEntity 객체에 set
 
         BoardEntity entity = BoardEntity.builder()
+                .iboard(dto.getIboard())
                 .title(dto.getTitle())
                 .ctnt(dto.getCtnt())
                 .writer(dto.getWriter())
                 .rdt(dto.getRdt())
                 .fix(dto.getFix())
                 .iuser(userEntity)
+                .view(boardRepository.findByIboard(dto.getIboard()).getView())
                 .build();
 
         System.out.println(entity);
