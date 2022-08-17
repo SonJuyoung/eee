@@ -12,6 +12,8 @@ import org.springframework.util.StringUtils;
 
 import java.util.List;
 
+import static ieetu.common.entity.QBoardEntity.*;
+
 @RequiredArgsConstructor
 public class BoardCustomRepositoryImpl implements BoardCustomRepository {
 
@@ -19,12 +21,12 @@ public class BoardCustomRepositoryImpl implements BoardCustomRepository {
 
     @Override
     public List<BoardEntity> search(String search, int fix, String ctnt, String writer, String title, String startDate, String endDate, Pageable pageable) {
-        return queryFactory.selectFrom(QBoardEntity.boardEntity)
+        return queryFactory.selectFrom(boardEntity)
                 .where(isFix(fix)
                         ,searchResult(search)
                         ,(isDate(startDate, endDate))
                 )
-                .orderBy(QBoardEntity.boardEntity.iboard.desc())
+                .orderBy(boardEntity.iboard.desc())
                 .offset(pageable.getOffset())
                 .limit(pageable.getPageSize())
                 .fetch();
@@ -32,28 +34,28 @@ public class BoardCustomRepositoryImpl implements BoardCustomRepository {
 
     @Override
     public List<BoardEntity> search(String search, int fix, String ctnt, String writer, String title, String startDate, String endDate) {
-        return queryFactory.selectFrom(QBoardEntity.boardEntity)
+        return queryFactory.selectFrom(boardEntity)
                 .where(isFix(fix)
                         ,searchResult(search)
                         ,(isDate(startDate, endDate))
                 )
-                .orderBy(QBoardEntity.boardEntity.iboard.desc())
+                .orderBy(boardEntity.iboard.desc())
                 .fetch();
     }
 
     @Override
     public List<BoardEntity> fixList(int fix) {
-        return queryFactory.selectFrom(QBoardEntity.boardEntity)
+        return queryFactory.selectFrom(boardEntity)
                 .where(isFix(fix))
-                .orderBy(QBoardEntity.boardEntity.rdt.desc())
+                .orderBy(boardEntity.rdt.desc())
                 .fetch();
     }
 
     @Override
     public List<BoardEntity> List(int fix, Pageable pageable) {
-        return queryFactory.selectFrom(QBoardEntity.boardEntity)
+        return queryFactory.selectFrom(boardEntity)
                 .where(isFix(fix))
-                .orderBy(QBoardEntity.boardEntity.rdt.desc())
+                .orderBy(boardEntity.rdt.desc())
                 .offset(pageable.getOffset())
                 .limit(pageable.getPageSize())
                 .fetch();
@@ -61,7 +63,7 @@ public class BoardCustomRepositoryImpl implements BoardCustomRepository {
 
     @Override
     public List<BoardEntity> findPrevOrNext(int prevNext, int iboard) {
-        return queryFactory.selectFrom(QBoardEntity.boardEntity)
+        return queryFactory.selectFrom(boardEntity)
                 .where(prevOrNext(prevNext, iboard))
                 .orderBy(descOrAsc(prevNext))
                 .fetch();
@@ -69,37 +71,37 @@ public class BoardCustomRepositoryImpl implements BoardCustomRepository {
 
     @Override
     public void viewUp(int iboard, int view) {
-        queryFactory.update(QBoardEntity.boardEntity)
-                .set(QBoardEntity.boardEntity.view, view + 1)
-                .where(QBoardEntity.boardEntity.iboard.eq(iboard))
+        queryFactory.update(boardEntity)
+                .set(boardEntity.view, view + 1)
+                .where(boardEntity.iboard.eq(iboard))
                 .execute();
     }
 
     private BooleanExpression isDate(String startDate, String endDate) {
-        return (StringUtils.hasText(startDate) && StringUtils.hasText(endDate)) ? QBoardEntity.boardEntity.rdt.between(startDate, endDate) : null;
+        return (StringUtils.hasText(startDate) && StringUtils.hasText(endDate)) ? boardEntity.rdt.between(startDate, endDate) : null;
     }
 
     private BooleanExpression isFix(int fix) {
         if (fix == 1) {
-            return QBoardEntity.boardEntity.fix.eq(1);
+            return boardEntity.fix.eq(1);
         } else if (fix == 0) {
-            return QBoardEntity.boardEntity.fix.eq(0);
+            return boardEntity.fix.eq(0);
         } else {
             return null;
         }
     }
 
     private BooleanExpression searchResult(String search) {
-        return QBoardEntity.boardEntity.writer.contains(search)
-                .or(QBoardEntity.boardEntity.ctnt.contains(search))
-                .or(QBoardEntity.boardEntity.title.contains(search));
+        return boardEntity.writer.contains(search)
+                .or(boardEntity.ctnt.contains(search))
+                .or(boardEntity.title.contains(search));
     }
 
     private BooleanExpression prevOrNext(int prevNext, int iboard) {
         if (prevNext == 0) {
-            return QBoardEntity.boardEntity.iboard.lt(iboard);
+            return boardEntity.iboard.lt(iboard);
         } else if (prevNext == 1){
-            return QBoardEntity.boardEntity.iboard.gt(iboard);
+            return boardEntity.iboard.gt(iboard);
         } else {
             return null;
         }
@@ -107,9 +109,9 @@ public class BoardCustomRepositoryImpl implements BoardCustomRepository {
 
     private OrderSpecifier<Integer> descOrAsc(int prevNext) {
         if (prevNext == 0) {
-            return QBoardEntity.boardEntity.iboard.desc();
+            return boardEntity.iboard.desc();
         } else {
-            return QBoardEntity.boardEntity.iboard.asc();
+            return boardEntity.iboard.asc();
         }
     }
 }
