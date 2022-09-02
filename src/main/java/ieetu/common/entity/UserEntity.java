@@ -36,6 +36,12 @@ public class UserEntity {
     @Column(nullable = false)
     private String address;
 
+    @Column
+    private String addressDetail;
+
+    @Column
+    private String addressExtra;
+
     @Column(nullable = false)
     private int postcode;
 

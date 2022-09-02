@@ -39,13 +39,15 @@ public class UserService {
                 .phone(dto.getPhone())
                 .postcode(dto.getPostcode())
                 .address(dto.getAddress())
+                .addressDetail(dto.getAddressDetail())
+                .addressExtra(dto.getAddressExtra())
                 .build();
 
         if (dto.getIuser()!=0) {
             entity.builder().iuser(dto.getIuser()).build();
 //            entity.setIuser(dto.getIuser());
         }
-
+        System.out.println("entity : " + entity);
         try {
             userRepository.save(entity);
 

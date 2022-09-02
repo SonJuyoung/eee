@@ -21,9 +21,6 @@ joinBtn.addEventListener("click", (e)=> {
     let detailAddressVal = detailAddress.value;
     let extraAddressVal = extraAddress.value;
 
-    let address = addressVal + " " +detailAddressVal + extraAddressVal;
-    console.log(address);
-
     if (url.includes("myinfo")) {
         let iuser = document.querySelector("#id").dataset.set;
 
@@ -55,7 +52,9 @@ joinBtn.addEventListener("click", (e)=> {
                 "mail": mail.value,
                 "phone": phone.value,
                 "postcode": postcodeVal,
-                "address" : address
+                "address" : addressVal,
+                "addressDetail" : detailAddressVal,
+                "addressExtra" : extraAddressVal
             }),
         }).then(res => {
             console.log(res);
@@ -112,7 +111,9 @@ joinBtn.addEventListener("click", (e)=> {
                 "mail": mail.value,
                 "phone": phone.value,
                 "postcode": postcodeVal,
-                "address" : address
+                "address" : addressVal,
+                "addressDetail" : detailAddressVal,
+                "addressExtra" : extraAddressVal
             }),
         }).then(res => {
             console.log(res);

@@ -58,8 +58,8 @@
                     <input type="text" class="form-control w-100 main-address" id="sample6_address" value="${loginUser.address}" placeholder="주소" readonly><br>
                 </div>
                 <div class="d-flex align-items-center justify-content-center w-50">
-                    <input type="text" class="form-control detail-address" id="sample6_detailAddress" placeholder="상세주소">
-                    <input type="text" class="form-control extra-address" id="sample6_extraAddress" placeholder="참고항목">
+                    <input type="text" class="form-control detail-address" id="sample6_detailAddress" value="${loginUser.addressDetail}" placeholder="상세주소">
+                    <input type="text" class="form-control extra-address" id="sample6_extraAddress" value="${loginUser.addressExtra}" placeholder="참고항목">
                 </div>
             </div>
         </div>

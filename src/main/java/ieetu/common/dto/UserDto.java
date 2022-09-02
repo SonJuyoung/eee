@@ -14,4 +14,6 @@ public class UserDto {
     private int iuser;
     private int postcode;
     private String address;
+    private String addressDetail;
+    private String addressExtra;
 }
